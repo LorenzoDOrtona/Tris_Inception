@@ -6,21 +6,22 @@ import (
 )
 
 type Game struct {
-	playerUuid   uuid.UUID
-	opponentUuid uuid.UUID
-	gameUuid     uuid.UUID
-	gameState    GameState
-	winner       uuid.UUID
-	looser       uuid.UUID
-	mainBoard    BigBoard
+	playerUuid     uuid.UUID
+	opponentUuid   uuid.UUID
+	currentPlaying uuid.UUID
+	gameUuid       uuid.UUID
+	gameState      GameState
+	winner         uuid.UUID
+	looser         uuid.UUID
+	mainBoard      BigBoard
 }
 
 /*
 Starts the game by activating the first
 gameState
 */
-func start() {
-
+func init() {
+	
 }
 
 /*
