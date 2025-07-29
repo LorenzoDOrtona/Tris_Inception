@@ -35,7 +35,8 @@ func isThereSpecialPostionable() bool{
 }
 func getPositionable() Positionable{
 	/*
-	returns a random positionable, based on chances
+	returns a random positionable, based on chances,
+	of each type
 	*/
-	
+	return
 }
