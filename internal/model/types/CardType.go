@@ -1,7 +1,7 @@
 package types
 type CardType int
 const(
-	None=iota
+	NoCard=iota
 	MoreCrosses
 	LessCrosses
 	SwitchBoards
