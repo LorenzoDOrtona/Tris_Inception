@@ -9,7 +9,7 @@ type MatchState struct{
 }
 // Returns next state from this one
 func (cgs MatchState) GetNextState(hasOtherChoice bool) (ngs GameState) {
-	return EndState{}
+	return &EndState{}
 }
 func (gs *MatchState)moveCommand(i,j,x,y int, player uuid.UUID) {
 	/*
@@ -74,6 +74,6 @@ func finishMove(i,j,x,y int){
 	//2) update player to play
 }
 func (gs *MatchState) GoNextState() {
-	gs.mainGame.gameState = EndState{}
+	gs.mainGame.gameState = &EndState{}
 	gs.mainGame.gameState.Activate()
 }
