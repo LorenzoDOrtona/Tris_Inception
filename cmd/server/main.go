@@ -9,4 +9,5 @@ func main()  {
 	var BB board.BigBoard
 	BB.SetupBigBoard()
 	BB.Print()
+	
 }
