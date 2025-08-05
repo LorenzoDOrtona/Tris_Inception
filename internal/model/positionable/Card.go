@@ -1,14 +1,11 @@
-package model
+package positionable
 
 type Card interface {
 	Positionable
+	
 }
 
-func effect() {
+func Effect() {
 
 }
-func (c Card) String() string{
-	var out string
-	out="C"
-	return out
-}
+

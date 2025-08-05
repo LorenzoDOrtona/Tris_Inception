@@ -1,10 +1,7 @@
-package model
+package positionable
 
 type Positionable interface {
-	getType() int
-	print()
+	GetType() int
+	String() string
 }
 
-func (p Positionable) GetType() positionable int {
-	return 
-}

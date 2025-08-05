@@ -1,14 +1,12 @@
-package model
+package positionable
 import (
-    "fmt"
     "math/rand"
     "time"
-	"internal/model/positionable/Positionable"
 )
 //config
-var cardChance uint:=10 //one in 10 should be a card
-var M unit:=100
-func randomGen() res int{
+var cardChance =10 //one in 10 should be a card
+var M =100
+func RandomGen() int{
 	/*
 	generates a random number in 0,M range
 	*/
@@ -18,25 +16,29 @@ func randomGen() res int{
 	return x
 }
 
-func isThereSpecialPostionable() bool{
+func IsThereSpecialPostionable() bool{
 	/*
 	Generates a random number between 0 and M (example 100)
 	If the result x (49) is more than M/x (10), we are NOT having 
 	a special positionable, function returns false
 	Otherwise we have true
 	*/
-	var x int :=randomGen()
-	var cutOff float:=M/cardChance
+	var x int = RandomGen()
+	cutOff :=M/cardChance
 	if x<=cutOff{
 		return true
 	}else{
 		return false
 	}
 }
-func getPositionable() Positionable{
+func GetPositionable() (p Positionable) {
 	/*
 	returns a random positionable, based on chances,
 	of each type
 	*/
-	return
+	if IsThereSpecialPostionable(){
+		return CardMoreCrosses{}
+	}else{
+		return Mark{}
+	}
 }

@@ -1,9 +1,12 @@
-package model
+package types
+
 type MarkType int
-const(
-	circle=iota
-	cross
+
+const (
+	Circle = iota
+	Cross
 )
-func (p posType) String() s String{
-	return [...]string{"circle","cross"}
+
+func (p MarkType) String() string {
+	return [...]string{"Circle", "Cross"}
 }

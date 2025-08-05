@@ -1,8 +1,10 @@
-package model
+package game
 
 //import "fmt"s
 import (
 	"github.com/google/uuid"
+	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/board"
+
 )
 
 type Game struct {
@@ -26,7 +28,7 @@ func init() {
 
 /*
  */
-func changePlayerTurn() {
+func ChangePlayerTurn() {
 
 }
 

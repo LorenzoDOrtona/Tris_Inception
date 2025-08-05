@@ -1,8 +1,8 @@
-package model
+package game
 
 // import "fmt"
 type GameState interface {
-	game Game
+	//var game Game
 	GetNextState(hasOtherChoice bool) GameState
 }
 
@@ -10,7 +10,7 @@ type GameState interface {
 func GetNextState(hasOtherChoice bool) (ngs GameState) {
 	return
 }
-func (cs GameState)GoNextState(hasOtherChoice bool){
-	game.state=GoNextState(hasOtherChoice)
+func (cs GameState) GoNextState(hasOtherChoice bool) {
+	game.state = GoNextState(hasOtherChoice)
 	game.state.activate()
 }

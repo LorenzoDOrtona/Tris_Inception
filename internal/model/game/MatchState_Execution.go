@@ -1,4 +1,4 @@
-package model
+package game
 
 type MatchState_Execution struct {
 

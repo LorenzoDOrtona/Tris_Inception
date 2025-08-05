@@ -1,30 +1,32 @@
-package model
-import(
+package board
+
+import (
 	"fmt"
-	"internal/model/positionable/Board"
 )
+
 type BigBoard struct {
-	mainBoard:=[3][3]Board
+	mainBoard [3][3]Board
+}
+
+func (B *BigBoard) SetupBigBoard() {
+
+	for i := 0; i < 3; i++ {
+		for j := 0; j < 3; j++ {
+			B.mainBoard[i][j].SetupBoard()
+		}
+	}
 
 }
-func setupBigBoard(){
-	var boardInit BigBoard
-	for i==0;i<3;i++{
-		for j==0;j<3;j++{
-			boardInit[i][j]=Board.setupBoard()
-		}
-	}
-	return boardInit
-}
-func (BB BigBoard) String() string{
+func (BB BigBoard) String() string {
 	var out string
-	for i==0;i<3;i++{
-		for j==0;j<3;j++{
-			out= out+mainBoard[i][j].String()+" "
+	for i := 0; i < 9; i++ {
+		for j := 0; j < 9; j++ {
+			out = out + BB.mainBoard[i/3][j/3].board[i%3][j%3].String() + " "
 		}
-		out=out+"\n"
+		out = out + "\n"
 	}
+	return out
 }
-func (BB BigBoard) print(){
+func (BB BigBoard) Print() {
 	fmt.Println(BB.String())
 }

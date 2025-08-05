@@ -1,14 +1,14 @@
-package model
+package positionable
 
 type Mark struct {
 	marktype uint8
 }
 
-func (m Positionable) GetType() (num int) {
+func (m Mark) GetType() (num int) {
 	return 0
 }
 func (c Mark) String() string{
-	if GetType()==0{
+	if (c.marktype==0){
 		return "0"
 	}else {
 		return "X"
