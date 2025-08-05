@@ -8,5 +8,9 @@ const (
 )
 
 func (p MarkType) String() string {
-	return [...]string{"Circle", "Cross"}
+	names := [...]string{"Circle", "Cross"}
+	if int(p) < 0 || int(p) >= len(names) {
+		return "Unknown"
+	}
+	return names[p]
 }

@@ -5,6 +5,6 @@ type BeginState struct {
 	GameState
 }
 
-func (gs *BeginState) activate() {
-	gs.mainGame.Init()
+func (gs *BeginState) Activate() {
+	
 }

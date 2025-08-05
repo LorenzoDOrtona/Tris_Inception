@@ -2,14 +2,7 @@ package game
 
 // import "fmt"
 type GameState interface {
-	GetNextState(hasOtherChoice bool) GameState
+	Activate()
 }
 
-// Returns next state from this one
-func GetNextState(hasOtherChoice bool) (ngs GameState) {
-	return
-}
-func (cs GameState) GoNextState(hasOtherChoice bool) {
-	game.state = GoNextState(hasOtherChoice)
-	game.state.activate()
-}
+
