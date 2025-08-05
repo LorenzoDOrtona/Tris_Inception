@@ -5,7 +5,6 @@ import (
 )
 type MatchState struct{
 	mainGame *Game
-	GameState
 }
 // Returns next state from this one
 func (cgs MatchState) GetNextState(hasOtherChoice bool) (ngs GameState) {

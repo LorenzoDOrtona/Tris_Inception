@@ -23,7 +23,7 @@ Starts the game by activating the first
 gameState
 */
 func (game *Game) Init() {
-	game.gameState=BeginState{game}
+	game.gameState=&BeginState{mainGame:game}
 	game.mainBoard.SetupBigBoard()
 	game.gameState.Activate()
 }

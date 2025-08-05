@@ -9,12 +9,8 @@ import (
 func main() {
 	fmt.Println("Ciao gente")
 
-	g := CreateGame()
+	g:= game.Game{}
 	g.Init()
 
 }
-func CreateGame() game.Game {
-	mainGame := game.Game{}
-	return mainGame
 
-}
