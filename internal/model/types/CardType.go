@@ -9,5 +9,5 @@ const(
 	ChoseAdd
 )
 func (c CardType)String() string{
-	return[...]string{"None","MoreCrosses","LessCrosses","SwitchBoards","ChooseRemove","ChoseAdd"}
+	return [...] string{"None","MoreCrosses","LessCrosses","SwitchBoards","ChooseRemove","ChoseAdd"}
 }

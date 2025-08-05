@@ -2,7 +2,6 @@ package game
 
 // import "fmt"
 type GameState interface {
-	//var game Game
 	GetNextState(hasOtherChoice bool) GameState
 }
 

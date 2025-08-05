@@ -2,12 +2,19 @@ package main
 
 import (
 	"fmt"
-	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/board"
+
+	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/game"
 )
-func main()  {
+
+func main() {
 	fmt.Println("Ciao gente")
-	var BB board.BigBoard
-	BB.SetupBigBoard()
-	BB.Print()
-	
+
+	g := CreateGame()
+	g.Init()
+
+}
+func CreateGame() game.Game {
+	mainGame := game.Game{}
+	return mainGame
+
 }

@@ -3,8 +3,6 @@ package game
 //import "fmt"s
 import (
 	"github.com/google/uuid"
-	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/board"
-
 )
 
 type Game struct {
@@ -12,7 +10,7 @@ type Game struct {
 	opponentUuid   uuid.UUID
 	currentPlaying uuid.UUID
 	gameUuid       uuid.UUID
-	gameState      GameState
+	gameState      *GameState
 	winner         uuid.UUID
 	looser         uuid.UUID
 	mainBoard      BigBoard
@@ -22,7 +20,9 @@ type Game struct {
 Starts the game by activating the first
 gameState
 */
-func init() {
+func (game *Game) Init() {
+	game.gameState=BeginState{*game}
+	game.mainBoard.SetupBigBoard()
 	
 }
 
