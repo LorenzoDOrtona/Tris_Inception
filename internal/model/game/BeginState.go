@@ -10,4 +10,6 @@ func (gs *BeginState) Activate() {
 	gs.mainGame.mainBoard=board.BigBoard{}
 	gs.mainGame.mainBoard.SetupBigBoard()
 	gs.mainGame.mainBoard.Print()
+	gs.mainGame.CurrentGameState=MatchState{}
+	gs.mainGame.CurrentGameState.Activate()
 }

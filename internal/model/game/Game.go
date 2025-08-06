@@ -8,14 +8,15 @@ import (
 )
 
 type Game struct {
-	playerUuid     uuid.UUID
-	opponentUuid   uuid.UUID
-	currentPlaying uuid.UUID
+	PlayerUuid     uuid.UUID
+	OpponentUuid   uuid.UUID
+	CurrentPlaying uuid.UUID
 	gameUuid       uuid.UUID
-	gameState      GameState
+	CurrentGameState      GameState
 	winner         uuid.UUID
 	looser         uuid.UUID
 	mainBoard      board.BigBoard
+	Finished 	bool=false
 }
 
 /*
