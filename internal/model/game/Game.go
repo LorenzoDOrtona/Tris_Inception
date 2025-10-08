@@ -8,25 +8,37 @@ import (
 )
 
 type Game struct {
-	PlayerUuid     uuid.UUID
-	OpponentUuid   uuid.UUID
+	playerUuid     uuid.UUID
+	opponentUuid   uuid.UUID
 	CurrentPlaying uuid.UUID
 	gameUuid       uuid.UUID
 	CurrentGameState      GameState
 	winner         uuid.UUID
 	looser         uuid.UUID
 	mainBoard      board.BigBoard
-	Finished 	bool=false
+	Finished 	bool
 }
-
+func New(player,opp uuid.UUID) *Game{
+	g := Game{
+		playerUuid:   player,
+		opponentUuid: opp,
+		// CurrentPlaying lo settiamo al player di default
+		CurrentPlaying: player,
+		gameUuid:       uuid.New(),
+		Finished:       false,
+	}
+	return &g
+}
 /*
 Starts the game by activating the first
 gameState
 */
 func (game *Game) Init() {
-	game.gameState=&BeginState{mainGame:game}
+	// inizializza la board e lo stato iniziale
+	game.mainBoard = board.BigBoard{}
+	game.CurrentGameState=&BeginState{mainGame:game}
 	game.mainBoard.SetupBigBoard()
-	game.gameState.Activate()
+	game.CurrentGameState.Activate()
 }
 
 /*
@@ -37,3 +49,7 @@ func ChangePlayerTurn() {
 
 /*
  */
+func (g*Game) GoNextState(gs GameState){
+	g.CurrentGameState=gs
+	g.CurrentGameState.Activate()
+}

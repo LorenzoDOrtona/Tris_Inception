@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/game"
+	"github.com/google/uuid"
 )
 
 func main() {
@@ -11,15 +11,17 @@ func main() {
 	m:=selectMode()
 	if m==1{
 
-	g:= game.Game{}
-	g.Initial()
-	
+	i:=uuid.New()
+	o:=uuid.New()
+	g:=game.New(i,o)
+	g.Init()
 	for {
 		var move string=""
 		for ! g.Finished{
 			fmt.Println("Move: ")
 			fmt.Scanln(&move)
 			err:=g.CurrentGameState.MoveCommand(1,1,1,1,g.CurrentPlaying)
+			
 			if err==nil{
 
 			}

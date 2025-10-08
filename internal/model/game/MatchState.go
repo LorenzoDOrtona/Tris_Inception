@@ -2,7 +2,6 @@ package game
 
 import (
 	"fmt"
-
 	"github.com/google/uuid"
 )
 
@@ -13,13 +12,16 @@ type MatchState struct {
 	//listener degli ev
 }
 
-func Activate() {
-
+func (ms *MatchState) Activate() {
+	fmt.Println("MatchState: activated")
+	// inizializzazioni se necessarie
 }
 
+
 // Returns next state from this one
-func (cgs MatchState) GetNextState(hasOtherChoice bool) (ngs GameState) {
-	return &EndState{}
+// Returns next state from this one
+func (ms *MatchState) GetNextState(hasOtherChoice bool) GameState {
+	return &EndState{mainGame: ms.mainGame}
 }
 func (gs *MatchState) MoveCommand(i, j, x, y int, player uuid.UUID) error {
 	/*
@@ -34,10 +36,13 @@ func (gs *MatchState) MoveCommand(i, j, x, y int, player uuid.UUID) error {
 		gs.checkStatus()
 		//4
 		finishMove(i, j, x, y)
+		gs.mainGame.mainBoard.Print()
 	} else {
 		//e) ERROR, not correct move
+		gs.mainGame.mainBoard.Print()
 		return fmt.Errorf("not valid")
 	}
+	
 	return nil
 }
 func (gs *MatchState) validateMove(i, j, x, y int, player uuid.UUID) bool {
@@ -70,7 +75,7 @@ func (gs *MatchState) checkStatus() {
 	weHaveAWinner := checkWin()
 	//if someone won, we end game
 	if weHaveAWinner {
-		gs.GoNextState()
+		gs.mainGame.GoNextState(&EndState{mainGame: gs.mainGame})
 	}
 }
 func checkWin() bool {
@@ -84,7 +89,4 @@ func finishMove(i, j, x, y int) {
 	//1) update the available plane to mark
 	//2) update player to play
 }
-func (gs *MatchState) GoNextState() {
-	gs.mainGame.CurrentGameState = &EndState{}
-	gs.mainGame.CurrentGameState.Activate()
-}
+
