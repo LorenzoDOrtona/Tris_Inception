@@ -3,6 +3,7 @@ package game
 import (
 	"fmt"
 	"github.com/google/uuid"
+	//"github.com/LorenzoDOrtona/Tris_Inception/internal/model/player"
 )
 
 type MatchState struct {
@@ -23,15 +24,15 @@ func (ms *MatchState) Activate() {
 func (ms *MatchState) GetNextState(hasOtherChoice bool) GameState {
 	return &EndState{mainGame: ms.mainGame}
 }
-func (gs *MatchState) MoveCommand(i, j, x, y int, player uuid.UUID) error {
+func (gs *MatchState) MoveCommand(i, j, x, y int, player Player) error {
 	/*
 		Command handler
 	*/
 	//1) validation
-	valid := gs.validateMove(i, j, x, y, player)
+	valid := gs.validateMove(i, j, x, y, player.Uuid)
 	if valid {
 		//2) execution
-		executeMove(i, j, x, y, player)
+		gs.executeMove(i, j, x, y, player)
 		//3) check status
 		gs.checkStatus()
 		//4
@@ -47,26 +48,36 @@ func (gs *MatchState) MoveCommand(i, j, x, y int, player uuid.UUID) error {
 }
 func (gs *MatchState) validateMove(i, j, x, y int, player uuid.UUID) bool {
 	//returns True or False depensing on move avalability
-	occupied := IsOccupied(i, j, x, y)
-	yourTurn := player == gs.mainGame.CurrentPlaying
+	occupied := gs.IsOccupied(i, j, x, y)
+	yourTurn := player == gs.mainGame.CurrentPlaying.Uuid
 
 	if occupied || !yourTurn {
 		return false
 	}
 	return true
 }
-func IsOccupied(i, j, x, y int) bool {
+func (gs *MatchState)IsOccupied(i, j, x, y int) bool {
 	//if there is something different
-	///From card or empty it's false
+	///From empty it's false
+
+	isEmpty:=gs.mainGame.mainBoard.GetCell(i,j,x,y).ImEmpty()
+	if (isEmpty) {return false}
 	return true
 }
-func executeMove(i, j, x, y int, player uuid.UUID) {
+func (gs*MatchState) executeMove(i, j, x, y int, player Player) string{
 	//1) check if a card is selected
 	// or if it is a white place
 	//2) if there is a card, activate the effect and
 	// 		go to another state in the card
 	//3) place the mark in the specified cell
+	cell:=gs.mainGame.mainBoard.GetCell(i,j,x,y)
+	isCard:=cell.ImCard()
+	
+	m:=player.MarkS
+	if (isCard){cell.Selected(player.Uuid,m)}
+	gs.mainGame.mainBoard.InsertMark(m,i,j,x,y)
 
+	return ""
 }
 func (gs *MatchState) checkStatus() {
 	//1) check if there is a new little win

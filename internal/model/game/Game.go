@@ -4,13 +4,15 @@ package game
 import (
 	"github.com/google/uuid"
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/board"
+	
+	
 
 )
 
 type Game struct {
 	playerUuid     uuid.UUID
 	opponentUuid   uuid.UUID
-	CurrentPlaying uuid.UUID
+	CurrentPlaying Player
 	gameUuid       uuid.UUID
 	CurrentGameState      GameState
 	winner         uuid.UUID
@@ -18,10 +20,10 @@ type Game struct {
 	mainBoard      board.BigBoard
 	Finished 	bool
 }
-func New(player,opp uuid.UUID) *Game{
+func New(player,opp Player) *Game{
 	g := Game{
-		playerUuid:   player,
-		opponentUuid: opp,
+		playerUuid:   player.Uuid,
+		opponentUuid: opp.Uuid,
 		// CurrentPlaying lo settiamo al player di default
 		CurrentPlaying: player,
 		gameUuid:       uuid.New(),

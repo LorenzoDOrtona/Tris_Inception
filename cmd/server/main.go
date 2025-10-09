@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/game"
+	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/positionable"
 	"github.com/google/uuid"
 )
 
@@ -11,10 +12,20 @@ func main() {
 	m:=selectMode()
 	if m==1{
 
-	i:=uuid.New()
-	o:=uuid.New()
-	g:=game.New(i,o)
+	pl1 := game.Player{
+		Uuid:     uuid.New(),
+		Username: "pippo",
+		MarkS:   positionable.Mark{Marktype: 1},
+	}
+	pl2 := game.Player{
+		Uuid:     uuid.New(),
+		Username: "peppa",
+		MarkS:   positionable.Mark{Marktype: 2},
+	}
+
+	g:=game.New(pl1,pl2)
 	g.Init()
+	
 	for {
 		var move string=""
 		for ! g.Finished{

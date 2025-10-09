@@ -2,6 +2,7 @@ package board
 
 import (
 	"fmt"
+	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/positionable"
 )
 
 type BigBoard struct {
@@ -33,6 +34,13 @@ func (BB BigBoard) String() string {
 		
 	}
 	return out
+}
+func (BB *BigBoard) GetCell(x,y,z,k int) positionable.Positionable{
+	return BB.mainBoard[x][y].board[z][k]
+}
+//func update sector
+func (BB *BigBoard) InsertMark(m positionable.Mark,i,j,x,y int) {
+	BB.mainBoard[i][j].board[x][y]=m
 }
 func (BB BigBoard) Print() {
 	fmt.Println(BB.String())

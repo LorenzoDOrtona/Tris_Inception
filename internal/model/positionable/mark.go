@@ -1,17 +1,31 @@
 package positionable
 
 type Mark struct {
-	marktype uint8
+	Marktype uint8
+	Positionable
 }
 
 func (m Mark) GetType() (num int) {
 	return 0
 }
 func (c Mark) String() string{
-	if (c.marktype==0){
+	if (c.Marktype==0){
 		return "0"
 	}else {
 		return "X"
 	}
 	
+}
+func (m Mark) ImCard() bool{
+	return false
+}
+func (m Mark)ImMark() bool{
+	return true
+}
+func (m Mark) ImEmpty() bool{
+	if (m.Marktype==0){
+		return true
+	}else {
+		return false
+	}
 }

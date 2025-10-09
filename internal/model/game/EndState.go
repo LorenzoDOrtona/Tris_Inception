@@ -2,12 +2,12 @@ package game
 
 import (
 	"fmt"
-
-	"github.com/google/uuid"
+	
 )
 
 type EndState struct {
 	mainGame *Game
+	GameState
 }
 
 func (es *EndState) Activate() {
@@ -17,6 +17,6 @@ func (es *EndState) Activate() {
 	}
 }
 
-func (es *EndState) MoveCommand(i, j, x, y int, player uuid.UUID) error {
+func (es *EndState) MoveCommand(i, j, x, y int, player Player) error {
 	return fmt.Errorf("game already ended")
 }

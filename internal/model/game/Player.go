@@ -1,4 +1,4 @@
-package player
+package game
 
 import (
 	"github.com/google/uuid"
@@ -7,7 +7,7 @@ import (
 
 
 type Player struct{
-	uuid uuid.UUID
-	username String
-	mark Mark
+	Uuid uuid.UUID
+	Username string
+	MarkS positionable.Mark
 }
