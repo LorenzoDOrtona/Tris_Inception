@@ -37,6 +37,7 @@ gameState
 */
 func (game *Game) Init() {
 	// inizializza la board e lo stato iniziale
+	//quindi tutto il model
 	game.mainBoard = board.BigBoard{}
 	game.CurrentGameState=&BeginState{mainGame:game}
 	game.mainBoard.SetupBigBoard()

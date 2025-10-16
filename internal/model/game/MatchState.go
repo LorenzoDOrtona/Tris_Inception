@@ -3,6 +3,7 @@ package game
 import (
 	"fmt"
 	"github.com/google/uuid"
+	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/positionable"
 	//"github.com/LorenzoDOrtona/Tris_Inception/internal/model/player"
 )
 
@@ -34,7 +35,7 @@ func (gs *MatchState) MoveCommand(i, j, x, y int, player Player) error {
 		//2) execution
 		gs.executeMove(i, j, x, y, player)
 		//3) check status
-		gs.checkStatus()
+		gs.checkStatus(player.MarkS,i,j)
 		//4
 		finishMove(i, j, x, y)
 		gs.mainGame.mainBoard.Print()
@@ -79,8 +80,9 @@ func (gs*MatchState) executeMove(i, j, x, y int, player Player) string{
 
 	return ""
 }
-func (gs *MatchState) checkStatus() {
+func (gs *MatchState) checkStatus(MarkS positionable.Mark,i,j int) {
 	//1) check if there is a new little win
+	gs.mainGame.mainBoard.CheckSmallWin(MarkS,i,j)
 	checkNewSmallWins()
 	//2) check if someone won definetelly
 	weHaveAWinner := checkWin()
@@ -91,6 +93,7 @@ func (gs *MatchState) checkStatus() {
 }
 func checkWin() bool {
 	// Check if there is a WINNER
+	
 	return false
 }
 func checkNewSmallWins() {

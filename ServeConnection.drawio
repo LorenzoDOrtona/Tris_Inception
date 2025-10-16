@@ -1,0 +1,87 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" version="28.2.5">
+  <diagram name="Pagina-1" id="qSf9xPEC9pydIfdbYJsx">
+    <mxGraphModel dx="672" dy="454" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2339" pageHeight="3300" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="jLMnp1wSS5WA5XdZEuZA-1" value="" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};participant=umlActor;" vertex="1" parent="1">
+          <mxGeometry x="440" y="160" width="20" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="jLMnp1wSS5WA5XdZEuZA-2" value="Server" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="1">
+          <mxGeometry x="540" y="160" width="100" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="jLMnp1wSS5WA5XdZEuZA-4" value="connection" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1" target="jLMnp1wSS5WA5XdZEuZA-2">
+          <mxGeometry x="-0.0005" width="80" relative="1" as="geometry">
+            <mxPoint x="450" y="230" as="sourcePoint" />
+            <mxPoint x="530" y="230" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jLMnp1wSS5WA5XdZEuZA-5" value="ack" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="590" y="270" as="sourcePoint" />
+            <mxPoint x="450" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jLMnp1wSS5WA5XdZEuZA-6" value="login_data" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="-0.0005" width="80" relative="1" as="geometry">
+            <mxPoint x="450" y="309.71" as="sourcePoint" />
+            <mxPoint x="590" y="309.71" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jLMnp1wSS5WA5XdZEuZA-7" value="response with current stats" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="0.0041" width="80" relative="1" as="geometry">
+            <mxPoint x="590" y="350" as="sourcePoint" />
+            <mxPoint x="450" y="350" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jLMnp1wSS5WA5XdZEuZA-8" value="LOGIN PAGE" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="70" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jLMnp1wSS5WA5XdZEuZA-9" value="Home Page" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="710" y="70" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jLMnp1wSS5WA5XdZEuZA-10" value="" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};participant=umlActor;" vertex="1" parent="1">
+          <mxGeometry x="670" y="160" width="20" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="jLMnp1wSS5WA5XdZEuZA-11" value="Server" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="1">
+          <mxGeometry x="770" y="160" width="100" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="jLMnp1wSS5WA5XdZEuZA-12" value="view stats query button" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1" target="jLMnp1wSS5WA5XdZEuZA-11">
+          <mxGeometry x="-0.0005" width="80" relative="1" as="geometry">
+            <mxPoint x="680" y="230" as="sourcePoint" />
+            <mxPoint x="760" y="230" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jLMnp1wSS5WA5XdZEuZA-13" value="response" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="820" y="270" as="sourcePoint" />
+            <mxPoint x="680" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jLMnp1wSS5WA5XdZEuZA-16" value="" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};participant=umlActor;" vertex="1" parent="1">
+          <mxGeometry x="670" y="440" width="20" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="jLMnp1wSS5WA5XdZEuZA-17" value="Server" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="1">
+          <mxGeometry x="770" y="440" width="100" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="jLMnp1wSS5WA5XdZEuZA-18" value="Start battle type x, &lt;br&gt;player uuid" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1" target="jLMnp1wSS5WA5XdZEuZA-17">
+          <mxGeometry x="-0.0005" width="80" relative="1" as="geometry">
+            <mxPoint x="680" y="510" as="sourcePoint" />
+            <mxPoint x="760" y="510" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jLMnp1wSS5WA5XdZEuZA-19" value="Battle started update:&lt;div&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;enemy&lt;/span&gt;&lt;/div&gt;" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="820" y="550" as="sourcePoint" />
+            <mxPoint x="680" y="550" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
