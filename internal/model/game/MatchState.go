@@ -89,6 +89,10 @@ func (gs *MatchState) checkStatus(MarkS positionable.Mark,i,j int) {
 	//if someone won, we end game
 	if weHaveAWinner {
 		gs.mainGame.GoNextState(&EndState{mainGame: gs.mainGame})
+	}else{
+	//change current player
+	
+		gs.mainGame.ChangePlayerTurn()
 	}
 }
 func checkWin() bool {

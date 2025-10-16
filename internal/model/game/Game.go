@@ -13,6 +13,7 @@ type Game struct {
 	playerUuid     uuid.UUID
 	opponentUuid   uuid.UUID
 	CurrentPlaying Player
+	NotCurrentlyPlaying Player
 	gameUuid       uuid.UUID
 	CurrentGameState      GameState
 	winner         uuid.UUID
@@ -26,6 +27,7 @@ func New(player,opp Player) *Game{
 		opponentUuid: opp.Uuid,
 		// CurrentPlaying lo settiamo al player di default
 		CurrentPlaying: player,
+		NotCurrentlyPlaying: opp,
 		gameUuid:       uuid.New(),
 		Finished:       false,
 	}
@@ -46,8 +48,10 @@ func (game *Game) Init() {
 
 /*
  */
-func ChangePlayerTurn() {
-
+func (game * Game)ChangePlayerTurn() {
+	temp:=game.CurrentPlaying
+	game.CurrentPlaying=game.NotCurrentlyPlaying
+	game.NotCurrentlyPlaying=temp
 }
 
 /*

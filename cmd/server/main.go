@@ -38,7 +38,9 @@ func main() {
     		move = strings.TrimSpace(move)
 			p,err:=validMove(move)
 			if err==nil{
+
 				err=g.CurrentGameState.MoveCommand(p[0],p[1],p[2],p[3],g.CurrentPlaying)
+				fmt.Println("curr played: ",g.CurrentPlaying.Username)
 			}else{
 				fmt.Println("Error:",err)
 			}
@@ -52,7 +54,7 @@ func selectMode() int{
 	var i int=0
 	for !valid{
 	fmt.Println("Seleziona la modalità: \n")
-	fmt.Println("1- 2v2 local \n")
+	fmt.Println("1- 1v1 local \n")
 	fmt.Scanln(&m)
 	if m=="1"{
 		valid=true
