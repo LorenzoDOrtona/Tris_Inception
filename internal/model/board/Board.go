@@ -5,6 +5,7 @@ import (
 type Board struct {
 	Board [3][3]positionable.Positionable
 	IsComplete bool
+	MarkCompleted positionable.Positionable
 
 }
 func (B * Board)SetupBoard() {
@@ -18,6 +19,7 @@ func (B * Board)SetupBoard() {
 		}
 	}
 	B.IsComplete=false
+	B.MarkCompleted=nil
 	
 }
 

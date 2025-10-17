@@ -53,6 +53,10 @@ func (gs *MatchState) validateMove(i, j, x, y int, player uuid.UUID) bool {
 	if (!gs.mainGame.mainBoard.AvailableBoards[[2]int{i,j}]){
 		return false
 	}
+	//if is complete is not available
+	//if (gs.mainGame.mainBoard[i][j].IsComplete){
+	//	return false
+	//}
 	occupied := gs.IsOccupied(i, j, x, y)
 	yourTurn := player == gs.mainGame.CurrentPlaying.Uuid
 

@@ -35,8 +35,11 @@ func (BB BigBoard) String() string {
 			if j%3 == 0 && j/3>0 {
 				out+="| "
 			}
+			if ( BB.mainBoard[i/3][j/3].IsComplete==true){
+				out = out + BB.mainBoard[i/3][j/3].MarkCompleted.String() + " "
+			}else{
 			out = out + BB.mainBoard[i/3][j/3].Board[i%3][j%3].String() + " "
-		}
+		}}
 		out = out + "\n"
 		
 	}
@@ -90,6 +93,8 @@ func (BB *BigBoard)CheckSmallWin(m positionable.Mark,i,j int) bool{
 		}
 		if mini_tris_done==true{
 		// ho fatto un tris verticale
+			BB.mainBoard[i][j].IsComplete=true
+			BB.mainBoard[i][j].MarkCompleted=m
 			return true
 		}
 	}
@@ -103,14 +108,35 @@ func (BB *BigBoard)CheckSmallWin(m positionable.Mark,i,j int) bool{
 		}
 		if mini_tris_done==true{
 		// ho fatto un tris verticale
+			BB.mainBoard[i][j].IsComplete=true
+			BB.mainBoard[i][j].MarkCompleted=m
 			return true
 		}
 	}
 	//if I'm here I didn't do an horizontal tris
-	//mini_tris_done:=true
+	mini_tris_done:=true
 	for x:=0;x<3;x++{
-		
+		if little_tris.Board[x][x]!=m{
+			mini_tris_done=false
+		}
 	}
-	
+	if mini_tris_done==true{
+		BB.mainBoard[i][j].IsComplete=true
+		BB.mainBoard[i][j].MarkCompleted=m
+		return true
+	}
+	mini_tris_done=true
+	for x:=0;x<3;x++{
+		if little_tris.Board[2-x][x]!=m{
+			mini_tris_done=false
+		}
+	}
+	if mini_tris_done==true{
+		BB.mainBoard[i][j].IsComplete=true
+		BB.mainBoard[i][j].MarkCompleted=m
+		return true
+	}
+	//at this point I checked the cross section and found nothing
+	BB.mainBoard[i][j].IsComplete=false
 	return false
 }
