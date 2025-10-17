@@ -7,14 +7,22 @@ import (
 
 type BigBoard struct {
 	mainBoard [3][3]Board
+	AvailableBoards map[[2]int]bool
+
 }
 
 func (B *BigBoard) SetupBigBoard() {
+	//initialize the map
+	B.AvailableBoards=make(map[[2]int]bool)
 	for i := 0; i < 3; i++ {
 		for j := 0; j < 3; j++ {
+			
 			B.mainBoard[i][j].SetupBoard()
+			//setting the board accessible
+			B.AvailableBoards[[2]int{i,j}]=true
 		}
 	}
+
 
 }
 func (BB BigBoard) String() string {
@@ -40,6 +48,32 @@ func (BB *BigBoard) GetCell(x,y,z,k int) positionable.Positionable{
 //func update sector
 func (BB *BigBoard) InsertMark(m positionable.Mark,i,j,x,y int) {
 	BB.mainBoard[i][j].Board[x][y]=m
+}
+func (BB *BigBoard)ChangeBoardAvailability(i,j,x,y int){
+	//the Board where I put the mark is unavailable now
+	for u:=0;u<3;u++{
+		for o:=0;o<3;o++{
+			BB.AvailableBoards[[2]int{u,o}]=false
+		}
+	}
+	//but one descrived by where I put the mark in the little board is now available
+	//even if is the same I just blocked
+	if (BB.mainBoard[i][j].IsComplete==false){
+		BB.AvailableBoards[[2]int{x, y}] = true
+	}else 
+	{
+		for u:=0;u<3;u++{
+			for o:=0;o<3;o++{
+				if (BB.mainBoard[u][o].IsComplete==true) {
+					BB.AvailableBoards[[2]int{u,o}]=false
+				}else{
+					BB.AvailableBoards[[2]int{u,o}]=true
+				}
+			}
+		}
+		//BB.AvailableBoards[[2]int{x, y}] = false
+    
+}
 }
 func (BB BigBoard) Print() {
 	fmt.Println(BB.String())

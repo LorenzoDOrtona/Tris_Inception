@@ -4,6 +4,7 @@ import (
 )
 type Board struct {
 	Board [3][3]positionable.Positionable
+	IsComplete bool
 
 }
 func (B * Board)SetupBoard() {
@@ -12,9 +13,11 @@ func (B * Board)SetupBoard() {
 	*/
 	for i:=0;i<3;i++{
 		for j:=0;j<3;j++{
+			
 			B.Board[i][j] = positionable.GetPositionable()
 		}
 	}
+	B.IsComplete=false
 	
 }
 

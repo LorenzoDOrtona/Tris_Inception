@@ -49,6 +49,10 @@ func (gs *MatchState) MoveCommand(i, j, x, y int, player Player) error {
 }
 func (gs *MatchState) validateMove(i, j, x, y int, player uuid.UUID) bool {
 	//returns True or False depensing on move avalability
+	//0) check if the board selected is available
+	if (!gs.mainGame.mainBoard.AvailableBoards[[2]int{i,j}]){
+		return false
+	}
 	occupied := gs.IsOccupied(i, j, x, y)
 	yourTurn := player == gs.mainGame.CurrentPlaying.Uuid
 
@@ -66,17 +70,24 @@ func (gs *MatchState)IsOccupied(i, j, x, y int) bool {
 	return true
 }
 func (gs*MatchState) executeMove(i, j, x, y int, player Player) string{
+	
 	//1) check if a card is selected
 	// or if it is a white place
 	//2) if there is a card, activate the effect and
 	// 		go to another state in the card
 	//3) place the mark in the specified cell
+	
 	cell:=gs.mainGame.mainBoard.GetCell(i,j,x,y)
 	isCard:=cell.ImCard()
 	
 	m:=player.MarkS
 	if (isCard){cell.Selected(player.Uuid,m)}
 	gs.mainGame.mainBoard.InsertMark(m,i,j,x,y)
+	
+	gs.mainGame.mainBoard.ChangeBoardAvailability(i,j,x,y)
+	//change current player
+	gs.mainGame.ChangePlayerTurn()
+
 
 	return ""
 }
@@ -89,10 +100,6 @@ func (gs *MatchState) checkStatus(MarkS positionable.Mark,i,j int) {
 	//if someone won, we end game
 	if weHaveAWinner {
 		gs.mainGame.GoNextState(&EndState{mainGame: gs.mainGame})
-	}else{
-	//change current player
-	
-		gs.mainGame.ChangePlayerTurn()
 	}
 }
 func checkWin() bool {
