@@ -100,17 +100,13 @@ func (gs *MatchState) checkStatus(MarkS positionable.Mark,i,j int) {
 	gs.mainGame.mainBoard.CheckSmallWin(MarkS,i,j)
 	checkNewSmallWins()
 	//2) check if someone won definetelly
-	weHaveAWinner := checkWin()
+	weHaveAWinner := gs.mainGame.CheckWin()
 	//if someone won, we end game
 	if weHaveAWinner {
 		gs.mainGame.GoNextState(&EndState{mainGame: gs.mainGame})
 	}
 }
-func checkWin() bool {
-	// Check if there is a WINNER
-	
-	return false
-}
+
 func checkNewSmallWins() {
 	//
 }

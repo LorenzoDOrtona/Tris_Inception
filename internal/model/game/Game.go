@@ -60,3 +60,8 @@ func (g*Game) GoNextState(gs GameState){
 	g.CurrentGameState=gs
 	g.CurrentGameState.Activate()
 }
+func (g *Game)CheckWin() bool {
+	// Check if there is a WINNER
+	win:=g.mainBoard.CheckWin()
+	return win
+}
