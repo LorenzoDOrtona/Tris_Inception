@@ -15,6 +15,7 @@ func (es *EndState) Activate() {
 	if es.mainGame != nil {
 		es.mainGame.Finished = true
 	}
+	fmt.Println("WInner is: ",es.mainGame.mainBoard.PlayerWhoCompleted)
 }
 
 func (es *EndState) MoveCommand(i, j, x, y int, player Player) error {
