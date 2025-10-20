@@ -63,5 +63,8 @@ func (g*Game) GoNextState(gs GameState){
 func (g *Game)CheckWin(m positionable.Positionable) bool {
 	// Check if there is a WINNER
 	win:=g.mainBoard.CheckWin(m,g.CurrentPlaying.Uuid)
+	if win {
+		g.Finished=true
+	}
 	return win
 }

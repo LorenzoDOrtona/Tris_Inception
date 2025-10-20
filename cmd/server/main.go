@@ -58,9 +58,9 @@ func selectMode() int{
 	var m string
 	var i int=0
 	for !valid{
-	fmt.Println("Seleziona la modalità: \n")
-	fmt.Println("1- 1v1 local \n")
-	fmt.Scanln(&m)
+	fmt.Println("Seleziona la modalità:")
+	fmt.Println("1- 1v1 local ")
+	m= "2"
 	if m=="1"{
 		valid=true
 		i=1
@@ -108,7 +108,7 @@ func validMove(s string) ([]int,error){
 func RunAutomatedTest(g *game.Game, moves []string) error {
 	idx := 0
 
-	for !g.Finished {
+	for !g.Finished{
 		if idx >= len(moves) {
 			return fmt.Errorf("test moves esaurite ma la partita non è finita")
 		}

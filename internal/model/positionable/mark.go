@@ -10,7 +10,7 @@ func (m Mark) GetType() (num int) {
 }
 func (c Mark) String() string{
 	if (c.Marktype==0){
-		return "0"
+		return "_"
 	}
 	if (c.Marktype==1){
 		return "X"

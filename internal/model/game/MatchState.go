@@ -83,7 +83,6 @@ func (gs*MatchState) executeMove(i, j, x, y int, player Player) string{
 func (gs *MatchState) checkStatus(MarkS positionable.Mark,i,j int) {
 	//1) check if there is a new little win
 	gs.mainGame.mainBoard.CheckSmallWin(MarkS,i,j)
-	checkNewSmallWins()
 	//2) check if someone won definetelly
 	weHaveAWinner := gs.mainGame.CheckWin(MarkS)
 	//if someone won, we end game
@@ -92,9 +91,7 @@ func (gs *MatchState) checkStatus(MarkS positionable.Mark,i,j int) {
 	}
 }
 
-func checkNewSmallWins() {
-	//
-}
+
 func finishMove(i, j, x, y int) {
 	//1) update the available plane to mark
 	//2) update player to play

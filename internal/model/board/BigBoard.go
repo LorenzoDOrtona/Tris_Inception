@@ -67,9 +67,7 @@ func (BB *BigBoard) GetCell(x,y,z,k int) positionable.Positionable{
 func (BB *BigBoard) InsertMark(m positionable.Mark,i,j,x,y int) {
 	BB.mainBoard[i][j].Board[x][y]=m
 }
-func (BB *BigBoard)UpdateAvailableMoves(){
-	
-}
+
 func (BB *BigBoard)MakeAllMovesUnavailable(){
 	for k := range BB.AvailableMoves {
 		BB.AvailableMoves[k]=false
@@ -203,7 +201,7 @@ func (BB *BigBoard)CheckWin(m positionable.Positionable,player uuid.UUID) bool {
 		mini_tris_done:=true
 		for y:=0;y<3;y++{
 			little_tris:=&BB.mainBoard[x][y]
-			if little_tris.IsComplete && little_tris.MarkCompleted!=m{
+			if !little_tris.IsComplete || little_tris.MarkCompleted != m{
 				mini_tris_done=false
 			}
 		}
@@ -219,7 +217,7 @@ func (BB *BigBoard)CheckWin(m positionable.Positionable,player uuid.UUID) bool {
 		mini_tris_done:=true
 		for x:=0;x<3;x++{
 			little_tris:=&BB.mainBoard[x][y]
-			if little_tris.IsComplete && little_tris.MarkCompleted!=m{
+			if !little_tris.IsComplete || little_tris.MarkCompleted != m{
 				mini_tris_done=false
 			}
 		}
@@ -234,7 +232,7 @@ func (BB *BigBoard)CheckWin(m positionable.Positionable,player uuid.UUID) bool {
 	mini_tris_done:=true
 	for x:=0;x<3;x++{
 		little_tris:=&BB.mainBoard[x][x]
-		if little_tris.IsComplete && little_tris.MarkCompleted!=m{
+		if !little_tris.IsComplete || little_tris.MarkCompleted != m{
 			mini_tris_done=false
 		}
 	}
@@ -246,7 +244,7 @@ func (BB *BigBoard)CheckWin(m positionable.Positionable,player uuid.UUID) bool {
 	mini_tris_done=true
 	for x:=0;x<3;x++{
 		little_tris:=&BB.mainBoard[2-x][x]
-		if little_tris.IsComplete && little_tris.MarkCompleted!=m{
+		if !little_tris.IsComplete || little_tris.MarkCompleted != m{
 			mini_tris_done=false
 		}
 		
