@@ -71,19 +71,19 @@ func (BB *BigBoard)UpdateAvailableMoves(){
 	
 }
 func (BB *BigBoard)MakeAllMovesUnavailable(){
-	for k,val := BB.AvailableMoves{
+	for k := range BB.AvailableMoves {
 		BB.AvailableMoves[k]=false
 	}
 	
 }
-func (BB *BigBoard)AllowNewCorrectMoves(i,j,x,y){
+func (BB *BigBoard)AllowNewCorrectMoves(i,j,x,y int){
 	//if x, y are the cordinates of a complete little board
 	//Now there are available moves across all the bigBoard
 	if(BB.mainBoard[x][y].IsComplete){
-		for k,v:=BB.AvailableBoards{
+		for k := range BB.AvailableMoves {
 			for u:=0;u<3;u++{
 				for o:=0;o<3;o++{
-					if BB.mainBoard[k[0]][k[1]].Board[u][o].ImEmpty{
+					if BB.mainBoard[k[0]][k[1]].Board[u][o].ImEmpty(){
 						BB.AvailableMoves[[4]int{k[0],k[1],u,o}]=true
 					}else{
 						BB.AvailableMoves[[4]int{k[0],k[1],u,o}]=false
@@ -94,7 +94,7 @@ func (BB *BigBoard)AllowNewCorrectMoves(i,j,x,y){
 	}else{
 		for u:=0;u<3;u++{
 			for o:=0;o<3;o++{
-				if BB.mainBoard[x][y].Board[u][o].ImEmpty{
+				if BB.mainBoard[x][y].Board[u][o].ImEmpty(){
 					BB.AvailableMoves[[4]int{x,y,u,o}]=true
 				}else{
 					BB.AvailableMoves[[4]int{x,y,u,o}]=false
@@ -195,9 +195,7 @@ func (BB *BigBoard)CheckSmallWin(m positionable.Mark,i,j int) bool{
 	BB.mainBoard[i][j].IsComplete=false
 	return false
 }
-func (BB *BigBoard)CheckWin() bool {
-	return false
-}
+
 func (BB *BigBoard)CheckWin(m positionable.Positionable,player uuid.UUID) bool {
 	
 	

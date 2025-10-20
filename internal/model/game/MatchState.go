@@ -36,8 +36,6 @@ func (gs *MatchState) MoveCommand(i, j, x, y int, player Player) error {
 		gs.executeMove(i, j, x, y, player)
 		//3) check status
 		gs.checkStatus(player.MarkS,i,j)
-		//4
-		finishMove(i, j, x, y)
 		gs.mainGame.mainBoard.Print()
 	} else {
 		//e) ERROR, not correct move
@@ -48,22 +46,9 @@ func (gs *MatchState) MoveCommand(i, j, x, y int, player Player) error {
 	return nil
 }
 func (gs *MatchState) validateMove(i, j, x, y int, player uuid.UUID) bool {
-	//returns True or False depensing on move avalability
-	//0) check if the board selected is available
-	if (!gs.mainGame.mainBoard.AvailableBoards[[2]int{i,j}]){
-		return false
-	}
-	//if is complete is not available
-	//if (gs.mainGame.mainBoard[i][j].IsComplete){
-	//	return false
-	//}
-	occupied := gs.IsOccupied(i, j, x, y)
-	yourTurn := player == gs.mainGame.CurrentPlaying.Uuid
-
-	if occupied || !yourTurn {
-		return false
-	}
-	return true
+	//this function returns true iff the proposed move is valid
+	return gs.mainGame.mainBoard.AvailableMoves[[4]int{i,j,x,y}]
+	//we just need to 
 }
 func (gs *MatchState)IsOccupied(i, j, x, y int) bool {
 	//if there is something different
@@ -100,7 +85,7 @@ func (gs *MatchState) checkStatus(MarkS positionable.Mark,i,j int) {
 	gs.mainGame.mainBoard.CheckSmallWin(MarkS,i,j)
 	checkNewSmallWins()
 	//2) check if someone won definetelly
-	weHaveAWinner := gs.mainGame.CheckWin()
+	weHaveAWinner := gs.mainGame.CheckWin(MarkS)
 	//if someone won, we end game
 	if weHaveAWinner {
 		gs.mainGame.GoNextState(&EndState{mainGame: gs.mainGame})

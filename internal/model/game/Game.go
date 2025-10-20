@@ -4,7 +4,7 @@ package game
 import (
 	"github.com/google/uuid"
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/board"
-	
+	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/positionable"
 	
 
 )
@@ -60,8 +60,8 @@ func (g*Game) GoNextState(gs GameState){
 	g.CurrentGameState=gs
 	g.CurrentGameState.Activate()
 }
-func (g *Game)CheckWin() bool {
+func (g *Game)CheckWin(m positionable.Positionable) bool {
 	// Check if there is a WINNER
-	win:=g.mainBoard.CheckWin()
+	win:=g.mainBoard.CheckWin(m,g.CurrentPlaying.Uuid)
 	return win
 }
