@@ -1,0 +1,16 @@
+# File temporanei editor
+.vscode/
+.idea/
+*.swp
+
+# Build / output
+dist/
+build/
+out/
+
+# Log
+*.log
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
