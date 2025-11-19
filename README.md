@@ -1,39 +1,107 @@
-# Ultimate Tic-Tac-Toe Engine  
-[Tris_Inception](https://github.com/LorenzoDOrtona/Tris_Inception)
+# Tris Inception — Tris Inception (Ultimate Tic-Tac-Toe Engine)
 
-## 🔍 Overview  
-This is the backend engine for an **Ultimate Tic-Tac-Toe** variant, developed in Go. The project aims to build a distributed gaming service with containerized deployment, orchestration via Kubernetes, and a strong focus on performance, scalability and developer experience.
+Tris Inception is an **Ultimate Tic-Tac-Toe** engine written in **Go**.
 
-## 🚀 Key Features  
-- Written in **Go**, leveraging its concurrency model for efficient game state management.  
-- Fully containerized with **Docker**, enabling consistent environments and easy deployment.  
-- Orchestrated using **Kubernetes**, designed to scale and handle multiple simultaneous game sessions.  
-- Modular architecture: core game logic separated from infrastructure concerns.  
-- Clean code practices: maintainable, testable, and built with refactoring in mind.
+The goal of the project is to build a clean, extensible core for the game — starting from a solid domain model and a terminal UI — and later evolve it into a distributed, containerized service (with HTTP/WebSocket API, Docker, Kubernetes, monitoring, etc.).
 
-## 🧱 Architecture & Components  
-- **server/** – The main game engine: handles routing, game state machine, logic for Ultimate Tic-Tac-Toe.  
-- **internal/model/board**, **internal/model/positionable** etc – Domain packages implementing the board structure and game rules.  
-- **cmd/** – Entrypoint for the service, sets up HTTP handlers, WebSocket connections, and orchestrates game sessions.  
-- **docker/** – Dockerfiles and compose files for local development and testing environments.  
-- **k8s/** – Kubernetes manifests for deployment, service, scaling, and monitoring.  
-- **docs/** – UML diagrams, architecture sketches, and design decisions (e.g., ProjectZ.drawio).
+At the current stage, the focus is mainly on:
 
-## 🛠 Tech Stack  
-- **Languages**: Go  
-- **Containers**: Docker  
-- **Orchestration**: Kubernetes  
-- **Testing**: Go’s built-in testing framework (unit & integration)  
-- **CI/CD**: (planned) GitHub Actions for build, test, and deployment pipelines  
-- **Monitoring/Logging**: (future) Prometheus + Grafana integration planned
+- **game modelling** (boards, moves, rules),
+- a **terminal user interface (TUI)** for local play / debugging,
+- structuring the codebase so it can grow into a real backend service.
 
-## ✅ Why This Project Matters  
-- Demonstrates system design skills: distributed backend, concurrency, container orchestration.  
-- Shows hands-on use of modern cloud/devops tools—critical for backend and cybersecurity roles.  
-- Offers tangible results: the service can be stress-tested, scaled, and observed in production-like environments.
+---
 
-## 📂 Getting Started  
-1. Clone the repo:  
-   ```bash
-   git clone https://github.com/LorenzoDOrtona/Tris_Inception.git
-   cd Tris_Inception
+## 🎯 Goals
+
+- Model Ultimate Tic-Tac-Toe in a clear, testable way.
+- Provide a TUI layer to interact with the engine from the terminal.
+- Keep the architecture modular so a future server (HTTP/WebSocket) can be added without rewriting the core.
+- Use this project as a learning playground for:
+  - Go best practices,
+  - clean architecture / domain modelling,
+  - (later) containers, orchestration, monitoring.
+
+---
+
+## 🧱 Project Structure
+
+> Names may evolve as the project grows, but the high-level idea is:
+
+- `cmd/server/`  
+  Entrypoint of the application (the `main` package). Wires everything together and runs the current “game loop” / interaction.
+
+- `internal/model/`  
+  Core **domain model** of the game:
+  - board representation,
+  - cells / positions,
+  - players,
+  - rules for valid moves,
+  - win / draw logic for both small boards and the global board.
+
+- `internal/tui/`  
+  **Terminal UI** components:
+  - rendering of the board(s) in the terminal,
+  - user input handling,
+  - feedback / messages.
+
+- `uml/` & `*.drawio`  
+  Diagrams and design sketches used to reason about:
+  - commands flow,
+  - connections between components,
+  - overall architecture of Project Z.
+
+- `go.mod`, `go.sum`  
+  Go module definition and dependencies.
+
+---
+
+## 🚦 Status & Roadmap
+
+### ✅ Already implemented / in progress
+
+- [x] Go module setup
+- [x] Core game model under `internal/model`
+- [x] Basic terminal UI under `internal/tui`
+- [x] Main entrypoint in `cmd/server`
+- [x] First versions of UML / architecture diagrams
+
+### 🔜 Planned / not implemented yet
+
+- [ ] Full Ultimate Tic-Tac-Toe rules validation (edge cases, illegal moves, etc.)
+- [ ] Clean error handling and logging
+- [ ] HTTP and/or WebSocket API to expose the game engine
+- [ ] Dockerfile and containerized dev environment
+- [ ] Kubernetes manifests for deployment and scaling
+- [ ] Simple AI/bot opponent
+- [ ] Metrics & monitoring (Prometheus/Grafana or similar)
+- [ ] Automated tests with coverage tracking
+- [ ] CI pipeline (GitHub Actions) for build + test
+
+The idea is to iterate step by step and use this as a long-term learning project rather than a one-off script.
+
+---
+
+## 🛠 Tech Stack
+
+- **Language**: Go
+- **Architecture**: layered (model + UI), with clear separation between domain logic and presentation
+- **Tooling**: Go modules, UML/Draw.io for design
+
+In future iterations:
+
+- **Containers**: Docker (planned)
+- **Orchestration**: Kubernetes (planned)
+- **CI/CD**: GitHub Actions (planned)
+
+---
+
+## 🚀 Getting Started
+
+> Commands may change as the project evolves; this is the current expected flow.
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/LorenzoDOrtona/Tris_Inception.git
+cd Tris_Inception
