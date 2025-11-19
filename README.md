@@ -1,4 +1,4 @@
-# Tris Inception — Tris Inception (Ultimate Tic-Tac-Toe Engine)
+# Tris Inception (Ultimate Tic-Tac-Toe Engine)
 
 Tris Inception is an **Ultimate Tic-Tac-Toe** engine written in **Go**.
 
