@@ -1,4 +1,4 @@
-# Project Z — Ultimate Tic-Tac-Toe Engine  
+#Ultimate Tic-Tac-Toe Engine  
 [Tris_Inception](https://github.com/LorenzoDOrtona/Tris_Inception)
 
 ## 🔍 Overview  
