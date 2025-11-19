@@ -12,7 +12,7 @@ At the current stage, the focus is mainly on:
 
 ---
 
-## 🎯 Goals
+## Goals
 
 - Model Ultimate Tic-Tac-Toe in a clear, testable way.
 - Provide a TUI layer to interact with the engine from the terminal.
@@ -24,7 +24,7 @@ At the current stage, the focus is mainly on:
 
 ---
 
-## 🧱 Project Structure
+## Project Structure
 
 > Names may evolve as the project grows, but the high-level idea is:
 
@@ -56,7 +56,7 @@ At the current stage, the focus is mainly on:
 
 ---
 
-## 🚦 Status & Roadmap
+## Status & Roadmap
 
 ### ✅ Already implemented / in progress
 
@@ -82,7 +82,7 @@ The idea is to iterate step by step and use this as a long-term learning project
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - **Language**: Go
 - **Architecture**: layered (model + UI), with clear separation between domain logic and presentation
@@ -96,7 +96,7 @@ In future iterations:
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 > Commands may change as the project evolves; this is the current expected flow.
 
@@ -119,7 +119,7 @@ This will start the current version of the game, using the internal model and th
 
 ---
 
-## 📦 Importing the Engine in Your Own Code
+## Importing the Engine in Your Own Code
 
 If you want to experiment with the model or TUI:
 
