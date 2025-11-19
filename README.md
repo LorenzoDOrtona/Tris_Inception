@@ -102,6 +102,81 @@ In future iterations:
 
 ### 1. Clone the repository
 
+
+
 ```bash
 git clone https://github.com/LorenzoDOrtona/Tris_Inception.git
 cd Tris_Inception
+````
+
+### 2. Run the server / entrypoint
+
+```bash
+go run ./cmd/server
+```
+
+This will start the current version of the game, using the internal model and the TUI.
+
+---
+
+## 📦 Importing the Engine in Your Own Code
+
+If you want to experiment with the model or TUI:
+
+```go
+import (
+    "github.com/LorenzoDOrtona/Tris_Inception/internal/model"
+    "github.com/LorenzoDOrtona/Tris_Inception/internal/tui"
+)
+```
+
+---
+
+## 🧪 Testing
+
+(Planned)
+
+Tests will cover:
+
+* board state transitions
+* win/draw detection
+* command handling
+* invalid moves and edge cases
+
+Once implemented:
+
+```bash
+go test ./...
+```
+
+---
+
+## 🤝 Why This Project Exists
+
+This repo is part of a personal learning path focused on:
+
+* building non-trivial game logic in Go,
+* structuring a clean, extensible codebase,
+* eventually exploring:
+
+  * distributed systems
+  * containerization
+  * observability
+  * automated deployment flows
+
+It also acts as a portfolio project for backend / cybersecurity / systems-oriented roles, where:
+
+* code quality
+* architecture
+* incremental evolution
+
+matter more than quick prototypes.
+
+---
+
+## 📄 License
+
+TBD — this project currently has no explicit license.
+A license (likely MIT) will be added later.
+
+```
