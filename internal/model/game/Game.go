@@ -55,6 +55,7 @@ func (game * Game)ChangePlayerTurn() {
 }
 
 /*
+This functions makes the game procede to next state!
  */
 func (g*Game) GoNextState(gs GameState){
 	g.CurrentGameState=gs
