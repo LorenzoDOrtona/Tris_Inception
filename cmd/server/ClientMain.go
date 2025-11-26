@@ -44,8 +44,21 @@ func startClient(url string) {
         }
     }
 }
-func main() {
-	
+func main() {	
     serverURL := "ws://localhost:8080/ws"
-    startClient(serverURL)
+		m:=selectMode()
+		if m=="1"{
+		}
+		if m=="2"{
+			startClient(serverURL)
+		}
+	
+}
+func selectMode() string{
+	var m string
+	fmt.Println("Seleziona la modalità:")
+	fmt.Println("1- 1v1 local ")
+	fmt.Println("2- Online")
+	m= "1"
+	return m	
 }

@@ -60,7 +60,9 @@ func selectMode() int{
 	for !valid{
 	fmt.Println("Seleziona la modalità:")
 	fmt.Println("1- 1v1 local ")
-	m= "2"
+	fmt.Println("2- Online")
+	m= "1"
+
 	if m=="1"{
 		valid=true
 		i=1
