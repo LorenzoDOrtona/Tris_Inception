@@ -43,6 +43,10 @@ func startClient(url string) {
             fmt.Printf("Client Ricevuto (Binario) di %d byte\n", len(p))
         }
     }
+
+}
+func startMenuInputRoutine(){
+
 }
 func main() {	
     serverURL := "ws://localhost:8080/ws"
@@ -51,6 +55,7 @@ func main() {
 		}
 		if m=="2"{
 			startClient(serverURL)
+			go startMenuInputRoutine()
 		}
 	
 }
