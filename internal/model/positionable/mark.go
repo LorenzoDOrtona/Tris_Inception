@@ -19,6 +19,17 @@ func (c Mark) String() string{
 	
 	
 }
+func (c Mark) ToInt() int{
+	if (c.Marktype==0){//empty
+		return 0
+	}
+if (c.Marktype==1){//X
+		return 1
+	}
+	return 2 //O
+	
+	
+}
 func (m Mark) ImCard() bool{
 	return false
 }

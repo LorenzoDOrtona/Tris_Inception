@@ -7,6 +7,7 @@ type Positionable interface {
 	ImCard()bool
 	ImMark() bool
 	ImEmpty() bool
+	ToInt() int
 	Selected(player uuid.UUID, m Mark) 
 }
 
