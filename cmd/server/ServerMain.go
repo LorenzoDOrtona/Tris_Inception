@@ -1,4 +1,4 @@
-package main
+package server
 import(
 	"fmt"
 	"log"       // <-- Devi importare il pacchetto log per usare log.Fatal/Println
