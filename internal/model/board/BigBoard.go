@@ -2,7 +2,6 @@ package board
 
 import (
 	"fmt"
-	"github.com/LorenzoDOrtona/Tris_Inception/cmd/server/DTO"
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/positionable"
 	"github.com/google/uuid"
 )
@@ -262,19 +261,4 @@ func (BB *BigBoard) CheckWin(m positionable.Positionable, player uuid.UUID) bool
 	BB.IsComplete = false
 	return false
 }
-func (BB BigBoard) BigBoardToDTO() [][]int {
-	boardState := make([][]int, BB.SideSize)
-	for i := 0; i < BB.SideSize; i++ {
-		boardState[i] = make([]int, BB.SideSize)
-		for j := 0; j < BB.SideSize; j++ {
-			boardState[i][j] = BB.mainBoard[i/3][j/3].Board[i%3][j%3].ToInt()
-		}
-	}
-	return DTO.GameStateDTO{
-		boardState:      boardState,
-		availableBoards: BB.AvailableBoards,
-		availableMoves:  BB.AvailableMoves,
-		isComplete:      BB.IsComplete,
-		winner:          BB.PlayerWhoCompleted,
-	}
-}
+
