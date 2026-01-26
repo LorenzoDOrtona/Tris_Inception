@@ -1,7 +1,6 @@
-package server
+package api
 
 import (
-	"github.com/LorenzoDOrtona/Tris_Inception/cmd/server/api"
 	"github.com/google/uuid"
 )
 
@@ -14,7 +13,7 @@ type RespGameCreatedOrFound struct {
 	Found  bool      `json:"found"` //true if joined existing game, false if created new game
 }
 type RespMove struct {
-	GameState api.GameStateDTO `json:"game_state"`
+	GameState GameStateDTO `json:"game_state"`
 }
 type RespError struct {
 	ErrorMessage string `json:"error_message"`
