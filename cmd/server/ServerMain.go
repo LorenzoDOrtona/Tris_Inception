@@ -5,12 +5,18 @@ import (
 
 	"github.com/LorenzoDOrtona/Tris_Inception/cmd/server/api"
 	internal "github.com/LorenzoDOrtona/Tris_Inception/internal/controller"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func setup_gin(GC *internal.GameController) {
 	// Create a Gin router with default middleware (logger and recovery)
 	r := gin.Default()
+	// CONFIGURAZIONE CORS: Permetti al frontend di chiamare il backend
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:5173"} // L'indirizzo di React
+	config.AllowMethods = []string{"GET", "POST", "PUT", "OPTIONS"}
+	r.Use(cors.New(config))
 	r.POST("/playerToken", func(c *gin.Context) {
 		var RQ api.ReqToken
 		if err := c.ShouldBindJSON(&RQ); err != nil {
