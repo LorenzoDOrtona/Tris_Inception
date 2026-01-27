@@ -23,7 +23,14 @@ func NewGameController() *GameController {
 	}
 }
 func (GC *GameController) CreatePlayerToken(reqStruct *api.ReqToken) api.RespToken {
-	newID := uuid.New()
+	newID, exist := GC.ConnectedPlayers[reqStruct.PlayerName]
+	if exist {
+		return api.RespToken{
+			Token: newID.String(),
+		}
+	}
+	newID = uuid.New()
+	GC.ConnectedPlayers[reqStruct.PlayerName] = newID
 	return api.RespToken{
 		Token: newID.String(),
 	}

@@ -34,7 +34,7 @@ func setup_gin(GC *internal.GameController) {
 }
 
 func main() {
-	var gc = new(internal.GameController)
+	var gc = internal.NewGameController()
 	setup_gin(gc)
 
 }
