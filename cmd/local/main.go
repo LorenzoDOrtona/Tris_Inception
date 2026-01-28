@@ -1,11 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"bufio"
+	"fmt"
+	"os"
 	"strconv"
 	"strings"
-	"os"
+
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/game"
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/positionable"
 	"github.com/google/uuid"
@@ -13,39 +14,39 @@ import (
 
 func main() {
 	fmt.Println("Ciao gente")
-	m:=selectMode()
+	m := selectMode()
 
 	pl1 := game.Player{
-		Uuid:     uuid.New(),
+		Uuid:     uuid.New().String(),
 		Username: "pippo",
-		MarkS:   positionable.Mark{Marktype: 1},
+		MarkS:    positionable.Mark{Marktype: 1},
 	}
 	pl2 := game.Player{
-		Uuid:     uuid.New(),
+		Uuid:     uuid.New().String(),
 		Username: "peppa",
-		MarkS:   positionable.Mark{Marktype: 2},
+		MarkS:    positionable.Mark{Marktype: 2},
 	}
 
-	g:=game.New(pl1,pl2)
+	g := game.New(&pl1, &pl2)
 	g.Init()
-	if m==1{
-	for {
-		for ! g.Finished{
-			fmt.Println("Move: ")
-			reader := bufio.NewReader(os.Stdin)
-			move, _ := reader.ReadString('\n')
-    		move = strings.TrimSpace(move)
-			p,err:=validMove(move)
-			if err==nil{
+	if m == 1 {
+		for {
+			for !g.Finished {
+				fmt.Println("Move: ")
+				reader := bufio.NewReader(os.Stdin)
+				move, _ := reader.ReadString('\n')
+				move = strings.TrimSpace(move)
+				p, err := validMove(move)
+				if err == nil {
 
-				err=g.CurrentGameState.MoveCommand(p[0],p[1],p[2],p[3],g.CurrentPlaying)
-				fmt.Println("curr played: ",g.CurrentPlaying.Username)
-			}else{
-				fmt.Println("Error:",err)
+					err = g.CurrentGameState.MoveCommand(p[0], p[1], p[2], p[3], *g.PlayingPlayer)
+					fmt.Println("curr played: ", g.PlayingPlayer.Username)
+				} else {
+					fmt.Println("Error:", err)
+				}
 			}
 		}
-	}
-	}else if m == 2 {
+	} else if m == 2 {
 		// modalità test automatico
 		if err := RunAutomatedTest(g, GetDefaultTestMoves()); err != nil {
 			fmt.Println("Errore durante test automatico:", err)
@@ -53,64 +54,65 @@ func main() {
 		}
 	}
 }
-func selectMode() int{
-	var valid bool= false
+func selectMode() int {
+	var valid bool = false
 	var m string
-	var i int=0
-	for !valid{
-	fmt.Println("Seleziona la modalità:")
-	fmt.Println("1- 1v1 local ")
-	fmt.Println("2- Online")
-	m= "1"
+	var i int = 0
+	for !valid {
+		fmt.Println("Seleziona la modalità:")
+		fmt.Println("1- 1v1 local ")
+		fmt.Println("2- Online")
+		m = "1"
 
-	if m=="1"{
-		valid=true
-		i=1
+		if m == "1" {
+			valid = true
+			i = 1
+		}
+		if m == "2" {
+			valid = true
+			i = 2
+		}
+
 	}
-	if m=="2"{
-		valid=true
-		i=2
-	}
-	
-	}	
 	return i
 }
-func validMove(s string) ([]int,error){
-	sideLenght:=9
+func validMove(s string) ([]int, error) {
+	sideLenght := 9
 	//array of the integer positions
 	var p []int
-	
-	n:=strings.Split(s," ")
-	
-	if len(n)!=4{
+
+	n := strings.Split(s, " ")
+
+	if len(n) != 4 {
 		fmt.Println("lunghezza", len(n))
-		return nil,fmt.Errorf("Input is too long!")
-		
+		return nil, fmt.Errorf("Input is too long!")
+
 	}
-	
+
 	//conversion from string to int
-	for u:=0;u<4;u++{
-		num,err :=strconv.Atoi(n[u])
-		if (err!=nil){
-			return nil,fmt.Errorf("You didn't insert integers!")
+	for u := 0; u < 4; u++ {
+		num, err := strconv.Atoi(n[u])
+		if err != nil {
+			return nil, fmt.Errorf("You didn't insert integers!")
 		}
-		if(num>(sideLenght/3)-1){
-			return nil,fmt.Errorf("Input of move out of bound!")
+		if num > (sideLenght/3)-1 {
+			return nil, fmt.Errorf("Input of move out of bound!")
 		}
-		p=append(p,num)
-		
+		p = append(p, num)
+
 	}
-	return p,nil
-	
+	return p, nil
+
 }
-///TEST
+
+// /TEST
 // RunAutomatedTest esegue una sequenza di mosse (stringhe "i j x y")
 // contro il gioco passato. Usa validMove() e MoveCommand come nel main.
 // Ritorna nil se la partita finisce correttamente; altrimenti ritorna errore con motivo.
 func RunAutomatedTest(g *game.Game, moves []string) error {
 	idx := 0
 
-	for !g.Finished{
+	for !g.Finished {
 		if idx >= len(moves) {
 			return fmt.Errorf("test moves esaurite ma la partita non è finita")
 		}
@@ -125,12 +127,12 @@ func RunAutomatedTest(g *game.Game, moves []string) error {
 		}
 
 		// Esegui la mossa usando l'API del gioco
-		err = g.CurrentGameState.MoveCommand(p[0], p[1], p[2], p[3], g.CurrentPlaying)
+		err = g.CurrentGameState.MoveCommand(p[0], p[1], p[2], p[3], *g.PlayingPlayer)
 		if err != nil {
 			return fmt.Errorf("MoveCommand fallita sulla mossa '%s': %w", move, err)
 		}
 
-		fmt.Println("curr played:", g.CurrentPlaying.Username)
+		fmt.Println("curr played:", g.PlayingPlayer.Username)
 	}
 
 	fmt.Println("Partita terminata. Stato Finished =", g.Finished)
