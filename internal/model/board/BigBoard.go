@@ -2,8 +2,8 @@ package board
 
 import (
 	"fmt"
+
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/positionable"
-	"github.com/google/uuid"
 )
 
 type BigBoard struct {
@@ -12,7 +12,7 @@ type BigBoard struct {
 	AvailableBoards    map[[2]int]bool
 	AvailableMoves     map[[4]int]bool
 	IsComplete         bool
-	PlayerWhoCompleted uuid.UUID
+	PlayerWhoCompleted string
 }
 
 func (B *BigBoard) SetupBigBoard() {
@@ -198,7 +198,7 @@ func (BB *BigBoard) CheckSmallWin(m positionable.Mark, i, j int) bool {
 	return false
 }
 
-func (BB *BigBoard) CheckWin(m positionable.Positionable, player uuid.UUID) bool {
+func (BB *BigBoard) CheckWin(m positionable.Positionable, player string) bool {
 
 	for x := 0; x < 3; x++ {
 		mini_tris_done := true
@@ -261,4 +261,3 @@ func (BB *BigBoard) CheckWin(m positionable.Positionable, player uuid.UUID) bool
 	BB.IsComplete = false
 	return false
 }
-

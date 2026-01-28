@@ -8,9 +8,10 @@ type RespToken struct {
 	Token string `json:"token"`
 }
 type RespGameCreatedOrFound struct {
-	Token  string    `json:"token"` //authorization token
-	IdGame uuid.UUID `json:"id_game"`
-	Found  bool      `json:"found"` //true if joined existing game, false if created new game
+	IdGame      uuid.UUID `json:"id_game"`
+	CreatorName string    `json:"creator_name"`
+	//iff found there is a creator name
+	Found bool `json:"found"` //true if joined existing game, false if created new game
 }
 type RespMove struct {
 	GameState GameStateDTO `json:"game_state"`

@@ -2,37 +2,37 @@ package game
 
 //import "fmt"s
 import (
-	"github.com/google/uuid"
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/board"
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/positionable"
-	
-
+	"github.com/google/uuid"
 )
 
 type Game struct {
-	playerUuid     uuid.UUID
-	opponentUuid   uuid.UUID
-	CurrentPlaying Player
-	NotCurrentlyPlaying Player
-	gameUuid       uuid.UUID
-	CurrentGameState      GameState
-	winner         uuid.UUID
-	looser         uuid.UUID
-	mainBoard      board.BigBoard
-	Finished 	bool
+	GameUuid         uuid.UUID
+	Creator          *Player
+	Opponent         *Player
+	PlayingPlayer    *Player
+	ObservingPlayer  *Player
+	Winner           *Player
+	Looser           *Player
+	CurrentGameState GameState
+	MainBoard        board.BigBoard
+	Finished         bool
 }
-func New(player,opp Player) *Game{
+
+func New(player, opp *Player) *Game {
 	g := Game{
-		playerUuid:   player.Uuid,
-		opponentUuid: opp.Uuid,
-		// CurrentPlaying lo settiamo al player di default
-		CurrentPlaying: player,
-		NotCurrentlyPlaying: opp,
-		gameUuid:       uuid.New(),
-		Finished:       false,
+		Creator:  player,
+		Opponent: opp,
+		// PlayingPlayer lo settiamo al player di default
+		PlayingPlayer:   player,
+		ObservingPlayer: opp,
+		GameUuid:        uuid.New(),
+		Finished:        false,
 	}
 	return &g
 }
+
 /*
 Starts the game by activating the first
 gameState
@@ -40,32 +40,32 @@ gameState
 func (game *Game) Init() {
 	// inizializza la board e lo stato iniziale
 	//quindi tutto il model
-	game.mainBoard = board.BigBoard{}
-	game.CurrentGameState=&BeginState{mainGame:game}
-	game.mainBoard.SetupBigBoard()
+	game.MainBoard = board.BigBoard{}
+	game.CurrentGameState = &BeginState{mainGame: game}
+	game.MainBoard.SetupBigBoard()
 	game.CurrentGameState.Activate()
 }
 
 /*
  */
-func (game * Game)ChangePlayerTurn() {
-	temp:=game.CurrentPlaying
-	game.CurrentPlaying=game.NotCurrentlyPlaying
-	game.NotCurrentlyPlaying=temp
+func (game *Game) ChangePlayerTurn() {
+	temp := game.PlayingPlayer
+	game.PlayingPlayer = game.ObservingPlayer
+	game.ObservingPlayer = temp
 }
 
 /*
 This functions makes the game procede to next state!
- */
-func (g*Game) GoNextState(gs GameState){
-	g.CurrentGameState=gs
+*/
+func (g *Game) GoNextState(gs GameState) {
+	g.CurrentGameState = gs
 	g.CurrentGameState.Activate()
 }
-func (g *Game)CheckWin(m positionable.Positionable) bool {
+func (g *Game) CheckWin(m positionable.Positionable) bool {
 	// Check if there is a WINNER
-	win:=g.mainBoard.CheckWin(m,g.CurrentPlaying.Uuid)
+	win := g.MainBoard.CheckWin(m, g.PlayingPlayer.Uuid)
 	if win {
-		g.Finished=true
+		g.Finished = true
 	}
 	return win
 }

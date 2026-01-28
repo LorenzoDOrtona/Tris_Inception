@@ -1,13 +1,26 @@
 package game
 
 import (
-	"github.com/google/uuid"
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/positionable"
 )
 
-
-type Player struct{
-	Uuid uuid.UUID
+type Player struct {
+	Uuid     string
 	Username string
-	MarkS positionable.Mark
+	MarkS    positionable.Mark
+}
+
+func NewPlayer(uuid string, name string) Player {
+	return Player{
+		Uuid:     uuid,
+		Username: name,
+		MarkS:    positionable.NewRandomMark(),
+	}
+}
+func NewOpponent(uuid string, name string, m positionable.Mark) Player {
+	return Player{
+		Uuid:     uuid,
+		Username: name,
+		MarkS:    positionable.OppositeMark(m),
+	}
 }

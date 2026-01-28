@@ -1,27 +1,27 @@
 package positionable
-import (
-	"github.com/google/uuid")
-type CardMoreCrosses struct{
+
+type CardMoreCrosses struct {
 	Card
+	Positionable
 }
 
-func (c CardMoreCrosses) String() string{
+func (c CardMoreCrosses) String() string {
 	var out string
-	out="C"
+	out = "C"
 	return out
 }
-func (c CardMoreCrosses) ImCard() bool{
+func (c CardMoreCrosses) ImCard() bool {
 	return true
 }
-func (c CardMoreCrosses) ImMark() bool{
+func (c CardMoreCrosses) ImMark() bool {
 	return false
 }
-func (c CardMoreCrosses) ImEmpty() bool{
+func (c CardMoreCrosses) ImEmpty() bool {
 	return true
 }
-func (c CardMoreCrosses) Effect(player uuid.UUID) string{
+func (c CardMoreCrosses) Effect(player string) string {
 	return ""
 }
-func (c CardMoreCrosses) Selected(player uuid.UUID, m Mark) {
+func (c CardMoreCrosses) Selected(player string, m Mark) {
 	c.Effect(player)
 }

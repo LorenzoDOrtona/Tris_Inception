@@ -26,6 +26,19 @@ func setup_gin(GC *internal.GameController) {
 		response := GC.CreatePlayerToken(&RQ)
 		c.JSON(200, gin.H{"response": response})
 	})
+	r.POST("/match", func(c *gin.Context) {
+		var reqGame api.ReqCreateOrJoinGame
+		if err := c.ShouldBindJSON(&reqGame); err != nil {
+			c.JSON(400, gin.H{"error": err.Error()})
+		}
+
+		response, err := GC.CreateGame(&reqGame)
+		if err != nil {
+			c.JSON(400, gin.H{"error": err.Error()})
+		}
+		c.JSON(200, gin.H{"response": response})
+
+	})
 	// Define a simple GET endpoint
 	r.GET("/ping", func(c *gin.Context) {
 		// Return JSON response
