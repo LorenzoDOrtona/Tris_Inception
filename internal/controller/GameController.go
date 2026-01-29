@@ -51,7 +51,7 @@ func (GC *GameController) checkForExistingGame(reqStruct *api.ReqCreateOrJoinGam
 		}
 	}
 	//didnt find a good game
-	if gId != "" {
+	if gId == "" {
 		return nil, errors.New("no game")
 	}
 	//found one

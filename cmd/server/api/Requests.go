@@ -18,7 +18,10 @@ type ReqJoinGame struct {
 	Token  string    `json:"token"`
 	IdGame uuid.UUID `json:"id_game"`
 }
-
+type ReqPooling struct {
+	Token     string `json:"token"`
+	Timestamp int    `json:"timestamp"` //unix timestamp to get updates since
+}
 type ReqMove struct {
 	Token string `json:"token"`
 	//--
