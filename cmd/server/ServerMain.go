@@ -43,6 +43,22 @@ func setup_gin(GC *internal.GameController) {
 		c.JSON(200, response)
 
 	})
+	r.GET("/polling", func(c *gin.Context) {
+		var reqPool api.ReqPooling
+		// Bind JSON input to struct
+		if err := c.ShouldBindJSON(&reqPool); err != nil {
+			c.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+		//check game logic success
+		response, err := GC.CheckLastTimestamp(&reqPool)
+		if err != nil {
+			c.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(200, response)
+
+	})
 	// Define a simple GET endpoint
 	r.GET("/ping", func(c *gin.Context) {
 		// Return JSON response

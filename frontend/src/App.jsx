@@ -112,9 +112,8 @@ function App() {
         timestamp: lastTimestamp
       };
 
-      // TODO: Actual implementation
-      /*
-      const res = await fetch(`${API_BASE_URL}/game/poll`, { ... });
+      
+      const res = await fetch("${API_BASE_URL}/pooling");
       const data = await res.json(); // Should return GameStateDTO
       if (data.board) {
          setGameState(data);
@@ -122,16 +121,15 @@ function App() {
          if (view === 'waiting') setView('game');
       }
       setLastTimestamp(Date.now()); // Update timestamp
-      */
 
     } catch (err) {
       console.error("Polling Error:", err);
     }
   };
 
-  const startPolling = () => {
+  const startPolling = async() => {
     if (pollingRef.current) clearInterval(pollingRef.current);
-    pollingRef.current = setInterval(pollGameState, 2000); // Poll every 2 seconds
+    pollingRef.current = setInterval(pollGameState, 500); // Poll every 0.5 seconds
   };
 
   // Clean up polling when component unmounts

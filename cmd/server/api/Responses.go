@@ -13,7 +13,7 @@ type RespGameCreatedOrFound struct {
 	//iff found there is a creator name
 	Found bool `json:"found"` //true if joined existing game, false if created new game
 }
-type RespMove struct {
+type RespGameState struct {
 	GameState GameStateDTO `json:"game_state"`
 }
 type RespError struct {

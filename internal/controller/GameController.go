@@ -2,6 +2,7 @@ package internal
 
 import (
 	"errors"
+	"time"
 
 	"github.com/LorenzoDOrtona/Tris_Inception/cmd/server/api"
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/game"
@@ -67,6 +68,7 @@ func (GC *GameController) CreateGame(reqStruct *api.ReqCreateOrJoinGame) (*api.R
 			//creating one new
 			newCreator := game.NewPlayer(reqStruct.Token, name)
 			newGame := game.New(&newCreator, nil)
+			newGame.LastTimestamp = int(time.Now().Unix())
 			GC.ReadyGames[newGame.GameUuid.String()] = newGame
 			return &api.RespGameCreatedOrFound{
 				IdGame:      newGame.GameUuid,
@@ -81,6 +83,8 @@ func (GC *GameController) CreateGame(reqStruct *api.ReqCreateOrJoinGame) (*api.R
 			oppPlayer := game.NewOpponent(reqStruct.Token, name, g.Creator.MarkS)
 			//giving opponent player to the game object
 			g.Opponent = &oppPlayer
+			//update timestamp
+			g.LastTimestamp = int(time.Now().Unix())
 			//removing from ready games
 			delete(GC.ReadyGames, g.GameUuid.String())
 			//putting in Ongoing games
@@ -95,4 +99,7 @@ func (GC *GameController) CreateGame(reqStruct *api.ReqCreateOrJoinGame) (*api.R
 	} else {
 		return nil, errors.New("No player with that Token")
 	}
+}
+func (GC *GameController)CheckLastTimestamp(reqPool *api.ReqPooling) (respPool *api.){
+
 }

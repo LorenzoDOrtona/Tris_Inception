@@ -6,6 +6,7 @@ type GameStateDTO struct {
 	AvailableBoards [][]int `json:"available_boards"`
 	AvailableMoves  [][]int `json:"available_moves"`
 
-	IsComplete bool   `json:"is_complete"`
-	Winner     string `json:"winner,omitempty"`
+	IsComplete    bool   `json:"is_complete"`
+	Winner        string `json:"winner,omitempty"`
+	LastTimestamp int    `json:"LastTimestamp"`
 }

@@ -20,6 +20,7 @@ func BigBoardToDTO(bb *board.BigBoard) GameStateDTO {
 		AvailableMoves:  mapAvailableMoves(bb.AvailableMoves),
 		IsComplete:      bb.IsComplete,
 		Winner:          bb.PlayerWhoCompleted,
+		LastTimestamp: 	 bb.LastTimestamp
 	}
 }
 func mapAvailableBoards(m map[[2]int]bool) [][]int {

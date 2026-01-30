@@ -13,6 +13,7 @@ type BigBoard struct {
 	AvailableMoves     map[[4]int]bool
 	IsComplete         bool
 	PlayerWhoCompleted string
+	LastTimestamp      int
 }
 
 func (B *BigBoard) SetupBigBoard() {
