@@ -20,12 +20,13 @@ type ReqJoinGame struct {
 }
 type ReqPooling struct {
 	Token     string `json:"token"`
+	IdGame    string `json:"id_game"`
 	Timestamp int    `json:"timestamp"` //unix timestamp to get updates since
 }
 type ReqMove struct {
 	Token string `json:"token"`
 	//--
-	IdGame uuid.UUID `json:"id_game"`
+	IdGame string `json:"id_game"`
 	//--
 	X int `json:"x"`
 	Y int `json:"y"`

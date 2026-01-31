@@ -112,6 +112,7 @@ const pollGameState = async () => {
   try {
     const payload = {
       token: token,
+      id_game: gameId,
       timestamp: lastTimestamp
     };
 

@@ -100,26 +100,26 @@ func (GC *GameController) CreateGame(reqStruct *api.ReqCreateOrJoinGame) (*api.R
 		return nil, errors.New("No player with that Token")
 	}
 }
-func (GC *GameController)CheckLastTimestamp(reqPool *api.ReqPooling) (respPool *api.RespGameState, err error) {
- game, exists := GC.OnGoingGames[reqPool.Token]
- if !exists {
- 	//game not found
- 	return nil, errors.New("game not found")
- }
- //check timestamp
- if reqPool.Timestamp < game.MainBoard.LastTimestamp {
- 	//there are updates
- 	return &api.RespGameState{
- 		GameState: api.BigBoardToDTO(&game.MainBoard),
- 	}, nil
- }
- //no updates
- return &api.RespGameState{
- 	GameState: api.GameStateDTO{},
- }, nil
+func (GC *GameController) CheckLastTimestamp(reqPool *api.ReqPooling) (respPool *api.RespGameState, err error) {
+	game, exists := GC.OnGoingGames[reqPool.IdGame]
+	if !exists {
+		//game not found
+		return nil, errors.New("game not found")
+	}
+	//check timestamp
+	if reqPool.Timestamp < game.MainBoard.LastTimestamp {
+		//there are updates
+		return &api.RespGameState{
+			GameState: api.BigBoardToDTO(&game.MainBoard),
+		}, nil
+	}
+	//no updates
+	return &api.RespGameState{
+		GameState: api.GameStateDTO{},
+	}, nil
 }
 func (GC *GameController) MakeMove(reqMove *api.ReqMove) (*api.RespGameState, error) {
-	game, exists := GC.OnGoingGames[reqMove.Token]
+	game, exists := GC.OnGoingGames[reqMove.IdGame]
 	if !exists {
 		return nil, errors.New("game not found")
 	}
@@ -127,12 +127,12 @@ func (GC *GameController) MakeMove(reqMove *api.ReqMove) (*api.RespGameState, er
 	if game.PlayingPlayer.Uuid != reqMove.Token {
 		return nil, errors.New("not your turn")
 	}
-	err := game.CurrentGameState.MoveCommand(reqMove.X, reqMove.Y, reqMove.I, reqMove.J,*game.PlayingPlayer)
+	err := game.CurrentGameState.MoveCommand(reqMove.X, reqMove.Y, reqMove.I, reqMove.J, *game.PlayingPlayer)
 	if err != nil {
 		return nil, err
 	}
 	game.MainBoard.LastTimestamp = int(time.Now().Unix())
 	return &api.RespGameState{
- 		GameState: api.BigBoardToDTO(&game.MainBoard),
- 	}, nil
+		GameState: api.BigBoardToDTO(&game.MainBoard),
+	}, nil
 }
