@@ -103,29 +103,48 @@ function App() {
 
   // --- 3. POLLING (Maps to ReqPooling) ---
   // This runs periodically to check for moves or new players
-  const pollGameState = async () => {
-    if (!token) return;
+  // App.js
 
-    try {
-      const payload = {
-        token: token,
-        timestamp: lastTimestamp
-      };
+const pollGameState = async () => {
+  // Se non ho token o gameId (e sono in waiting o game), non ha senso fare polling
+  if (!token) return; 
 
-      
-      const res = await fetch("${API_BASE_URL}/pooling");
-      const data = await res.json(); // Should return GameStateDTO
-      if (data.board) {
-         setGameState(data);
-         // If we were waiting and now we have state, switch to game
-         if (view === 'waiting') setView('game');
-      }
-      setLastTimestamp(Date.now()); // Update timestamp
+  try {
+    const payload = {
+      token: token,
+      timestamp: lastTimestamp
+    };
 
-    } catch (err) {
-      console.error("Polling Error:", err);
+    // CORREZIONE 1: Usa i backtick ` per inserire la variabile nell'URL
+    // CORREZIONE 2: Usa l'endpoint corretto "/polling" (non "pooling")
+    // CORREZIONE 3: Aggiungi method POST e il body
+    const res = await fetch(`${API_BASE_URL}/polling`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+        // Gestisci errori silenziosamente o logga
+        return;
     }
-  };
+
+    const data = await res.json(); // GameStateDTO
+
+    // CORREZIONE 4: Verifica la logica di aggiornamento
+    // Se il backend risponde con una board popolata (timestamp aggiornato)
+    if (data.game_state && data.game_state.board && data.game_state.board.length > 0) {
+       console.log("Nuovo stato ricevuto:", data);
+       setGameState(data.game_state); // Assicurati di prendere il campo giusto dalla risposta
+      setLastTimestamp(Math.floor(Date.now() / 1000));       
+       // Se eravamo in attesa, passiamo alla schermata di gioco
+       if (view === 'waiting') setView('game');
+    }
+
+  } catch (err) {
+    console.error("Polling Error:", err);
+  }
+};
 
   const startPolling = async() => {
     if (pollingRef.current) clearInterval(pollingRef.current);
@@ -162,18 +181,16 @@ function App() {
       console.log("Sending Move:", payload);
 
       // TODO: Actual implementation
-      /*
-      const res = await fetch(`${API_BASE_URL}/game/move`, {
+      
+      const res = await fetch(`${API_BASE_URL}/move`, {
          method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+
          body: JSON.stringify(payload)
       });
       const data = await res.json(); // Maps to RespMove (contains GameStateDTO)
       setGameState(data.game_state);
-      */
       
-      // MOCK LOCAL UPDATE FOR UI FEEDBACK
-      alert(`Move sent: X=${X}, Y=${Y}, i=${I}, j=${J}`);
-
     } catch (err) {
       console.error("Move Error:", err);
     }

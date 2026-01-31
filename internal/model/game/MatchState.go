@@ -2,6 +2,7 @@ package game
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/positionable"
 	//"github.com/LorenzoDOrtona/Tris_Inception/internal/model/player"
@@ -33,6 +34,7 @@ func (gs *MatchState) MoveCommand(i, j, x, y int, player Player) error {
 	if valid {
 		//2) execution
 		gs.executeMove(i, j, x, y, player)
+		gs.mainGame.MainBoard.LastTimestamp= int(time.Now().Unix())
 		//3) check status
 		gs.checkStatus(player.MarkS, i, j)
 		gs.mainGame.MainBoard.Print()
@@ -89,6 +91,8 @@ func (gs *MatchState) checkStatus(MarkS positionable.Mark, i, j int) {
 	weHaveAWinner := gs.mainGame.CheckWin(MarkS)
 	//if someone won, we end game
 	if weHaveAWinner {
+		//go to end state
+		gs.mainGame.MainBoard.LastTimestamp= int(time.Now().Unix())
 		gs.mainGame.GoNextState(&EndState{mainGame: gs.mainGame})
 	}
 }
