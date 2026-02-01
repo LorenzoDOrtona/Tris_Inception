@@ -1,91 +1,165 @@
-/* General Layout */
-.app-container {
-  max-width: 800px;
-  margin: 0 auto;
-  text-align: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
+/* ===== RESET MINIMO ===== */
+* {
+  box-sizing: border-box;
 }
 
+body {
+  margin: 0;
+  background: #0f1115;
+  color: #eaeaea;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ===== LAYOUT ===== */
+.app-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 1.5rem;
+  font-size: 2.2rem;
+}
+
+/* ===== CARD ===== */
 .card {
-  background: rgb(0, 0, 0);
+  background: #181b22;
   padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
   margin-top: 2rem;
 }
 
+/* ===== INPUT & BUTTON ===== */
 input {
-  padding: 10px;
+  padding: 10px 14px;
   font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background: #0f1115;
+  color: #fff;
+  outline: none;
   margin-right: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+}
+
+input::placeholder {
+  color: #777;
 }
 
 button {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #007bff;
-  color: white;
+  background: #3b82f6;
+  color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   margin: 5px;
+  transition: background 0.2s ease, transform 0.1s ease;
 }
-button:hover { background-color: #0056b3; }
 
-/* --- SUPER BOARD STYLING --- */
+button:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button:focus {
+  outline: 3px solid #60a5fa;
+}
+
+/* ===== ERROR ===== */
+.error {
+  background: #7f1d1d;
+  color: #fee2e2;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+/* ===== GAME ===== */
+.game-container {
+  margin-top: 2rem;
+}
+
+/* ===== SUPER BOARD ===== */
 .super-board {
   display: flex;
   flex-direction: column;
   width: fit-content;
   margin: 20px auto;
-  border: 4px solid #333; /* Thick outer border */
+  border: 4px solid #eaeaea;
+  background: #0f1115;
 }
 
 .board-row {
   display: flex;
 }
 
+/* ===== CELL ===== */
 .cell {
-  width: 50px;
-  height: 50px;
-  border: 1px solid #ddd; /* Thin internal borders */
+  width: 52px;
+  height: 52px;
+  border: 1px solid #333;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: bold;
   cursor: pointer;
-  background-color: #fff;
+  background: #181b22;
+  transition: background 0.15s ease;
 }
 
 .cell:hover {
-  background-color: #f0f8ff;
+  background: #1f2937;
 }
 
-/* THICK BORDERS to separate the 9 macro-grids */
-/* Every 3rd cell horizontally gets a thick right border */
+/* ===== MACRO GRID BORDERS ===== */
 .cell.border-right {
-  border-right: 4px solid #333;
+  border-right: 4px solid #eaeaea;
 }
-/* Every 3rd row gets a thick bottom border */
+
 .cell.border-bottom {
-  border-bottom: 4px solid #333;
+  border-bottom: 4px solid #eaeaea;
 }
-/* Fix for the very last borders to match the container */
-.board-row:last-child .cell { border-bottom: none; }
-.cell:last-child { border-right: none; }
 
-/* Player Colors */
-.val-1 { color: red; }   /* Player X */
-.val-2 { color: blue; }  /* Player O */
+/* Fix ultimi bordi */
+.board-row:last-child .cell {
+  border-bottom: none;
+}
 
+.cell:last-child {
+  border-right: none;
+}
+
+/* ===== PLAYER COLORS ===== */
+.val-1 {
+  color: #ef4444; /* X */
+}
+
+.val-2 {
+  color: #3b82f6; /* O */
+}
+
+/* ===== SPINNER ===== */
 .spinner {
-  font-size: 40px;
-  animation: spin 2s linear infinite;
-  margin: 20px;
+  width: 40px;
+  height: 40px;
+  margin: 20px auto;
+  border: 4px solid #374151;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+/* ===== ANIMATIONS ===== */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

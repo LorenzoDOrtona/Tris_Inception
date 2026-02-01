@@ -1,13 +1,10 @@
 package game
 
-import (
-	//"github.com/google/uuid"
-	//"github.com/LorenzoDOrtona/Tris_Inception/internal/model/player"
-)
+//"github.com/google/uuid"
 
 // import "fmt"
 type GameState interface {
 	Activate()
 	MoveCommand(i, j, x, y int, player Player) error
+	AddOpponent(uuid string, name string)
 }
-

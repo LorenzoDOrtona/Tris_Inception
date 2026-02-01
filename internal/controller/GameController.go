@@ -10,7 +10,7 @@ import (
 )
 
 type GameController struct {
-	ConnectedPlayersID   map[string]uuid.UUID
+	ConnectedPlayersID   map[string]string
 	ConnectedPlayersName map[string]string
 	//games with player waiting for opponents
 	ReadyGames   map[string]*game.Game
@@ -19,25 +19,27 @@ type GameController struct {
 
 func NewGameController() *GameController {
 	return &GameController{
-		ConnectedPlayersID:   make(map[string]uuid.UUID),
+		ConnectedPlayersID:   make(map[string]string),
 		ConnectedPlayersName: make(map[string]string),
 		ReadyGames:           make(map[string]*game.Game),
 		OnGoingGames:         make(map[string]*game.Game),
 	}
 }
 func (GC *GameController) CreatePlayerToken(reqStruct *api.ReqToken) api.RespToken {
-	newID, exist := GC.ConnectedPlayersID[reqStruct.PlayerName]
+	Id, exist := GC.ConnectedPlayersID[reqStruct.PlayerName]
 	if exist {
 		//exists already the name
 		return api.RespToken{
-			Token: newID.String(),
+			Token: Id,
 		}
-	}
-	newID = uuid.New()
-	GC.ConnectedPlayersID[reqStruct.PlayerName] = newID
-	GC.ConnectedPlayersName[newID.String()] = reqStruct.PlayerName
-	return api.RespToken{
-		Token: newID.String(),
+	} else {
+
+		newID := uuid.New().String()
+		GC.ConnectedPlayersID[reqStruct.PlayerName] = newID
+		GC.ConnectedPlayersName[newID] = reqStruct.PlayerName
+		return api.RespToken{
+			Token: newID,
+		}
 	}
 }
 func FeasibleGameFound(g game.Game, reqStruct *api.ReqCreateOrJoinGame) bool {
@@ -68,7 +70,6 @@ func (GC *GameController) CreateGame(reqStruct *api.ReqCreateOrJoinGame) (*api.R
 			//creating one new
 			newCreator := game.NewPlayer(reqStruct.Token, name)
 			newGame := game.New(&newCreator, nil)
-			newGame.MainBoard.LastTimestamp = int(time.Now().Unix())
 			GC.ReadyGames[newGame.GameUuid.String()] = newGame
 			return &api.RespGameCreatedOrFound{
 				IdGame:      newGame.GameUuid,
@@ -80,11 +81,7 @@ func (GC *GameController) CreateGame(reqStruct *api.ReqCreateOrJoinGame) (*api.R
 			gameUUID := g.GameUuid
 			creatorName := g.Creator.Username
 			//creating oppenent player
-			oppPlayer := game.NewOpponent(reqStruct.Token, name, g.Creator.MarkS)
-			//giving opponent player to the game object
-			g.Opponent = &oppPlayer
-			//update timestamp
-			g.MainBoard.LastTimestamp = int(time.Now().Unix())
+			g.CurrentGameState.AddOpponent(reqStruct.Token, name)
 			//removing from ready games
 			delete(GC.ReadyGames, g.GameUuid.String())
 			//putting in Ongoing games

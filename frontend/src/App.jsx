@@ -10,7 +10,7 @@ function App() {
   
   const [gameId, setGameId] = useState(null);
   const [gameState, setGameState] = useState(null); 
-  const [lastTimestamp, setLastTimestamp] = useState(0); 
+const lastTimestampRef = useRef(0);
   const [errorMessage, setErrorMessage] = useState('');
 
   const pollingRef = useRef(null);
@@ -50,7 +50,7 @@ function App() {
       
       const data = await res.json(); 
       setGameId(data.id_game); // Questo è asincrono!
-      setLastTimestamp(0);     // Resetta timestamp per la nuova partita
+      lastTimestampRef.current = 0;
       
       if (data.found) {
         setView('game');
@@ -75,7 +75,8 @@ function App() {
         body: JSON.stringify({
             token: token,
             id_game: gameId, 
-            timestamp: lastTimestamp
+            timestamp: lastTimestampRef.current
+
         })
       });
 
@@ -92,12 +93,13 @@ function App() {
          // CORREZIONE FONDAMENTALE:
          // Usa il timestamp del SERVER, non quello del client!
          // Nota: Controlla se nel JSON ti arriva come "LastTimestamp" o "last_timestamp"
-         setLastTimestamp(data.game_state.last_timestamp); 
+          lastTimestampRef.current = data.game_state.last_timestamp;
          
          // Logica di switch view basata sul flag 'started' che hai aggiunto nel backend
-         if (view === 'waiting' && data.game_state.started) {
-             setView('game');
-         }
+         setView(prev =>
+          prev === 'waiting' && data.game_state.started ? 'game' : prev
+        );
+
       }
     } catch (err) {
       console.error("Polling Network Error:", err);
@@ -122,7 +124,7 @@ function App() {
     return () => {
         if (pollingRef.current) clearInterval(pollingRef.current);
     };
-  }, [view, gameId, lastTimestamp]); // Riavvia se cambia view o gameId
+  }, [view, gameId, token]);
 
 
   // --- 5. MOVE ---
@@ -148,7 +150,7 @@ function App() {
       const data = await res.json();
       if (data.game_state) {
           setGameState(data.game_state);
-          setLastTimestamp(Math.floor(Date.now() / 1000));
+          lastTimestampRef.current = data.game_state.last_timestamp;
       } else if (data.error) {
           console.warn(data.error);
       }
@@ -159,25 +161,38 @@ function App() {
 
   // --- RENDER ---
   const renderBoard = () => {
-    const board = gameState?.board || Array(9).fill(Array(9).fill(0));
-    return (
-      <div className="super-board">
-        {board.map((row, rIndex) => (
-          <div key={rIndex} className="board-row">
-            {row.map((cellValue, cIndex) => (
-                <div 
-                  key={cIndex} 
-                  className={`cell val-${cellValue} ${cIndex % 3 === 2 ? 'border-right' : ''} ${rIndex % 3 === 2 ? 'border-bottom' : ''}`}
-                  onClick={() => handleCellClick(rIndex, cIndex)}
-                >
-                  {cellValue === 1 ? 'X' : cellValue === 2 ? 'O' : ''}
-                </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    );
-  };
+  if (
+    !gameState?.board ||
+    !Array.isArray(gameState.board) ||
+    gameState.board.length !== 9 ||
+    gameState.board.some(row => !Array.isArray(row) || row.length !== 9)
+  ) {
+    return <div className="spinner" />;
+  }
+
+  return (
+    <div className="super-board">
+      {gameState.board.map((row, rIndex) => (
+        <div key={rIndex} className="board-row">
+          {row.map((cellValue, cIndex) => (
+            <div
+              key={cIndex}
+              className={`cell val-${cellValue} ${
+                cIndex % 3 === 2 ? 'border-right' : ''
+              } ${
+                rIndex % 3 === 2 ? 'border-bottom' : ''
+              }`}
+              onClick={() => handleCellClick(rIndex, cIndex)}
+            >
+              {cellValue === 1 ? 'X' : cellValue === 2 ? 'O' : ''}
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+};
+
 
   return (
     <div className="app-container">

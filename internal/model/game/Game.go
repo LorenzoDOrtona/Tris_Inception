@@ -30,6 +30,7 @@ func New(player, opp *Player) *Game {
 		GameUuid:        uuid.New(),
 		Finished:        false,
 	}
+	g.Init()
 	return &g
 }
 

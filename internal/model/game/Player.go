@@ -17,10 +17,3 @@ func NewPlayer(uuid string, name string) Player {
 		MarkS:    positionable.NewRandomMark(),
 	}
 }
-func NewOpponent(uuid string, name string, m positionable.Mark) Player {
-	return Player{
-		Uuid:     uuid,
-		Username: name,
-		MarkS:    positionable.OppositeMark(m),
-	}
-}

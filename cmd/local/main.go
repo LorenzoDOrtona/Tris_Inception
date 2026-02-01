@@ -28,7 +28,6 @@ func main() {
 	}
 
 	g := game.New(&pl1, &pl2)
-	g.Init()
 	if m == 1 {
 		for {
 			for !g.Finished {

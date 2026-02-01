@@ -2,6 +2,7 @@ package board
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/positionable"
 )
@@ -41,6 +42,8 @@ func (B *BigBoard) SetupBigBoard() {
 			B.AvailableBoards[[2]int{i, j}] = true
 		}
 	}
+	//Initialize timestamp
+	B.LastTimestamp = int(time.Now().Unix())
 
 }
 func (BB BigBoard) String() string {
