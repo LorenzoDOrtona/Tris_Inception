@@ -53,7 +53,7 @@ func setup_gin(GC *internal.GameController) {
 		//check game logic success
 		response, err := GC.MakeMove(&reqMove)
 		if err != nil {
-			c.JSON(400, gin.H{"error": err.Error()})
+			c.JSON(400, api.RespError{ErrorMessage: err.Error()})
 			return
 		}
 		c.JSON(200, response)

@@ -41,7 +41,7 @@ func (gs *MatchState) MoveCommand(i, j, x, y int, player Player) error {
 	} else {
 		//e) ERROR, not correct move
 		gs.mainGame.MainBoard.Print()
-		return fmt.Errorf("not valid")
+		return fmt.Errorf("Not valid move")
 	}
 
 	return nil

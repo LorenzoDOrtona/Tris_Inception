@@ -1,10 +1,10 @@
 package internal
 
 import (
-	"errors"
 	"time"
 
 	"github.com/LorenzoDOrtona/Tris_Inception/cmd/server/api"
+	"github.com/LorenzoDOrtona/Tris_Inception/internal/errors"
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/game"
 	"github.com/google/uuid"
 )
@@ -55,7 +55,7 @@ func (GC *GameController) checkForExistingGame(reqStruct *api.ReqCreateOrJoinGam
 	}
 	//didnt find a good game
 	if gId == "" {
-		return nil, errors.New("no game")
+		return nil, errors.ErrGameNotFound
 	}
 	//found one
 	return GC.ReadyGames[gId], nil
@@ -94,7 +94,7 @@ func (GC *GameController) CreateGame(reqStruct *api.ReqCreateOrJoinGame) (*api.R
 
 		}
 	} else {
-		return nil, errors.New("No player with that Token")
+		return nil, errors.ErrPlayerNotFound
 	}
 }
 func (GC *GameController) CheckLastTimestamp(reqPool *api.ReqPooling) (respPool *api.RespGameState, err error) {
@@ -103,7 +103,7 @@ func (GC *GameController) CheckLastTimestamp(reqPool *api.ReqPooling) (respPool 
 		//game not found
 		game, exists = GC.ReadyGames[reqPool.IdGame]
 		if !exists {
-			return nil, errors.New("game not found")
+			return nil, errors.ErrPlayerNotFound
 		}
 	}
 	//check timestamp
@@ -121,15 +121,15 @@ func (GC *GameController) CheckLastTimestamp(reqPool *api.ReqPooling) (respPool 
 func (GC *GameController) MakeMove(reqMove *api.ReqMove) (*api.RespGameState, error) {
 	game, exists := GC.OnGoingGames[reqMove.IdGame]
 	if !exists {
-		return nil, errors.New("game not found")
+		return nil, errors.ErrGameNotFound
 	}
 	// Make the move in the game's main board
 	if game.PlayingPlayer.Uuid != reqMove.Token {
-		return nil, errors.New("not your turn")
+		return nil, errors.ErrNotYourTurn
 	}
 	err := game.CurrentGameState.MoveCommand(reqMove.X, reqMove.Y, reqMove.I, reqMove.J, *game.PlayingPlayer)
 	if err != nil {
-		return nil, err
+		return nil, errors.ErrInvalidMove
 	}
 	game.MainBoard.LastTimestamp = int(time.Now().Unix())
 	return &api.RespGameState{

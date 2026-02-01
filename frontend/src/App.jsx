@@ -148,6 +148,13 @@ const lastTimestampRef = useRef(0);
          })
       });
       const data = await res.json();
+      if (!res.ok) {
+      if (data.error_message) {
+          setErrorMessage(data.error_message); 
+          alert(data.error_message); //pop-up
+      }
+        return;
+      }
       if (data.game_state) {
           setGameState(data.game_state);
           lastTimestampRef.current = data.game_state.last_timestamp;
