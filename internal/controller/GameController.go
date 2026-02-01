@@ -104,13 +104,16 @@ func (GC *GameController) CheckLastTimestamp(reqPool *api.ReqPooling) (respPool 
 	game, exists := GC.OnGoingGames[reqPool.IdGame]
 	if !exists {
 		//game not found
-		return nil, errors.New("game not found")
+		game, exists = GC.ReadyGames[reqPool.IdGame]
+		if !exists {
+			return nil, errors.New("game not found")
+		}
 	}
 	//check timestamp
 	if reqPool.Timestamp < game.MainBoard.LastTimestamp {
-		//there are updates
+		//there asre updates
 		return &api.RespGameState{
-			GameState: api.BigBoardToDTO(&game.MainBoard),
+			GameState: api.BigBoardToDTO(game),
 		}, nil
 	}
 	//no updates
@@ -133,6 +136,6 @@ func (GC *GameController) MakeMove(reqMove *api.ReqMove) (*api.RespGameState, er
 	}
 	game.MainBoard.LastTimestamp = int(time.Now().Unix())
 	return &api.RespGameState{
-		GameState: api.BigBoardToDTO(&game.MainBoard),
+		GameState: api.BigBoardToDTO(game),
 	}, nil
 }
