@@ -88,6 +88,18 @@ button:focus {
 }
 
 /* ===== SUPER BOARD ===== */
+/* Highlight available moves with a subtle pulse or background color */
+.cell.highlight-available {
+  background-color: rgba(0, 255, 0, 0.1); /* Light green tint */
+  cursor: pointer;
+  box-shadow: inset 0 0 8px rgba(0, 255, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+.cell.highlight-available:hover {
+  background-color: rgba(0, 255, 0, 0.2);
+  transform: scale(1.02);
+}
 .super-board {
   display: flex;
   flex-direction: column;

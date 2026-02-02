@@ -167,12 +167,19 @@ const lastTimestampRef = useRef(0);
   };
 
   // --- RENDER ---
-  const renderBoard = () => {
+// Function to check if a specific cell (r, c) is among the available moves
+const isMoveAvailable = (r, c) => {
+  if (!gameState?.available_moves) return false;
+  // available_moves is likely an array of [row, col] or similar coordinates
+  // We need to match the current cell indices
+  return gameState.available_moves.some(move => move[0] === r && move[1] === c);
+};
+
+const renderBoard = () => {
   if (
     !gameState?.board ||
     !Array.isArray(gameState.board) ||
-    gameState.board.length !== 9 ||
-    gameState.board.some(row => !Array.isArray(row) || row.length !== 9)
+    gameState.board.length !== 9
   ) {
     return <div className="spinner" />;
   }
@@ -181,25 +188,29 @@ const lastTimestampRef = useRef(0);
     <div className="super-board">
       {gameState.board.map((row, rIndex) => (
         <div key={rIndex} className="board-row">
-          {row.map((cellValue, cIndex) => (
-            <div
-              key={cIndex}
-              className={`cell val-${cellValue} ${
-                cIndex % 3 === 2 ? 'border-right' : ''
-              } ${
-                rIndex % 3 === 2 ? 'border-bottom' : ''
-              }`}
-              onClick={() => handleCellClick(rIndex, cIndex)}
-            >
-              {cellValue === 1 ? 'X' : cellValue === 2 ? 'O' : ''}
-            </div>
-          ))}
+          {row.map((cellValue, cIndex) => {
+            // Check if this specific cell is playable
+            const isAvailable = isMoveAvailable(rIndex, cIndex);
+
+            return (
+              <div
+                key={cIndex}
+                className={`cell val-${cellValue} ${
+                  cIndex % 3 === 2 ? 'border-right' : ''
+                } ${
+                  rIndex % 3 === 2 ? 'border-bottom' : ''
+                } ${isAvailable ? 'highlight-available' : ''}`} // Add CSS class if available
+                onClick={() => handleCellClick(rIndex, cIndex)}
+              >
+                {cellValue === 1 ? 'X' : cellValue === 2 ? 'O' : ''}
+              </div>
+            );
+          })}
         </div>
       ))}
     </div>
   );
 };
-
 
   return (
     <div className="app-container">
