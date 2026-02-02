@@ -168,11 +168,18 @@ const lastTimestampRef = useRef(0);
 
   // --- RENDER ---
 // Function to check if a specific cell (r, c) is among the available moves
+// Corrected logic to match backend [x, y, i, j] with frontend (r, c)
 const isMoveAvailable = (r, c) => {
   if (!gameState?.available_moves) return false;
-  // available_moves is likely an array of [row, col] or similar coordinates
-  // We need to match the current cell indices
-  return gameState.available_moves.some(move => move[0] === r && move[1] === c);
+
+  return gameState.available_moves.some(move => {
+    // Assuming move is [x, y, i, j] based on your handleCellClick logic
+    const [x, y, i, j] = move;
+    const mappedRow = x * 3 + i;
+    const mappedCol = y * 3 + j;
+    
+    return mappedRow === r && mappedCol === c;
+  });
 };
 
 const renderBoard = () => {
