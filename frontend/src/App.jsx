@@ -245,7 +245,7 @@ const renderBoard = () => {
         <div className="card">
           <h2>In attesa...</h2>
           <p>Game ID: {gameId}</p>
-          <div className="spinner">⌛</div>
+          <div className="spinner"></div>
         </div>
       )}
 

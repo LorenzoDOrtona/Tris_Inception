@@ -5,15 +5,19 @@
 
 body {
   margin: 0;
-  background: #0f1115;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center; /* centra orizzontalmente */
+  align-items: center;     /* centra verticalmente */
+  background: #0f1115;     /* tuo colore */
   color: #eaeaea;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+
 /* ===== LAYOUT ===== */
 .app-container {
   max-width: 900px;
-  margin: 0 auto;
   padding: 2rem 1rem;
   text-align: center;
 }
