@@ -9,6 +9,7 @@
 Try it live: [https://tris-inception.onrender.com/](https://tris-inception.onrender.com/)
 
 > Focus is on engine correctness and API behavior rather than UI polish.
+> Note: On the Render free plan, there may be a short delay between submitting your name and accessing the game lobby, as the backend takes a few seconds to wake up after inactivity.
 
 ---
 
