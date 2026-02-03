@@ -237,7 +237,7 @@ const renderBoard = () => {
       {view === 'lobby' && (
         <div className="card">
           <h2>Lobby: {playerName}</h2>
-          <button onClick={() => handleFindGame('normal')}>Gioca</button>
+          <button onClick={() => handleFindGame('normal')}>Play Online</button>
         </div>
       )}
 
