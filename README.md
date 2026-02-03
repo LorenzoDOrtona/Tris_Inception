@@ -1,5 +1,7 @@
 # Tris Inception – Ultimate Tic-Tac-Toe Engine 
 
+---
+
 **Tris Inception** is an **Ultimate Tic-Tac-Toe** engine written in **Go**, focused on building a scalable, maintainable, and testable backend.
 The backend and React frontend are currently deployed separately on Render’s free hosting plan and communicate via REST APIs.
 ---
