@@ -228,8 +228,8 @@ const renderBoard = () => {
         <div className="card">
           <h2>Login</h2>
           <form onSubmit={handleLogin}>
-            <input type="text" placeholder="Nome" value={playerName} onChange={e => setPlayerName(e.target.value)} />
-            <button type="submit">Entra</button>
+            <input type="text" placeholder="Username" value={playerName} onChange={e => setPlayerName(e.target.value)} />
+            <button type="submit">Submit</button>
           </form>
         </div>
       )}
