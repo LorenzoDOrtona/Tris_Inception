@@ -6,5 +6,5 @@ package game
 type GameState interface {
 	Activate()
 	MoveCommand(i, j, x, y int, player Player) error
-	AddOpponent(uuid string, name string)
+	AddOpponent(uuid string, name string, bot bool)
 }

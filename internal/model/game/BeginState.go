@@ -16,7 +16,7 @@ func (gs *BeginState) Activate() {
 	gs.mainGame.MainBoard.SetupBigBoard()
 	gs.mainGame.MainBoard.Print()
 }
-func (gs *BeginState) AddOpponent(uuid string, name string) {
+func (gs *BeginState) AddOpponent(uuid string, name string, bot bool) {
 	m := gs.mainGame.Creator.MarkS
 	oppPlayer := Player{
 		Uuid:     uuid,
@@ -29,7 +29,7 @@ func (gs *BeginState) AddOpponent(uuid string, name string) {
 	gs.mainGame.PlayingPlayer = gs.mainGame.Creator
 	gs.mainGame.ObservingPlayer = gs.mainGame.Opponent
 	//update timestamp
-	gs.mainGame.MainBoard.LastTimestamp = int(time.Now().Unix())
+	gs.mainGame.MainBoard.LastTimestamp = int(time.Now().UnixNano())
 	gs.mainGame.GoNextState(&MatchState{mainGame: gs.mainGame})
 
 }

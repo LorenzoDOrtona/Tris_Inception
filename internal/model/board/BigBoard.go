@@ -43,7 +43,7 @@ func (B *BigBoard) SetupBigBoard() {
 		}
 	}
 	//Initialize timestamp
-	B.LastTimestamp = int(time.Now().Unix())
+	B.LastTimestamp = int(time.Now().UnixNano())
 
 }
 func (BB BigBoard) String() string {

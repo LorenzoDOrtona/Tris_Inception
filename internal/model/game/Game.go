@@ -2,12 +2,15 @@ package game
 
 //import "fmt"s
 import (
+	"sync"
+
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/board"
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/positionable"
 	"github.com/google/uuid"
 )
 
 type Game struct {
+	Mu               sync.Mutex
 	GameUuid         uuid.UUID
 	Creator          *Player
 	Opponent         *Player
