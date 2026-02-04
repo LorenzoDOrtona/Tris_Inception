@@ -78,12 +78,35 @@ button:focus {
 }
 
 /* ===== ERROR ===== */
-.error {
-  background: #7f1d1d;
-  color: #fee2e2;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+/* Toast Notification Style */
+.error-toast {
+  position: fixed;        /* Stays fixed on the screen */
+  top: 20px;             /* At the top */
+  left: 50%;             /* Horizontally centered */
+  transform: translateX(-50%); /* Centering correction */
+  
+  background-color: #ff4444; /* Error red */
+  color: white;
+  padding: 15px 30px;
+  border-radius: 50px;   /* Rounded corners */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Shadow for depth */
+  
+  font-weight: bold;
+  z-index: 1000;         /* On top of everything else */
+  
+  /* Optional animation */
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    top: -50px;
+    opacity: 0;
+  }
+  to {
+    top: 20px;
+    opacity: 1;
+  }
 }
 
 /* ===== GAME ===== */

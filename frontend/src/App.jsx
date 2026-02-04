@@ -10,11 +10,20 @@ function App() {
   
   const [gameId, setGameId] = useState(null);
   const [gameState, setGameState] = useState(null); 
-const lastTimestampRef = useRef(0);
+  const lastTimestampRef = useRef(0);
   const [errorMessage, setErrorMessage] = useState('');
-
   const pollingRef = useRef(null);
+  useEffect(() => {
+      if (errorMessage) {
+        // Imposta un timer per cancellare il messaggio dopo 3 secondi (3000 ms)
+        const timer = setTimeout(() => {
+          setErrorMessage('');
+        }, 3000);
 
+        // Pulizia del timer se il componente smonta o se arriva un nuovo errore prima dei 3 sec
+        return () => clearTimeout(timer);
+      }
+    }, [errorMessage]);
   // --- 1. LOGIN ---
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -150,15 +159,12 @@ const lastTimestampRef = useRef(0);
       if (!res.ok) {
       if (data.error_message) {
           setErrorMessage(data.error_message); 
-          alert(data.error_message); //pop-up
       }
         return;
       }
       if (data.game_state) {
           setGameState(data.game_state);
           lastTimestampRef.current = data.game_state.last_timestamp;
-      } else if (data.error) {
-          console.warn(data.error);
       }
     } catch (err) {
       console.error("Move Error:", err);
@@ -227,7 +233,7 @@ const renderBoard = () => {
   return (
     <div className="app-container">
       <h1>Tris Inception</h1>
-      {errorMessage && <div className="error">{errorMessage}</div>}
+      {errorMessage && <div className="error-toast">{errorMessage}</div>}
 
       {view === 'login' && (
         <div className="card">
