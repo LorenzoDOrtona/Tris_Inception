@@ -63,8 +63,8 @@ const lastTimestampRef = useRef(0);
     }
   };
 
-  // --- 3. POLLING (Funzione) ---
-  // --- 3. POLLING (Funzione Corretta) ---
+  
+  // --- 3. POLLING ---
   const pollGameState = async () => {
     if (!token || !gameId) return; 
 
@@ -74,9 +74,8 @@ const lastTimestampRef = useRef(0);
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             token: token,
-            id_game: gameId, 
+            id_game: gameId,
             timestamp: lastTimestampRef.current
-
         })
       });
 
@@ -165,7 +164,14 @@ const lastTimestampRef = useRef(0);
       console.error("Move Error:", err);
     }
   };
-
+// --- 6. RESET / BACK TO LOBBY ---
+  const handleBackToLobby = () => {
+    setGameId(null);
+    setGameState(null);
+    lastTimestampRef.current = 0; // Reset importante del timestamp
+    setErrorMessage('');
+    setView('lobby');
+  };
   // --- RENDER ---
 // Function to check if a specific cell (r, c) is among the available moves
 // Corrected logic to match backend [x, y, i, j] with frontend (r, c)
@@ -198,7 +204,6 @@ const renderBoard = () => {
           {row.map((cellValue, cIndex) => {
             // Check if this specific cell is playable
             const isAvailable = isMoveAvailable(rIndex, cIndex);
-
             return (
               <div
                 key={cIndex}
@@ -252,6 +257,18 @@ const renderBoard = () => {
       {view === 'game' && (
         <div className="game-container">
           {renderBoard()}
+
+          {/* --- WINNER OVERLAY --- */}
+          {gameState && gameState.winner && gameState.winner !== "" && (
+            <div className="winner-overlay">
+              <div className="winner-card">
+                <h2>🏆 GAMEOVER! 🏆</h2>
+                <p>The winner is:</p>
+                <h3>{gameState.winner}</h3>
+                <button onClick={handleBackToLobby}>Go Back To Lobby</button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -14,14 +14,17 @@ func BigBoardToDTO(g *game.Game) GameStateDTO {
 		}
 	}
 	S := g.Opponent != nil
-
+	winnerName := ""
+	if g.Winner != nil {
+		winnerName = g.Winner.Username
+	}
 	return GameStateDTO{
 		Started:         S,
 		Board:           boardState,
 		AvailableBoards: mapAvailableBoards(g.MainBoard.AvailableBoards),
 		AvailableMoves:  mapAvailableMoves(g.MainBoard.AvailableMoves),
 		IsComplete:      g.MainBoard.IsComplete,
-		Winner:          g.MainBoard.PlayerWhoCompleted,
+		Winner:          winnerName,
 		LastTimestamp:   g.MainBoard.LastTimestamp,
 	}
 }
