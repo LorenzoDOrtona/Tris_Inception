@@ -11,13 +11,18 @@ Try it live: [https://tris-inception.onrender.com/](https://tris-inception.onren
 
 > Note: For a demo, I suggest playing against a bot due to the lack of online players.
 ---
-
+## Accomplished
+* Working MVC pattern
+* Implemented Rest APIs communication
+* Working React frontend
+* Multiplayer Mode, vs Bot mode
+---
 ## Roadmap
-
 * User accounts and authentication
 * Persistent storage (game history, rankings)
-* Multiple game modes (local, ranked, bot)
-* Observability: metrics, logging, monitoring
+* Multiple game searching parameters (Play against a friend, Specific game mode, etc.)
+* GitHub Actions to run game tests before every production deploy
+* Observability: metrics statistics, logging, monitoring of server resources
 
 ---
 
@@ -25,5 +30,5 @@ Try it live: [https://tris-inception.onrender.com/](https://tris-inception.onren
 
 * **Go language**: Chosen for simplicity, performance, and deployment efficiency
 * **Stateful backend**: Ensures consistent live gameplay
-* **REST-APIs Polling**: Used for the MVP for simplicity, even though WebSockets would be better for real-time updates
-* **MVC pattern**: Choosen for better separation on concerns
+* **REST APIs Polling**: Used for the MVP for simplicity, even though WebSockets would be better for real-time updates
+* **MVC pattern**: Chosen for better separation of concerns
