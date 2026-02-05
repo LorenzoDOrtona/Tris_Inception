@@ -2,6 +2,7 @@ package board
 
 import (
 	"fmt"
+	"math/rand"
 	"time"
 
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/positionable"
@@ -264,4 +265,19 @@ func (BB *BigBoard) CheckWin(m positionable.Positionable, player string) bool {
 	//at this point I checked the cross section and found nothing
 	BB.IsComplete = false
 	return false
+}
+func (BB *BigBoard) MakeBotMove(difficulty string) [4]int {
+	//here to be updated
+
+	var possibleMoves [][4]int
+	for i, v := range BB.AvailableMoves {
+		if v == true {
+			possibleMoves = append(possibleMoves, i)
+		}
+	}
+	len := len(possibleMoves)
+	index := rand.Intn(len)
+
+	return possibleMoves[index]
+
 }

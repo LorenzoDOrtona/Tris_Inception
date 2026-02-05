@@ -18,7 +18,6 @@ type GameController struct {
 	muGames      sync.Mutex
 	ReadyGames   map[string]*game.Game
 	OnGoingGames map[string]*game.Game
-	BotGames     map[string]*game.Game
 }
 
 func NewGameController() *GameController {
@@ -27,7 +26,6 @@ func NewGameController() *GameController {
 		ConnectedPlayersName: make(map[string]string),
 		ReadyGames:           make(map[string]*game.Game),
 		OnGoingGames:         make(map[string]*game.Game),
-		BotGames:             make(map[string]*game.Game),
 	}
 }
 
@@ -74,7 +72,24 @@ func (GC *GameController) checkForExistingGame(reqStruct *api.ReqCreateOrJoinGam
 }
 func (GC *GameController) StartABot(g *game.Game) {
 	GC.muGames.Lock()
-	GC.BotGames[g.GameUuid.String()] = g
+	GC.OnGoingGames[g.GameUuid.String()] = g
+	GC.muGames.Unlock()
+	for {
+		time.Sleep(500 * time.Millisecond)
+		g.Mu.Lock()
+		if g.Finished {
+			g.Mu.Unlock()
+			break
+		}
+		if g.PlayingPlayer.Uuid == "BOT-UUID" {
+			move := g.MainBoard.MakeBotMove("")
+			g.CurrentGameState.MoveCommand(move[0], move[1], move[2], move[3], *g.PlayingPlayer)
+		}
+		g.Mu.Unlock()
+
+	}
+	GC.muGames.Lock()
+	delete(GC.OnGoingGames, g.GameUuid.String())
 	GC.muGames.Unlock()
 }
 func (GC *GameController) CreateGame(reqStruct *api.ReqCreateOrJoinGame) (*api.RespGameCreatedOrFound, error) {

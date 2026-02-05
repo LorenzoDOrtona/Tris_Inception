@@ -45,20 +45,20 @@ function App() {
   };
 
   // --- 2. MATCHMAKING ---
-  const handleFindGame = async (mode) => {
+  const handleFindGame = async (mode) => { // 'mode can be "normal" o "BOT"
     try {
       const res = await fetch(`${API_BASE_URL}/match`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
            token: token,
-           game_mode: "normal",
+           game_mode: mode, 
            side_measure: 9
         })
       });
       
       const data = await res.json(); 
-      setGameId(data.id_game); // Questo è asincrono!
+      setGameId(data.id_game);
       lastTimestampRef.current = 0;
       
       if (data.found) {
@@ -66,7 +66,6 @@ function App() {
       } else {
         setView('waiting');
       }
-      // NOTA: Non chiamiamo startPolling() qui manualmente per evitare bug di stato
     } catch (err) {
       console.error("Matchmaking Error:", err);
     }
@@ -248,7 +247,17 @@ const renderBoard = () => {
       {view === 'lobby' && (
         <div className="card">
           <h2>Lobby: {playerName}</h2>
-          <button onClick={() => handleFindGame('normal')}>Play Online</button>
+          <div className="lobby-buttons">
+            <button onClick={() => handleFindGame('normal')}>Play Online</button>
+            {/* BOT button*/}
+            <button 
+                className="bot-button" 
+                onClick={() => handleFindGame('BOT')}
+                style={{ marginLeft: '10px', backgroundColor: '#673ab7' }}
+            >
+                Play vs Bot 🤖
+            </button>
+          </div>
         </div>
       )}
 
