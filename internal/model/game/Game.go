@@ -70,6 +70,7 @@ func (g *Game) CheckWin(m positionable.Mark) bool {
 	win := g.MainBoard.CheckWin(m, g.PlayingPlayer.Uuid)
 	if win {
 		g.Finished = true
+		g.Winner = g.PlayingPlayer
 	}
 	return win
 }
