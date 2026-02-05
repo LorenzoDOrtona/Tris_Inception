@@ -4,6 +4,7 @@
 The backend and React frontend are currently deployed separately on Render’s free hosting plan and communicate via REST APIs.
 
 ---
+<img width="926" height="766" alt="image" src="https://github.com/user-attachments/assets/3c76750e-101a-4471-b80b-f2687ee87566" />
 
 ## Demo
 
