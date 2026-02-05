@@ -76,7 +76,26 @@ button:active {
 button:focus {
   outline: 3px solid #60a5fa;
 }
+/* ===== LOBBY BUTTONS ===== */
+.lobby-buttons {
+  display: flex;
+  gap: 15px; /* Adds space between the two buttons */
+  justify-content: center;
+  margin-top: 20px;
+}
 
+/* Specific style for the Bot button to distinguish it from Online play */
+.bot-button {
+  background-color: #673ab7; /* Purple color to indicate AI/Bot */
+}
+
+.bot-button:hover {
+  background-color: #512da8; /* Darker purple on hover */
+}
+
+.bot-button:focus {
+  outline: 3px solid #9575cd; /* Focus ring color */
+}
 /* ===== ERROR ===== */
 /* Toast Notification Style */
 .error-toast {
