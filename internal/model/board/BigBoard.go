@@ -26,7 +26,7 @@ func (B *BigBoard) SetupBigBoard() {
 	//Setting the boards availability
 	B.AvailableBoards = make(map[[2]int]bool)
 	B.AvailableMoves = make(map[[4]int]bool)
-	//Setupping available moves, all are available
+	//Setting up available moves, all are available
 	for i := 0; i < B.SideSize/3; i++ {
 		for j := 0; j < B.SideSize/3; j++ {
 			for x := 0; x < B.SideSize/3; x++ {
@@ -47,7 +47,7 @@ func (B *BigBoard) SetupBigBoard() {
 	B.LastTimestamp = int(time.Now().UnixNano())
 
 }
-func (BB BigBoard) String() string {
+func (BB *BigBoard) String() string {
 	var out string
 	for i := 0; i < BB.SideSize; i++ {
 		if i%3 == 0 && i/3 > 0 {
@@ -120,7 +120,7 @@ func (BB *BigBoard) ChangeBoardAvailability(i, j, x, y int) {
 		}
 	}
 
-	//but one (descrived by where I put the mark in the little board) is now available
+	//but one (described by where I put the mark in the little board) is now available
 	//if its not complete
 	if BB.mainBoard[x][y].IsComplete == false {
 		BB.AvailableBoards[[2]int{x, y}] = true
@@ -144,65 +144,64 @@ func (BB BigBoard) Print() {
 	fmt.Println(BB.String())
 }
 func (BB *BigBoard) CheckSmallWin(m positionable.Mark, i, j int) bool {
-	little_tris := &BB.mainBoard[i][j]
+	littleTris := &BB.mainBoard[i][j]
 
+	// 1. Check Rows (Horizontal)
 	for x := 0; x < 3; x++ {
-		mini_tris_done := true
+		miniTrisDone := true
 		for y := 0; y < 3; y++ {
-			if little_tris.Board[x][y] != m {
-				mini_tris_done = false
+			if littleTris.Board[x][y] != m {
+				miniTrisDone = false
 			}
 		}
-		if mini_tris_done == true {
-			// ho fatto un tris verticale
+		if miniTrisDone {
 			BB.mainBoard[i][j].IsComplete = true
 			BB.mainBoard[i][j].MarkCompleted = m
 			return true
 		}
 	}
-	//if I'm here I didn't do a vertical tris
+
+	// 2. Check Columns (Vertical)
 	for y := 0; y < 3; y++ {
-		mini_tris_done := true
+		miniTrisDone := true
 		for x := 0; x < 3; x++ {
-			if little_tris.Board[x][y] != m {
-				mini_tris_done = false
+			if littleTris.Board[x][y] != m {
+				miniTrisDone = false
 			}
 		}
-		if mini_tris_done == true {
-			// ho fatto un tris verticale
+		if miniTrisDone {
 			BB.mainBoard[i][j].IsComplete = true
 			BB.mainBoard[i][j].MarkCompleted = m
 			return true
 		}
 	}
-	//if I'm here I didn't do an horizontal tris
-	mini_tris_done := true
-	for x := 0; x < 3; x++ {
-		if little_tris.Board[x][x] != m {
-			mini_tris_done = false
-		}
-	}
-	if mini_tris_done == true {
+
+	// 3. Check Diagonals
+	if (littleTris.Board[0][0] == m && littleTris.Board[1][1] == m && littleTris.Board[2][2] == m) ||
+		(littleTris.Board[0][2] == m && littleTris.Board[1][1] == m && littleTris.Board[2][0] == m) {
 		BB.mainBoard[i][j].IsComplete = true
 		BB.mainBoard[i][j].MarkCompleted = m
 		return true
 	}
-	mini_tris_done = true
+	// If no winner, check if board is full (Draw).
+	// If full, mark as Complete so players aren't sent here next turn.
+	isFull := true
 	for x := 0; x < 3; x++ {
-		if little_tris.Board[2-x][x] != m {
-			mini_tris_done = false
+		for y := 0; y < 3; y++ {
+			if littleTris.Board[x][y].ImEmpty() {
+				isFull = false
+				break
+			}
 		}
 	}
-	if mini_tris_done == true {
+
+	if isFull {
 		BB.mainBoard[i][j].IsComplete = true
-		BB.mainBoard[i][j].MarkCompleted = m
-		return true
+		//MarkCompleted remains empty/default, which is correct for a draw.
 	}
-	//at this point I checked the cross section and found nothing
-	BB.mainBoard[i][j].IsComplete = false
+
 	return false
 }
-
 func (BB *BigBoard) CheckWin(m positionable.Positionable, player string) bool {
 
 	for x := 0; x < 3; x++ {
