@@ -71,9 +71,7 @@ func (GC *GameController) checkForExistingGame(reqStruct *api.ReqCreateOrJoinGam
 	return game, nil
 }
 func (GC *GameController) StartABot(g *game.Game) {
-	GC.muGames.Lock()
-	GC.OnGoingGames[g.GameUuid.String()] = g
-	GC.muGames.Unlock()
+
 	for {
 		time.Sleep(500 * time.Millisecond)
 		g.Mu.Lock()
@@ -107,6 +105,9 @@ func (GC *GameController) CreateGame(reqStruct *api.ReqCreateOrJoinGame) (*api.R
 			creatorName := newGame.Creator.Username
 			//creating oppenent player
 			newGame.CurrentGameState.AddOpponent("BOT-UUID", "BOT", false)
+			GC.muGames.Lock()
+			GC.OnGoingGames[newGame.GameUuid.String()] = newGame
+			GC.muGames.Unlock()
 			go GC.StartABot(newGame)
 			return &api.RespGameCreatedOrFound{
 				IdGame:      gameUUID,
