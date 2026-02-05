@@ -65,7 +65,7 @@ func (g *Game) GoNextState(gs GameState) {
 	g.CurrentGameState = gs
 	g.CurrentGameState.Activate()
 }
-func (g *Game) CheckWin(m positionable.Positionable) bool {
+func (g *Game) CheckWin(m positionable.Mark) bool {
 	// Check if there is a WINNER
 	win := g.MainBoard.CheckWin(m, g.PlayingPlayer.Uuid)
 	if win {
