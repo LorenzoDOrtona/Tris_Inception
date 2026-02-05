@@ -202,8 +202,10 @@ func (BB *BigBoard) CheckSmallWin(m positionable.Mark, i, j int) bool {
 
 	return false
 }
-func (BB *BigBoard) CheckWin(m positionable.Positionable, player string) bool {
-
+func (BB *BigBoard) CheckWin(m positionable.Mark, player string) bool {
+	if BB.IsComplete {
+		return BB.PlayerWhoCompleted == player
+	}
 	for x := 0; x < 3; x++ {
 		mini_tris_done := true
 		for y := 0; y < 3; y++ {
@@ -262,7 +264,21 @@ func (BB *BigBoard) CheckWin(m positionable.Positionable, player string) bool {
 		return true
 	}
 	//at this point I checked the cross section and found nothing
-	BB.IsComplete = false
+	allBoardsClosed := true
+	for x := 0; x < 3; x++ {
+		for y := 0; y < 3; y++ {
+			if !BB.mainBoard[x][y].IsComplete {
+				allBoardsClosed = false
+				break
+			}
+		}
+	}
+
+	if allBoardsClosed {
+		BB.IsComplete = true
+		// PlayerWhoCompleted resta vuoto -> Pareggio
+		return false
+	}
 	return false
 }
 func (BB *BigBoard) MakeBotMove(difficulty string) [4]int {
@@ -274,8 +290,11 @@ func (BB *BigBoard) MakeBotMove(difficulty string) [4]int {
 			possibleMoves = append(possibleMoves, i)
 		}
 	}
-	len := len(possibleMoves)
-	index := rand.Intn(len)
+	length := len(possibleMoves)
+	if length == 0 {
+		return [4]int{0, 0, 0, 0}
+	}
+	index := rand.Intn(length)
 
 	return possibleMoves[index]
 
