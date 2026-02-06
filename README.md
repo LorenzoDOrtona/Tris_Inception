@@ -19,6 +19,7 @@ Try it live: [https://tris-inception.onrender.com/](https://tris-inception.onren
 * Multiplayer Mode, vs Bot mode
 ---
 ## Roadmap
+* 90% Game Logic test coverage
 * User accounts and authentication
 * Persistent storage (game history, rankings)
 * Multiple game searching parameters (Play against a friend, Specific game mode, etc.)
