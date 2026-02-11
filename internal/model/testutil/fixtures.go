@@ -32,7 +32,7 @@ var MoveFirstPLayerWins = [][]int{
 	{0, 2, 0, 0},
 }
 
-func CreateBasicGame() game.Game {
+func CreateBasicGame() *game.Game {
 	/*
 		Creates a game with 2 players of fixed Username and UUID
 	*/
@@ -40,5 +40,5 @@ func CreateBasicGame() game.Game {
 	newGame := game.New(&newCreator, nil)
 	//creating oppenent player
 	newGame.CurrentGameState.AddOpponent("OpponentUUID", "OpponentUsername", false)
-	return *newGame
+	return newGame
 }

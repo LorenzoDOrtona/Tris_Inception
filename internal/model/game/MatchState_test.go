@@ -1,6 +1,7 @@
 package game_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/testutil"
@@ -18,10 +19,33 @@ func TestValidateMove(t *testing.T) {
 	}
 
 }
+
 func TestFirstPlayerWins(t *testing.T) {
 	TestGame := testutil.CreateBasicGame()
 	movArray := testutil.MoveFirstPLayerWins
-	for _, v := range movArray {
-		TestGame.CurrentGameState.MoveCommand(v[0], v[1], v[2], v[3], *TestGame.PlayingPlayer)
+
+	fmt.Printf("Starting player: %s (%s)\n", TestGame.PlayingPlayer.Username, TestGame.PlayingPlayer.Uuid)
+
+	for i, v := range movArray {
+		currentPlayer := TestGame.PlayingPlayer
+		fmt.Printf("Move %d: [%d,%d,%d,%d] - Player: %s (%s)\n",
+			i, v[0], v[1], v[2], v[3], currentPlayer.Username, currentPlayer.Uuid)
+
+		err := TestGame.CurrentGameState.MoveCommand(v[0], v[1], v[2], v[3], *currentPlayer)
+		if err != nil {
+			fmt.Printf("ERROR at move %d: %v\n", i, err)
+			fmt.Printf("Expected: %s, PlayingPlayer after: %s\n",
+				currentPlayer.Uuid, TestGame.PlayingPlayer.Uuid)
+			t.Fatalf("Move %d failed: %v | Move data: %v", i, err, v)
+		}
+
+		fmt.Printf("After move %d - Next player: %s (%s)\n\n",
+			i, TestGame.PlayingPlayer.Username, TestGame.PlayingPlayer.Uuid)
+	}
+
+	TestGame.MainBoard.Print()
+
+	if TestGame.Winner != nil {
+		fmt.Printf("Winner: %s (%s)\n", TestGame.Winner.Username, TestGame.Winner.Uuid)
 	}
 }

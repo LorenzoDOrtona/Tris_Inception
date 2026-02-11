@@ -8,33 +8,33 @@ import (
 )
 
 type BeginState struct {
-	mainGame *Game
+	MainGame *Game
 }
 
 func (gs *BeginState) Activate() {
-	gs.mainGame.MainBoard = board.BigBoard{}
-	gs.mainGame.MainBoard.SetupBigBoard()
-	gs.mainGame.MainBoard.Print()
+	gs.MainGame.MainBoard = board.BigBoard{}
+	gs.MainGame.MainBoard.SetupBigBoard()
+	gs.MainGame.MainBoard.Print()
 }
 func (gs *BeginState) AddOpponent(uuid string, name string, bot bool) {
-	m := gs.mainGame.Creator.MarkS
+	m := gs.MainGame.Creator.MarkS
 	oppPlayer := Player{
 		Uuid:     uuid,
 		Username: name,
 		MarkS:    positionable.OppositeMark(m),
 	}
 	//giving opponent player to the game object
-	gs.mainGame.Opponent = &oppPlayer
+	gs.MainGame.Opponent = &oppPlayer
 	//
-	gs.mainGame.PlayingPlayer = gs.mainGame.Creator
-	gs.mainGame.ObservingPlayer = gs.mainGame.Opponent
+	gs.MainGame.PlayingPlayer = gs.MainGame.Creator
+	gs.MainGame.ObservingPlayer = gs.MainGame.Opponent
 	//update timestamp
-	gs.mainGame.MainBoard.LastTimestamp = int(time.Now().UnixNano())
-	gs.mainGame.GoNextState(&MatchState{mainGame: gs.mainGame})
+	gs.MainGame.MainBoard.LastTimestamp = int(time.Now().UnixNano())
+	gs.MainGame.GoNextState(&MatchState{MainGame: gs.MainGame})
 
 }
 func (gs *BeginState) MoveCommand(i, j, x, y int, player Player) error {
 	// non accetti mosse in BeginState
-	gs.mainGame.MainBoard.Print()
+	gs.MainGame.MainBoard.Print()
 	return nil
 }

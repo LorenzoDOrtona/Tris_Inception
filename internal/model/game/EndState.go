@@ -5,16 +5,16 @@ import (
 )
 
 type EndState struct {
-	mainGame *Game
+	MainGame *Game
 	GameState
 }
 
 func (es *EndState) Activate() {
 	fmt.Println("EndState: game ended")
-	if es.mainGame != nil {
-		es.mainGame.Finished = true
+	if es.MainGame != nil {
+		es.MainGame.Finished = true
 	}
-	fmt.Println("WInner is: ", es.mainGame.MainBoard.PlayerWhoCompleted)
+	fmt.Println("WInner is: ", es.MainGame.MainBoard.PlayerWhoCompleted)
 }
 
 func (es *EndState) MoveCommand(i, j, x, y int, player Player) error {

@@ -10,7 +10,7 @@ import (
 )
 
 type MatchState struct {
-	mainGame *Game
+	MainGame *Game
 	GameState
 	//listener dei turni per i giocatori
 	//listener degli ev
@@ -24,7 +24,7 @@ func (ms *MatchState) Activate() {
 // Returns next state from this one
 // Returns next state from this one
 func (ms *MatchState) GetNextState(hasOtherChoice bool) GameState {
-	return &EndState{mainGame: ms.mainGame}
+	return &EndState{MainGame: ms.MainGame}
 }
 func (gs *MatchState) MoveCommand(i, j, x, y int, player Player) error {
 	/*
@@ -35,12 +35,13 @@ func (gs *MatchState) MoveCommand(i, j, x, y int, player Player) error {
 	if err == nil {
 		//2) execution
 		gs.executeMove(i, j, x, y, player)
-		gs.mainGame.MainBoard.LastTimestamp = int(time.Now().UnixNano())
+		gs.MainGame.MainBoard.LastTimestamp = int(time.Now().UnixNano())
 		//3) check status
 		gs.checkStatus(player.MarkS, i, j)
-		gs.mainGame.MainBoard.Print()
+		if !gs.MainGame.Finished {
+			gs.MainGame.ChangePlayerTurn()
+		}
 	} else {
-		gs.mainGame.MainBoard.Print()
 		return err
 	}
 
@@ -48,10 +49,10 @@ func (gs *MatchState) MoveCommand(i, j, x, y int, player Player) error {
 }
 func (gs *MatchState) validateMove(i, j, x, y int, player Player) error {
 	//this function returns true iff the proposed move is valid
-	if !gs.mainGame.MainBoard.AvailableMoves[[4]int{i, j, x, y}] {
+	if !gs.MainGame.MainBoard.AvailableMoves[[4]int{i, j, x, y}] {
 		return errors.ErrInvalidMove
 	}
-	if gs.mainGame.PlayingPlayer.Uuid != player.Uuid {
+	if gs.MainGame.PlayingPlayer.Uuid != player.Uuid {
 		return errors.ErrNotYourTurn
 	} else {
 		return nil
@@ -62,7 +63,7 @@ func (gs *MatchState) IsOccupied(i, j, x, y int) bool {
 	//if there is something different
 	///From empty it's false
 
-	isEmpty := gs.mainGame.MainBoard.GetCell(i, j, x, y).ImEmpty()
+	isEmpty := gs.MainGame.MainBoard.GetCell(i, j, x, y).ImEmpty()
 	if isEmpty {
 		return false
 	}
@@ -75,30 +76,28 @@ func (gs *MatchState) executeMove(i, j, x, y int, player Player) {
 	// 		go to another state in the card
 	//3) place the mark in the specified cell
 
-	cell := gs.mainGame.MainBoard.GetCell(i, j, x, y)
+	cell := gs.MainGame.MainBoard.GetCell(i, j, x, y)
 	isCard := cell.ImCard()
 
 	m := player.MarkS
 	if isCard {
 		cell.Selected(player.Uuid, m)
 	}
-	gs.mainGame.MainBoard.InsertMark(m, i, j, x, y)
+	gs.MainGame.MainBoard.InsertMark(m, i, j, x, y)
 
-	gs.mainGame.MainBoard.ChangeBoardAvailability(i, j, x, y)
-	//change current player
-	gs.mainGame.ChangePlayerTurn()
+	gs.MainGame.MainBoard.ChangeBoardAvailability(i, j, x, y)
 
 }
 func (gs *MatchState) checkStatus(MarkS positionable.Mark, i, j int) {
 	//1) check if there is a new little win
-	gs.mainGame.MainBoard.CheckSmallWin(MarkS, i, j)
+	gs.MainGame.MainBoard.CheckSmallWin(MarkS, i, j)
 	//2) check if someone won definetelly
-	weHaveAWinner := gs.mainGame.CheckWin(MarkS)
+	weHaveAWinner := gs.MainGame.CheckWin(MarkS)
 	//if someone won, we end game
 	if weHaveAWinner {
 		//go to end state
-		gs.mainGame.MainBoard.LastTimestamp = int(time.Now().UnixNano())
-		gs.mainGame.GoNextState(&EndState{mainGame: gs.mainGame})
+		gs.MainGame.MainBoard.LastTimestamp = int(time.Now().UnixNano())
+		gs.MainGame.GoNextState(&EndState{MainGame: gs.MainGame})
 	}
 }
 

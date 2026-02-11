@@ -45,7 +45,7 @@ func (game *Game) Init() {
 	// inizializza la board e lo stato iniziale
 	//quindi tutto il model
 	game.MainBoard = board.BigBoard{}
-	game.CurrentGameState = &BeginState{mainGame: game}
+	game.CurrentGameState = &BeginState{MainGame: game}
 	game.MainBoard.SetupBigBoard()
 	game.CurrentGameState.Activate()
 }
@@ -70,7 +70,8 @@ func (g *Game) CheckWin(m positionable.Mark) bool {
 	win := g.MainBoard.CheckWin(m, g.PlayingPlayer.Uuid)
 	if win {
 		g.Finished = true
-		g.Winner = g.Opponent
+		//player turn already changed so if player won it's not it's turn now (swapped before)
+		g.Winner = g.PlayingPlayer
 	}
 	return win
 }

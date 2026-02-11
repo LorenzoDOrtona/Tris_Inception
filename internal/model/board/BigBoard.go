@@ -84,60 +84,65 @@ func (BB *BigBoard) MakeAllMovesUnavailable() {
 
 }
 func (BB *BigBoard) AllowNewCorrectMoves(i, j, x, y int) {
-	//if x, y are the cordinates of a complete little board
-	//Now there are available moves across all the bigBoard
+	// If the destination board is complete,
+	// make all moves available in NON-complete boards
 	if BB.mainBoard[x][y].IsComplete {
-		for k := range BB.AvailableMoves {
-			for u := 0; u < 3; u++ {
-				for o := 0; o < 3; o++ {
-					if BB.mainBoard[k[0]][k[1]].Board[u][o].ImEmpty() {
-						BB.AvailableMoves[[4]int{k[0], k[1], u, o}] = true
-					} else {
-						BB.AvailableMoves[[4]int{k[0], k[1], u, o}] = false
+		// Iterate through all 9 small boards
+		for boardX := 0; boardX < 3; boardX++ {
+			for boardY := 0; boardY < 3; boardY++ {
+				// Skip boards that are already complete
+				if BB.mainBoard[boardX][boardY].IsComplete {
+					continue
+				}
+
+				// For this non-complete board, enable all empty cells
+				for cellX := 0; cellX < 3; cellX++ {
+					for cellY := 0; cellY < 3; cellY++ {
+						if BB.mainBoard[boardX][boardY].Board[cellX][cellY].ImEmpty() {
+							BB.AvailableMoves[[4]int{boardX, boardY, cellX, cellY}] = true
+						}
 					}
 				}
 			}
 		}
-
 	} else {
-		for u := 0; u < 3; u++ {
-			for o := 0; o < 3; o++ {
-				if BB.mainBoard[x][y].Board[u][o].ImEmpty() {
-					BB.AvailableMoves[[4]int{x, y, u, o}] = true
-				} else {
-					BB.AvailableMoves[[4]int{x, y, u, o}] = false
+		// The destination board is NOT complete,
+		// only make empty cells in that board available
+		for cellX := 0; cellX < 3; cellX++ {
+			for cellY := 0; cellY < 3; cellY++ {
+				if BB.mainBoard[x][y].Board[cellX][cellY].ImEmpty() {
+					BB.AvailableMoves[[4]int{x, y, cellX, cellY}] = true
 				}
 			}
 		}
 	}
-
 }
 func (BB *BigBoard) ChangeBoardAvailability(i, j, x, y int) {
-	//Im making every board unavailable now
+	// Make all boards unavailable first
 	for u := 0; u < 3; u++ {
 		for o := 0; o < 3; o++ {
 			BB.AvailableBoards[[2]int{u, o}] = false
 		}
 	}
 
-	//but one (described by where I put the mark in the little board) is now available
-	//if its not complete
-	if BB.mainBoard[x][y].IsComplete == false {
+	// The destination board (x, y) becomes available
+	// ONLY if it's not complete
+	if !BB.mainBoard[x][y].IsComplete {
 		BB.AvailableBoards[[2]int{x, y}] = true
 	} else {
+		// If the destination board is complete,
+		// make ALL non-complete boards available
 		for u := 0; u < 3; u++ {
 			for o := 0; o < 3; o++ {
-				if BB.mainBoard[u][o].IsComplete == true {
-					BB.AvailableBoards[[2]int{u, o}] = false
-				} else {
+				if !BB.mainBoard[u][o].IsComplete {
 					BB.AvailableBoards[[2]int{u, o}] = true
 				}
 			}
 		}
 	}
-	//And also every move is now unavailable
+
+	// IMPORTANT: First disable everything, then re-enable only the correct moves
 	BB.MakeAllMovesUnavailable()
-	//and only correct moves are available
 	BB.AllowNewCorrectMoves(i, j, x, y)
 }
 func (BB BigBoard) Print() {
