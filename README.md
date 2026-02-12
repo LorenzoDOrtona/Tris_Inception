@@ -17,6 +17,7 @@ Try it live: [https://tris-inception.onrender.com/](https://tris-inception.onren
 ---
 ## Accomplished
 * Working MVC pattern
+* GitHub Actions to run game tests before every production deploy
 * Implemented Rest APIs communication
 * Working React frontend
 * Multiplayer Mode, vs Bot mode
@@ -26,7 +27,6 @@ Try it live: [https://tris-inception.onrender.com/](https://tris-inception.onren
 * User accounts and authentication
 * Persistent storage (game history, rankings)
 * Multiple game searching parameters (Play against a friend, Specific game mode, etc.)
-* GitHub Actions to run game tests before every production deploy
 * Observability: metrics statistics, logging, monitoring of server resources
 
 ---
