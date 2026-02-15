@@ -16,7 +16,7 @@ Try it live: [https://tris-inception.onrender.com/](https://tris-inception.onren
 > Note: For a demo, I suggest playing against a bot due to the lack of online players.
 ---
 ## Accomplished
-* >90% Game Logic tested
+* 90% Game Logic tested
 * Working MVC pattern
 * GitHub Actions to run game tests before every production deploy
 * Implemented Rest APIs communication
