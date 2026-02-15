@@ -16,6 +16,7 @@ Try it live: [https://tris-inception.onrender.com/](https://tris-inception.onren
 > Note: For a demo, I suggest playing against a bot due to the lack of online players.
 ---
 ## Accomplished
+* >90% Game Logic tested
 * Working MVC pattern
 * GitHub Actions to run game tests before every production deploy
 * Implemented Rest APIs communication
@@ -23,7 +24,6 @@ Try it live: [https://tris-inception.onrender.com/](https://tris-inception.onren
 * Multiplayer Mode, vs Bot mode
 ---
 ## Roadmap
-* 90% Game Logic test coverage
 * User accounts and authentication
 * Persistent storage (game history, rankings)
 * Multiple game searching parameters (Play against a friend, Specific game mode, etc.)
