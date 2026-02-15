@@ -1,7 +1,10 @@
 package game
 
 import (
+	"fmt"
 	"time"
+
+	"github.com/LorenzoDOrtona/Tris_Inception/internal/errors"
 
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/board"
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/positionable"
@@ -12,6 +15,7 @@ type BeginState struct {
 }
 
 func (gs *BeginState) Activate() {
+	fmt.Print("Begin STATE!")
 	gs.MainGame.MainBoard = board.BigBoard{}
 	gs.MainGame.MainBoard.SetupBigBoard()
 	gs.MainGame.MainBoard.Print()
@@ -36,5 +40,5 @@ func (gs *BeginState) AddOpponent(uuid string, name string, bot bool) {
 func (gs *BeginState) MoveCommand(i, j, x, y int, player Player) error {
 	// non accetti mosse in BeginState
 	gs.MainGame.MainBoard.Print()
-	return nil
+	return errors.ErrNotYourTurn
 }

@@ -17,6 +17,10 @@ func TestValidateMove(t *testing.T) {
 	if err != nil {
 		t.Errorf("Correct player cannot play when it could")
 	}
+	errs := TestGame.CurrentGameState.MoveCommand(1, 1, 1, 1, *TestGame.ObservingPlayer)
+	if errs == nil {
+		t.Errorf("Correct player played where it CANNOT")
+	}
 
 }
 
@@ -41,11 +45,22 @@ func TestFirstPlayerWins(t *testing.T) {
 
 		fmt.Printf("After move %d - Next player: %s (%s)\n\n",
 			i, TestGame.PlayingPlayer.Username, TestGame.PlayingPlayer.Uuid)
+		TestGame.MainBoard.Print()
 	}
 
-	TestGame.MainBoard.Print()
+	//TestGame.MainBoard.Print()
 
 	if TestGame.Winner != nil {
 		fmt.Printf("Winner: %s (%s)\n", TestGame.Winner.Username, TestGame.Winner.Uuid)
 	}
+
+}
+
+func TestNoMoveBeforeOpponent(t *testing.T) {
+	TestGame := testutil.CreateGameWaitingOpponent()
+	err := TestGame.CurrentGameState.MoveCommand(1, 1, 1, 1, *TestGame.PlayingPlayer)
+	if err == nil {
+		t.Errorf("Payer allowed to play when it should not")
+	}
+
 }

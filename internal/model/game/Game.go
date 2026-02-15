@@ -46,7 +46,6 @@ func (game *Game) Init() {
 	//quindi tutto il model
 	game.MainBoard = board.BigBoard{}
 	game.CurrentGameState = &BeginState{MainGame: game}
-	game.MainBoard.SetupBigBoard()
 	game.CurrentGameState.Activate()
 }
 

@@ -59,16 +59,6 @@ func (gs *MatchState) validateMove(i, j, x, y int, player Player) error {
 	}
 	//we just need to
 }
-func (gs *MatchState) IsOccupied(i, j, x, y int) bool {
-	//if there is something different
-	///From empty it's false
-
-	isEmpty := gs.MainGame.MainBoard.GetCell(i, j, x, y).ImEmpty()
-	if isEmpty {
-		return false
-	}
-	return true
-}
 func (gs *MatchState) executeMove(i, j, x, y int, player Player) {
 	//1) check if a card is selected
 	// or if it is a white place
@@ -97,11 +87,7 @@ func (gs *MatchState) checkStatus(MarkS positionable.Mark, i, j int) {
 	if weHaveAWinner {
 		//go to end state
 		gs.MainGame.MainBoard.LastTimestamp = int(time.Now().UnixNano())
-		gs.MainGame.GoNextState(&EndState{MainGame: gs.MainGame})
+		nextGamestate := gs.GetNextState(false)
+		gs.MainGame.GoNextState(nextGamestate)
 	}
-}
-
-func finishMove(i, j, x, y int) {
-	//1) update the available plane to mark
-	//2) update player to play
 }
