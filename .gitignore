@@ -76,7 +76,7 @@ Temporary Items
 .history
 .ionide
 #env
-*.env.*
+*.env*
 !*.env.example
 
 
