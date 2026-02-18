@@ -75,6 +75,10 @@ Temporary Items
 # Ignore all local history of files
 .history
 .ionide
+#env
+*.env.*
+!*.env.example
+
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,go,visualstudiocode
 
