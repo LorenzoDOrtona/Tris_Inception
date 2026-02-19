@@ -14,7 +14,12 @@ func setup_gin(GC *internal.GameController) {
 	r := gin.Default()
 	// CONFIGURAZIONE CORS: Permetti al frontend di chiamare il backend
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"https://tris-inception.onrender.com", "https://tris.lorenzodortona.com"} // L'indirizzo di React
+	config.AllowOrigins = []string{
+		"https://tris-inception.onrender.com",
+		"https://tris.lorenzodortona.com",
+		"http://localhost",
+		"http://localhost:5173",
+	}
 	config.AllowMethods = []string{"GET", "POST", "PUT", "OPTIONS"}
 	r.Use(cors.New(config))
 	r.POST("/playerToken", func(c *gin.Context) {

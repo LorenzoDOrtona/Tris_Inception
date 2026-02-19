@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
-
-const API_BASE_URL = "https://trisinception.onrender.com";
+import { API_BASE_URL } from './costants.js';
 
 function App() {
   const [view, setView] = useState('login'); 
