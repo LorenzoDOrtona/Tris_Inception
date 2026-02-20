@@ -2,7 +2,7 @@
 # STAGE 1: The Builder (Il "Cantiere")
 # ==========================================
 # 1. Start from the official Go image
-FROM golang:1.22-alpine AS builder
+FROM golang:1.24.5-alpine AS builder
 
 # 2. Set the working directory inside the container
 WORKDIR /app

@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # --- POSTGRESQL DATABASE ---
+  db:
+    image: postgres:15-alpine
+    container_name: game_postgres
+    restart: unless-stopped
+    # Using fallback values (:-value) so it doesn't crash if variables are missing locally
+    environment:
+      POSTGRES_USER: ${DB_USER:-admin}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-admin123}
+      POSTGRES_DB: ${DB_NAME:-tris_db}
+    # Persist data even if the container is destroyed
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  # --- GO BACKEND API ---
+  api:
+    # Tell Docker to look inside the 'backend' folder for the Dockerfile
+    build: ./backend
+    container_name: game_api
+    restart: unless-stopped
+    # Map port 8080 of your PC to port 8080 of the container
+    ports:
+      - "8080:8080"
+    # Load environment variables specific to the Go server
+    env_file:
+      - ./backend/.env
+    # Ensure the DB and Redis start BEFORE the Go server
+    depends_on:
+      - db
+
+  # --- REACT FRONTEND ---
+  frontend:
+    # Tell Docker to look inside the 'frontend' folder for the Dockerfile
+    build: ./frontend
+    container_name: game_frontend
+    restart: unless-stopped
+    # Map port 80 of your PC (standard HTTP) to Nginx port 80
+    ports:
+      - "80:80"
+    # Ensure the API is up before starting the frontend
+    depends_on:
+      - api
+
+# Define the named volumes used by the databases
+volumes:
+  pg_data:
+  redis_data:
