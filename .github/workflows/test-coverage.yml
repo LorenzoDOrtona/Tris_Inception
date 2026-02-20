@@ -21,7 +21,7 @@ jobs:
         # Added -coverprofile to generate the report file needed for the badge
         working-directory: ./backend
         run: go test -v -coverpkg=./internal/model/game -coverprofile=coverage.out ./internal/model/game
-     s
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
