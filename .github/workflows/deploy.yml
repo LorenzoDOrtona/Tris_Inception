@@ -1,20 +1,68 @@
-- name: Update manifests and deploy to K3s
-  uses: appleboy/ssh-action@v1.0.3
-  with:
-    host: ${{ secrets.SERVER_IP }}
-    username: ${{ secrets.SERVER_USER }}
-    key: ${{ secrets.SSH_PRIVATE_KEY }}
-    script: |
-      # Clone the repo if it does not exist, or pull the latest changes into the 'tris' directory
-      if [ ! -d "/opt/tris" ]; then
-        git clone https://github.com/your-username/your-repo-name.git /opt/tris
-      else
-        cd /opt/tris && git pull origin main
-      fi
-      
-      # Apply all the manifests located in the k8s folder inside 'tris'
-      sudo k3s kubectl apply -f /opt/tris/k3s/
-      
-      # Force K3s to pull the new images and restart the applications
-      sudo k3s kubectl rollout restart deployment go-backend
-      sudo k3s kubectl rollout restart deployment react-frontend
+# .github/workflows/deploy.yml
+name: Build and Deploy to K3s
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend 
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend:latest
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend 
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:latest
+
+  deploy-to-vps:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update manifests and deploy to K3s
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # Clone the repo if it does not exist, or pull the latest changes into the 'tris' directory
+            if [ ! -d "/opt/tris" ]; then
+              git clone https://github.com/${{ github.repository }}.git /opt/tris
+            else
+              cd /opt/tris && git pull origin main
+            fi
+            
+            # Apply all the manifests located in the k3s folder inside 'tris'
+            sudo k3s kubectl apply -f /opt/tris/k3s/
+            
+            # Force K3s to pull the new images and restart the applications
+            sudo k3s kubectl rollout restart deployment go-backend
+            sudo k3s kubectl rollout restart deployment react-frontend
