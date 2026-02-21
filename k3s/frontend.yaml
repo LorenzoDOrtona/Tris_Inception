@@ -18,7 +18,7 @@ spec:
       containers:
         - name: react-frontend
           # Replace with your actual GitHub username and repository name
-          image: ghcr.io/your-username/your-repo-name-frontend:latest
+          image: ghcr.io/lorenzodortona/tris_inception-frontend:latest
           # Always pull the latest image upon restart
           imagePullPolicy: Always
           ports:

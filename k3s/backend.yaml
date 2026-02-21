@@ -18,7 +18,7 @@ spec:
       containers:
         - name: go-backend
           # Replace with your actual GitHub username and repository name
-          image: ghcr.io/your-username/your-repo-name-backend:latest
+          image: ghcr.io/lorenzodortona/tris_inception-backend:latest
           # Always pull the latest image upon restart
           imagePullPolicy: Always
           ports:
