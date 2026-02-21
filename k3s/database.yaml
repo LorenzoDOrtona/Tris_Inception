@@ -1,0 +1,64 @@
+# k3s/01-database.yaml
+
+# 1. Request permanent storage on the VPS disk
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+# 2. Deploy the PostgreSQL container
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          env:
+            # Basic credentials (for production, consider using Kubernetes Secrets)
+            - name: POSTGRES_USER
+              value: "dbuser"
+            - name: POSTGRES_PASSWORD
+              value: "dbpassword"
+            - name: POSTGRES_DB
+              value: "myappdb"
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            # Mount the persistent storage to the database data folder
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+
+---
+# 3. Create an internal network address for the database
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+spec:
+  selector:
+    app: postgres
+  ports:
+    - port: 5432
+      targetPort: 5432

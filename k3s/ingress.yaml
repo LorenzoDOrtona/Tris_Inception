@@ -1,0 +1,35 @@
+# k3s/04-ingress.yaml
+
+# Define routing rules for external traffic
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: main-ingress
+  annotations:
+    # Remove the size limit for file uploads (optional but recommended)
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+spec:
+  # Tell K3s to use Traefik to manage this ingress
+  ingressClassName: traefik
+  rules:
+    # Replace with your actual domain or VPS IP
+    - host: "tris.lorenzodortona.com"
+      http:
+        paths:
+          # 1. Route /api requests to the Go backend
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-service
+                port:
+                  number: 8080
+                  
+          # 2. Route all other requests to the React frontend
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 80
