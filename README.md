@@ -34,7 +34,7 @@ To run the entire stack locally for testing or development, simply use Docker Co
 
 ```bash
 # Clone the repository
-git clone [https://github.com/LorenzoDOrtona/Tris_Inception.git](https://github.com/LorenzoDOrtona/Tris_Inception.git)
+git clone https://github.com/LorenzoDOrtona/Tris_Inception.git
 cd Tris_Inception
 
 # Start both frontend and backend
