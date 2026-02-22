@@ -30,8 +30,22 @@ Try it live: [https://tris.lorenzodortona.com](https://tris.lorenzodortona.com)
 
 ## Local Development (Docker Compose)
 
-To run the entire stack locally for testing or development, simply use Docker Compose:
+To run the entire stack locally for testing or development, you need to set up your environment variables and use Docker Compose.
 
+### 1. Environment Setup
+The backend requires a `.env` file to run. Create a file named `.env` inside the `backend/` directory and populate it with your local settings. You can use the following template:
+
+```env
+# backend/.env
+PORT=8080
+DATABASE_URL=postgres://user:password@db:5432/tris_db
+JWT_SECRET=local-development-secret
+FRONTEND_URL=http://localhost:5173
+ENV=development
+
+```
+
+Once the environment variables are set, you can start the containers:
 ```bash
 # Clone the repository
 git clone https://github.com/LorenzoDOrtona/Tris_Inception.git
