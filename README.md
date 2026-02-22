@@ -1,7 +1,7 @@
 # Tris Inception – Ultimate Tic-Tac-Toe Engine 
 
 **Tris Inception** is an **Ultimate Tic-Tac-Toe** engine written in **Go**, focused on building a scalable, maintainable, and testable backend.
-The backend and React frontend are currently deployed separately on Render’s free hosting plan and communicate via REST APIs.
+The application is fully containerized and runs on a custom **Kubernetes (k3s)** cluster deployed on a remote VPS.
 
 [![codecov](https://codecov.io/github/LorenzoDOrtona/Tris_Inception/graph/badge.svg?token=ZHU72H7R0G)](https://codecov.io/github/LorenzoDOrtona/Tris_Inception)
 
@@ -11,29 +11,54 @@ The backend and React frontend are currently deployed separately on Render’s f
 
 ## Demo
 
-Try it live: [https://tris-inception.onrender.com/](https://tris-inception.onrender.com/)
+Try it live: [https://tris.lorenzodortona.com](https://tris.lorenzodortona.com)
 
-> Note: For a demo, I suggest playing against a bot due to the lack of online players.
+> Note: For a quick demo, I suggest playing against the bot due to the potential lack of online players in the lobby.
+
 ---
+
 ## Accomplished
 * 90% Game Logic tested
 * Working MVC pattern
-* GitHub Actions to run game tests before every production deploy
-* Implemented Rest APIs communication
-* Working React frontend
-* Multiplayer Mode, vs Bot mode
+* Fully automated GitOps CI/CD pipeline via GitHub Actions (building to GHCR and deploying to k3s)
+* Implemented REST APIs communication
+* Working React frontend using Vite
+* Multiplayer Mode & vs Bot mode
+* Automated HTTPS certificate provisioning via cert-manager and Let's Encrypt
+
 ---
+
+## Local Development (Docker Compose)
+
+To run the entire stack locally for testing or development, simply use Docker Compose:
+
+```bash
+# Clone the repository
+git clone [https://github.com/LorenzoDOrtona/Tris_Inception.git](https://github.com/LorenzoDOrtona/Tris_Inception.git)
+cd Tris_Inception
+
+# Start both frontend and backend
+docker-compose up --build
+
+```
+
+* The frontend will be available at `http://localhost:5173`
+* The backend API will be available at `http://localhost:8080`
+
+---
+
 ## Roadmap
+
 * User accounts and authentication
-* Persistent storage (game history, rankings)
+* Persistent storage (game history, rankings) using PostgreSQL
 * Multiple game searching parameters (Play against a friend, Specific game mode, etc.)
-* Observability: metrics statistics, logging, monitoring of server resources
+* Observability: metrics statistics, logging, and monitoring of server resources
 
 ---
 
 ## Design Choices
 
-* **Go language**: Chosen for simplicity, performance, and deployment efficiency
-* **Stateful backend**: Ensures consistent live gameplay
-* **REST APIs Polling**: Used for the MVP for simplicity, even though WebSockets would be better for real-time updates
-* **MVC pattern**: Chosen for better separation of concerns
+* **Go language**: Chosen for simplicity, performance, and deployment efficiency.
+* **Stateful backend**: Ensures consistent live gameplay and strict server-side validation.
+* **REST APIs Polling**: Used for the MVP for simplicity, paving the way for future WebSockets implementation for real-time updates.
+* **Infrastructure**: Migrated from PaaS (Render) to a self-hosted **Kubernetes (k3s)** environment to maximize control over deployment, scaling, and networking (via **Traefik** Ingress).
