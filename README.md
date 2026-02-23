@@ -1,5 +1,5 @@
 # Tris Inception – Ultimate Tic-Tac-Toe Engine 
-
+ 
 **Tris Inception** is an **Ultimate Tic-Tac-Toe** engine written in **Go**, focused on building a scalable, maintainable, and testable backend.
 The application is fully containerized and runs on a custom **Kubernetes (k3s)** cluster deployed on a remote VPS.
 
