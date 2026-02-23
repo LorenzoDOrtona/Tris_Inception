@@ -40,7 +40,7 @@ The backend requires a `.env` file to run. Create a file named `.env` inside the
 PORT=8080
 DATABASE_URL=postgres://user:password@db:5432/tris_db
 JWT_SECRET=local-development-secret
-FRONTEND_URL=http://localhost:5173
+FRONTEND_URL=http://localhost
 ENV=development
 
 ```
@@ -56,7 +56,7 @@ docker-compose up --build
 
 ```
 
-* The frontend will be available at `http://localhost:5173`
+* The frontend will be available at `http://localhost`
 * The backend API will be available at `http://localhost:8080`
 
 ---
