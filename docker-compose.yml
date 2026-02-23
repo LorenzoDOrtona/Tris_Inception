@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # --- POSTGRESQL DATABASE ---
   db:
@@ -47,4 +45,3 @@ services:
 # Define the named volumes used by the databases
 volumes:
   pg_data:
-  redis_data:
