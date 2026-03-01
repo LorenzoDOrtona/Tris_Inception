@@ -65,3 +65,4 @@ jobs:
             # Force K3s to pull the new images and restart the applications
             sudo k3s kubectl rollout restart deployment go-backend
             sudo k3s kubectl rollout restart deployment react-frontend
+

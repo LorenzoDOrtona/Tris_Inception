@@ -20,7 +20,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o game-server ./cmd/server/ServerMain.go
 
 
 # ==========================================
-# STAGE 2: The Production Image (La "Casa Finita")
+# STAGE 2: The Production Image
 # ==========================================
 # 6. Start from a completely empty, ultra-lightweight Linux image
 FROM alpine:latest
