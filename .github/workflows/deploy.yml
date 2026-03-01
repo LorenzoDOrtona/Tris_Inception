@@ -40,7 +40,7 @@ jobs:
           context: ./frontend 
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:latest
-
+ 
   deploy-to-vps:
     needs: build-and-push
     runs-on: ubuntu-latest
