@@ -18,61 +18,91 @@ Try it live: [https://tris.lorenzodortona.com](https://tris.lorenzodortona.com)
 ---
 
 ## Accomplished
-* 90% Game Logic tested
-* Working MVC pattern
-* Fully automated GitOps CI/CD pipeline via GitHub Actions (building to GHCR and deploying to k3s)
-* Implemented REST APIs communication
-* Working React frontend using Vite
-* Multiplayer Mode & vs Bot mode
-* Automated HTTPS certificate provisioning via cert-manager and Let's Encrypt
+- ~90% test coverage on core game engine logic
+- Clean backend architecture (MVC + State pattern)
+- Multiplayer mode and AI bot mode
+- RESTful API for game and user interactions
+- User authentication system (bcrypt password hashing)
+- PostgreSQL integration for user persistence
+- Encrypted secrets management (SOPS + Age)
+- Fully automated GitOps CI/CD pipeline (GitHub Actions → GHCR → k3s)
+- Deployed on k3s cluster running on a remote VPS
+- Automated HTTPS provisioning (cert-manager + Let's Encrypt)
+- React frontend built with Vite
 
 ---
+## 🛠 Local Development
 
-## Local Development (Docker Compose)
+The local environment is fully containerized using Docker Compose.  
+No SOPS or Kubernetes setup is required for development.
 
-To run the entire stack locally for testing or development, you need to set up your environment variables and use Docker Compose.
+### 1️⃣ Environment Variables
 
-### 1. Environment Setup
-The backend requires a `.env` file to run. Create a file named `.env` inside the `backend/` directory and populate it with your local settings. You can use the following template:
+Create a `.env` file inside the `backend/` directory:
 
 ```env
 # backend/.env
 PORT=8080
-DATABASE_URL=postgres://user:password@db:5432/tris_db
+DATABASE_URL=postgres://user:password@db:5432/tris_db?sslmode=disable
 JWT_SECRET=local-development-secret
 FRONTEND_URL=http://localhost
 ENV=development
+````
 
-```
+> The `db` hostname matches the PostgreSQL service name defined in `docker-compose.yml`.
 
-Once the environment variables are set, you can start the containers:
+---
+
+### 2️⃣ Start the Application
+
 ```bash
-# Clone the repository
 git clone https://github.com/LorenzoDOrtona/Tris_Inception.git
 cd Tris_Inception
 
-# Start both frontend and backend
-docker-compose up --build
-
+docker compose up --build
 ```
 
-* The frontend will be available at `http://localhost`
-* The backend API will be available at `http://localhost:8080`
+---
 
+### 3️⃣ Access the Services
+
+* Frontend → [http://localhost](http://localhost)
+* Backend API → [http://localhost:8080/api](http://localhost:8080/api)
+* PostgreSQL → running inside Docker (internal network only)
+
+---
+
+### ℹ️ Note on Secrets
+
+In production, secrets are encrypted using SOPS and injected via Kubernetes Secrets.
+For local development, environment variables are provided through the `.env` file.
 ---
 
 ## Roadmap
 
-* User accounts and authentication
-* Persistent storage (game history, rankings) using PostgreSQL
-* Multiple game searching parameters (Play against a friend, Specific game mode, etc.)
-* Observability: metrics statistics, logging, and monitoring of server resources
 
+- [x] User accounts and authentication
+- [ ] Persistent storage for matches and move history (PostgreSQL)
+- [ ] JWT-based authentication (stateless tokens)
+- [ ] Real-time gameplay via WebSockets (replace REST polling)
+- [ ] Global ranking system (leaderboard)
+- [ ] Advanced matchmaking options (friend games, custom parameters)
+- [ ] Observability stack (Prometheus, Grafana, structured logging)
 ---
 
 ## Design Choices
 
-* **Go language**: Chosen for simplicity, performance, and deployment efficiency.
-* **Stateful backend**: Ensures consistent live gameplay and strict server-side validation.
-* **REST APIs Polling**: Used for the MVP for simplicity, paving the way for future WebSockets implementation for real-time updates.
-* **Infrastructure**: Migrated from PaaS (Render) to a self-hosted **Kubernetes (k3s)** environment to maximize control over deployment, scaling, and networking (via **Traefik** Ingress).
+- **Go for backend development**  
+  Chosen for its simplicity, strong concurrency model, and ability to produce lightweight, deployable binaries suitable for containerized environments.
+- **Stateful game engine**  
+  Core game logic is fully server-side validated to ensure deterministic gameplay and prevent client-side manipulation.
+- **REST-first approach (MVP)**  
+  REST polling was selected to keep the initial architecture simple and predictable. WebSockets are planned to enable real-time bidirectional communication.
+- **k3s on VPS instead of PaaS**  
+  Migrated from a managed PaaS to a self-managed Kubernetes (k3s) cluster running on a VPS to gain full control over networking, deployment strategy, and scalability.
+- **PostgreSQL for persistence**  
+  Selected for strong consistency guarantees and relational modeling between users and future match data.
+- **Encrypted secrets management (SOPS + Age)**  
+  Ensures sensitive configuration never appears in plaintext within the repository or CI/CD pipelines.
+- **Ingress-based routing (Traefik)**  
+  Path-based routing (`/` for frontend, `/api` for backend) simplifies domain management and avoids cross-origin complexity.
