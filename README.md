@@ -20,7 +20,7 @@ Try it live: [https://tris.lorenzodortona.com](https://tris.lorenzodortona.com)
 ## Accomplished
 - ~90% test coverage on core game engine logic
 - Clean backend architecture (MVC + State pattern)
-- Multiplayer mode and AI bot mode
+- Multiplayer mode and bot mode
 - RESTful API for game and user interactions
 - User authentication system (bcrypt password hashing)
 - PostgreSQL integration for user persistence
@@ -76,11 +76,10 @@ docker compose up --build
 
 In production, secrets are encrypted using SOPS and injected via Kubernetes Secrets.
 For local development, environment variables are provided through the `.env` file.
+
 ---
 
 ## Roadmap
-
-
 - [x] User accounts and authentication
 - [ ] Persistent storage for matches and move history (PostgreSQL)
 - [ ] JWT-based authentication (stateless tokens)
@@ -91,7 +90,6 @@ For local development, environment variables are provided through the `.env` fil
 ---
 
 ## Design Choices
-
 - **Go for backend development**  
   Chosen for its simplicity, strong concurrency model, and ability to produce lightweight, deployable binaries suitable for containerized environments.
 - **Stateful game engine**  
