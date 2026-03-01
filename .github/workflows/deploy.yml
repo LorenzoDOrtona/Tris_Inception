@@ -52,17 +52,20 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Clone the repo if it does not exist, or pull the latest changes into the 'tris' directory
             if [ ! -d "/opt/tris" ]; then
               git clone https://github.com/${{ github.repository }}.git /opt/tris
             else
               cd /opt/tris && git pull origin main
             fi
             
-            # Apply all the manifests located in the k3s folder inside 'tris'
+            # 1. Decrypt the secret using SOPS and apply it directly to k3s
+            # We assume your age key is already at ~/.sops/key.txt on the server
+            export SOPS_AGE_KEY_FILE=~/.sops/key.txt
+            sops --decrypt /opt/tris/k3s/secrets/01-database-secret.enc.yaml | sudo k3s kubectl apply -f -
+            
+            # 2. Apply the rest of the standard manifests
             sudo k3s kubectl apply -f /opt/tris/k3s/
             
-            # Force K3s to pull the new images and restart the applications
+            # 3. Restart deployments
             sudo k3s kubectl rollout restart deployment go-backend
             sudo k3s kubectl rollout restart deployment react-frontend
-
