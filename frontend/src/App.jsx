@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
 
-const API_BASE_URL="https://tris.lorenzodortona.com"
+const API_BASE_URL="https://tris.lorenzodortona.com/api"
 function App() {
   const [view, setView] = useState('login'); 
   const [playerName, setPlayerName] = useState('');
@@ -12,6 +12,10 @@ function App() {
   const lastTimestampRef = useRef(0);
   const [errorMessage, setErrorMessage] = useState('');
   const pollingRef = useRef(null);
+  // New states for authentication
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoginMode, setIsLoginMode] = useState(true); // Toggle between Login and Register
   useEffect(() => {
       if (errorMessage) {
         // Imposta un timer per cancellare il messaggio dopo 3 secondi (3000 ms)
@@ -24,24 +28,37 @@ function App() {
       }
     }, [errorMessage]);
   // --- 1. LOGIN ---
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    if (!playerName) return;
-    try {
-      const res = await fetch(`${API_BASE_URL}/playerToken`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ player_name: playerName, user_type: "real" })
-      });
-      if (!res.ok) throw new Error(`Status: ${res.status}`);
-      const data = await res.json();
+  const handleAuth = async (e) => {
+  e.preventDefault();
+  
+  // Decide endpoint based on mode
+  const endpoint = isLoginMode ? '/login' : '/register';
+  const payload = isLoginMode 
+    ? { username: playerName, password: password } // Login uses username + pass
+    : { username: playerName, email: email, password: password }; // Register adds email
+
+  try {
+    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Auth failed");
+
+    if (isLoginMode) {
       setToken(data.token); 
       setView('lobby'); 
-    } catch (err) {
-      console.error(err);
-      setErrorMessage("Errore Login");
+    } else {
+      alert("Account successfully created!");
+      setIsLoginMode(true); // Switch back to login after registration
     }
-  };
+  } catch (err) {
+    console.error(err);
+    setErrorMessage(err.message);
+  }
+};
 
   // --- 2. MATCHMAKING ---
   const handleFindGame = async (mode) => { // 'mode can be "normal" o "BOT"
@@ -234,14 +251,55 @@ const renderBoard = () => {
       {errorMessage && <div className="error-toast">{errorMessage}</div>}
 
       {view === 'login' && (
-        <div className="card">
-          <h2>Login</h2>
-          <form onSubmit={handleLogin}>
-            <input type="text" placeholder="Username" value={playerName} onChange={e => setPlayerName(e.target.value)} />
-            <button type="submit">Submit</button>
-          </form>
-        </div>
-      )}
+    <div className="card">
+      <h2>{isLoginMode ? 'Sign In' : 'Create Account'}</h2>
+      <form onSubmit={handleAuth}>
+        {/* Username field (Used for both) */}
+        <input 
+          type="text" 
+          placeholder="Username" 
+          value={playerName} 
+          onChange={e => setPlayerName(e.target.value)} 
+          required 
+        />
+        
+        {/* Email field (Only shown during registration) */}
+        {!isLoginMode && (
+          <input 
+            type="email" 
+            placeholder="Email" 
+            value={email} 
+            onChange={e => setEmail(e.target.value)} 
+            required 
+          />
+        )}
+
+        {/* Password field */}
+        <input 
+          type="password" 
+          placeholder="Password" 
+          value={password} 
+          onChange={e => setPassword(e.target.value)} 
+          required 
+        />
+
+        <button type="submit">
+          {isLoginMode ? 'Login' : 'Register'}
+        </button>
+      </form>
+
+      {/* Toggle Link */}
+      <p style={{ marginTop: '15px', fontSize: '0.9rem' }}>
+        {isLoginMode ? "Don't have an account? " : "Already have an account? "}
+        <span 
+          style={{ color: '#646cff', cursor: 'pointer', textDecoration: 'underline' }}
+          onClick={() => setIsLoginMode(!isLoginMode)}
+        >
+          {isLoginMode ? 'Create account' : 'Sign In'}
+        </span>
+      </p>
+    </div>
+  )}
 
       {view === 'lobby' && (
         <div className="card">
