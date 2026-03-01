@@ -1,10 +1,12 @@
 package internal
 
 import (
+	"fmt"
 	"sync"
 	"time"
 
 	"github.com/LorenzoDOrtona/Tris_Inception/cmd/server/api"
+	"github.com/LorenzoDOrtona/Tris_Inception/database"
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/errors"
 	"github.com/LorenzoDOrtona/Tris_Inception/internal/model/game"
 	"github.com/google/uuid"
@@ -29,23 +31,30 @@ func NewGameController() *GameController {
 	}
 }
 
-func (GC *GameController) CreatePlayerToken(reqStruct *api.ReqToken) api.RespToken {
+func (GC *GameController) CreatePlayerToken(reqStruct *api.ReqToken) (api.RespToken, error) {
+	// 1. Validate credentials against the Database
+	// This handles both username or email login
+	dbUsername, err := database.AuthenticateUser(reqStruct.PlayerName, reqStruct.Password)
+	if err != nil {
+		return api.RespToken{}, fmt.Errorf("authentication failed: %w", err)
+	}
+
+	// 2. Logic for Token Management (using the verified dbUsername)
 	GC.muPlayer.Lock()
-	Id, exist := GC.ConnectedPlayersID[reqStruct.PlayerName]
+	defer GC.muPlayer.Unlock()
+
+	Id, exist := GC.ConnectedPlayersID[dbUsername]
 	if exist {
-		//exists already the name
-		GC.muPlayer.Unlock()
 		return api.RespToken{
 			Token: Id,
-		}
+		}, nil
 	} else {
 		newID := uuid.New().String()
-		GC.ConnectedPlayersID[reqStruct.PlayerName] = newID
-		GC.ConnectedPlayersName[newID] = reqStruct.PlayerName
-		GC.muPlayer.Unlock()
+		GC.ConnectedPlayersID[dbUsername] = newID
+		GC.ConnectedPlayersName[newID] = dbUsername
 		return api.RespToken{
 			Token: newID,
-		}
+		}, nil
 	}
 }
 func FeasibleGameFound(g game.Game, reqStruct *api.ReqCreateOrJoinGame) bool {

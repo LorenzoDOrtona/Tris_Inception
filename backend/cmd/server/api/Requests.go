@@ -5,8 +5,10 @@ import (
 )
 
 type ReqToken struct {
-	PlayerName string `json:"player_name"`
-	UserType   string `json:"user_type"` //real or bot
+	// PlayerName can be either the username or the email
+	PlayerName string `json:"username" binding:"required"`
+	Password   string `json:"password" binding:"required"`
+	UserType   string `json:"user_type"` // keep it for compatibility with your existing logic
 }
 
 type ReqCreateOrJoinGame struct {

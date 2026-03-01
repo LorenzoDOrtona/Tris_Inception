@@ -24,87 +24,101 @@ func setup_gin(GC *internal.GameController) {
 	}
 	config.AllowMethods = []string{"GET", "POST", "PUT", "OPTIONS"}
 	r.Use(cors.New(config))
-	r.POST("/playerToken", func(c *gin.Context) {
-		var RQ api.ReqToken
-		if err := c.ShouldBindJSON(&RQ); err != nil {
-			c.JSON(400, gin.H{"error": err.Error()})
-			return
-		}
-		response := GC.CreatePlayerToken(&RQ)
-		c.JSON(200, response)
-	})
+	apiR := r.Group("/api")
+	{
 
-	r.POST("/match", func(c *gin.Context) {
-		var reqGame api.ReqCreateOrJoinGame
-		// Bind JSON input to struct
-		if err := c.ShouldBindJSON(&reqGame); err != nil {
-			c.JSON(400, gin.H{"error": err.Error()})
-			return
-		}
-		//check game logic success
-		response, err := GC.CreateGame(&reqGame)
-		if err != nil {
-			c.JSON(400, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(200, response)
+		apiR.POST("/match", func(c *gin.Context) {
+			var reqGame api.ReqCreateOrJoinGame
+			// Bind JSON input to struct
+			if err := c.ShouldBindJSON(&reqGame); err != nil {
+				c.JSON(400, gin.H{"error": err.Error()})
+				return
+			}
+			//check game logic success
+			response, err := GC.CreateGame(&reqGame)
+			if err != nil {
+				c.JSON(400, gin.H{"error": err.Error()})
+				return
+			}
+			c.JSON(200, response)
 
-	})
-	r.POST("/move", func(c *gin.Context) {
-		var reqMove api.ReqMove
-		// Bind JSON input to struct
-		if err := c.ShouldBindJSON(&reqMove); err != nil {
-			c.JSON(400, gin.H{"error": err.Error()})
-			return
-		}
-		//check game logic success
-		response, err := GC.MakeMove(&reqMove)
-		if err != nil {
-			c.JSON(400, api.RespError{ErrorMessage: err.Error()})
-			return
-		}
-		c.JSON(200, response)
-
-	})
-	r.POST("/polling", func(c *gin.Context) {
-		var reqPool api.ReqPooling
-		// Bind JSON input to struct
-		if err := c.ShouldBindJSON(&reqPool); err != nil {
-			c.JSON(400, gin.H{"error": err.Error()})
-			return
-		}
-		//check game logic success
-		response, err := GC.CheckLastTimestamp(&reqPool)
-		if err != nil {
-			c.JSON(400, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(200, response)
-
-	})
-	// Define a simple GET endpoint
-	r.GET("/ping", func(c *gin.Context) {
-		// Return JSON response
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
 		})
-	})
-	r.POST("/register", func(c *gin.Context) {
-		var req api.ReqRegister
-		if err := c.ShouldBindJSON(&req); err != nil {
-			c.JSON(400, gin.H{"error": "Invalid input: " + err.Error()})
-			return
-		}
+		apiR.POST("/move", func(c *gin.Context) {
+			var reqMove api.ReqMove
+			// Bind JSON input to struct
+			if err := c.ShouldBindJSON(&reqMove); err != nil {
+				c.JSON(400, gin.H{"error": err.Error()})
+				return
+			}
+			//check game logic success
+			response, err := GC.MakeMove(&reqMove)
+			if err != nil {
+				c.JSON(400, api.RespError{ErrorMessage: err.Error()})
+				return
+			}
+			c.JSON(200, response)
 
-		// lets call the db function
-		err := database.RegisterUser(req.Username, req.Email, req.Password)
-		if err != nil {
-			c.JSON(500, gin.H{"error": "Registration failed: " + err.Error()})
-			return
-		}
+		})
+		apiR.POST("/polling", func(c *gin.Context) {
+			var reqPool api.ReqPooling
+			// Bind JSON input to struct
+			if err := c.ShouldBindJSON(&reqPool); err != nil {
+				c.JSON(400, gin.H{"error": err.Error()})
+				return
+			}
+			//check game logic success
+			response, err := GC.CheckLastTimestamp(&reqPool)
+			if err != nil {
+				c.JSON(400, gin.H{"error": err.Error()})
+				return
+			}
+			c.JSON(200, response)
 
-		c.JSON(201, gin.H{"message": "User created successfully"})
-	})
+		})
+		// Define a simple GET endpoint
+		apiR.GET("/ping", func(c *gin.Context) {
+			// Return JSON response
+			c.JSON(http.StatusOK, gin.H{
+				"message": "pong",
+			})
+		})
+		apiR.POST("/register", func(c *gin.Context) {
+			var req api.ReqRegister
+			if err := c.ShouldBindJSON(&req); err != nil {
+				c.JSON(400, gin.H{"error": "Invalid input: " + err.Error()})
+				return
+			}
+
+			// lets call the db function
+			err := database.RegisterUser(req.Username, req.Email, req.Password)
+			if err != nil {
+				c.JSON(500, gin.H{"error": "Registration failed: " + err.Error()})
+				return
+			}
+
+			c.JSON(201, gin.H{"message": "User created successfully"})
+		})
+		apiR.POST("/login", func(c *gin.Context) {
+			var req api.ReqToken // You'll need to define this struct in your api package
+			if err := c.ShouldBindJSON(&req); err != nil {
+				c.JSON(400, gin.H{"error": "Invalid input"})
+				return
+			}
+
+			// Verification logic (to be implemented in your database package)
+			user, err := GC.CreatePlayerToken(&req)
+			if err != nil {
+				c.JSON(401, gin.H{"error": "Invalid credentials"})
+				return
+			}
+
+			c.JSON(200, gin.H{
+				"message":  "Login successful",
+				"username": req.PlayerName,
+				"token":    user.Token,
+			})
+		})
+	}
 	// Start server on port 8080 (default)
 	// Server will listen on 0.0.0.0:8080 (localhost:8080 on Windows)
 	r.Run()

@@ -66,3 +66,23 @@ func RegisterUser(username string, email string, plainPassword string) error {
 	log.Printf("SUCCESS: User '%s' registered securely.\n", username)
 	return nil
 }
+func AuthenticateUser(identifier, password string) (string, error) {
+	var storedHash string
+	var username string
+
+	// Search by username OR email
+	query := `SELECT username, password_hash FROM users WHERE username = $1 OR email = $1`
+
+	err := Pool.QueryRow(context.Background(), query, identifier).Scan(&username, &storedHash)
+	if err != nil {
+		return "", fmt.Errorf("user not found or database error")
+	}
+
+	// Compare the stored hash with the plain text password
+	err = bcrypt.CompareHashAndPassword([]byte(storedHash), []byte(password))
+	if err != nil {
+		return "", fmt.Errorf("invalid password")
+	}
+
+	return username, nil
+}
