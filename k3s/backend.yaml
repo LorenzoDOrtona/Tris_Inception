@@ -24,15 +24,24 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            # Connect to the database using the Service name defined in 01-database.yaml
+            # Connect to the database using the Service name defined in database.yaml
             - name: DB_HOST
               value: "postgres-service"
             - name: DB_USER
-              value: "dbuser"
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: POSTGRES_USER
             - name: DB_PASSWORD
-              value: "dbpassword"
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: POSTGRES_PASSWORD
             - name: DB_NAME
-              value: "myappdb"
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: POSTGRES_DB
 
 ---
 # 2. Create an internal network address for the backend

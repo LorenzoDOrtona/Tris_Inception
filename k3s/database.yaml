@@ -1,5 +1,3 @@
-# k3s/01-database.yaml
-
 # 1. Request permanent storage on the VPS disk
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -32,13 +30,22 @@ spec:
         - name: postgres
           image: postgres:15-alpine
           env:
-            # Basic credentials (for production, consider using Kubernetes Secrets)
+            # Load credentials securely from the SOPS-encrypted Kubernetes Secret
             - name: POSTGRES_USER
-              value: "dbuser"
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
-              value: "dbpassword"
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
-              value: "myappdb"
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: POSTGRES_DB
           ports:
             - containerPort: 5432
           volumeMounts:
@@ -62,4 +69,3 @@ spec:
   ports:
     - port: 5432
       targetPort: 5432
-
