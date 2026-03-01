@@ -37,7 +37,7 @@ function App() {
     ? { username: playerName, password: password } // Login uses username + pass
     : { username: playerName, email: email, password: password }; // Register adds email
   if (password.length < 6) {
-    setErrorMessage("La password deve contenere almeno 6 caratteri");
+    setErrorMessage("Password should be at least of 6 characters");
     return;
 }
   try {
