@@ -83,3 +83,8 @@ Temporary Items
 # End of https://www.toptal.com/developers/gitignore/api/macos,go,visualstudiocode
 
 
+# Ignore the cleartext SOPS keys
+sops-key.txt
+
+# Ignore cleartext Kubernetes secrets (only commit .enc.yaml files)
+*secret.yaml
