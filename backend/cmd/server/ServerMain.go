@@ -1,9 +1,12 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/LorenzoDOrtona/Tris_Inception/cmd/server/api"
+	"github.com/LorenzoDOrtona/Tris_Inception/config"
+	"github.com/LorenzoDOrtona/Tris_Inception/database"
 	internal "github.com/LorenzoDOrtona/Tris_Inception/internal/controller"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -15,7 +18,6 @@ func setup_gin(GC *internal.GameController) {
 	// CONFIGURAZIONE CORS: Permetti al frontend di chiamare il backend
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{
-		"https://tris-inception.onrender.com",
 		"https://tris.lorenzodortona.com",
 		"http://localhost",
 		"http://localhost:5173",
@@ -87,13 +89,46 @@ func setup_gin(GC *internal.GameController) {
 			"message": "pong",
 		})
 	})
+	r.POST("/register", func(c *gin.Context) {
+		var req api.ReqRegister
+		if err := c.ShouldBindJSON(&req); err != nil {
+			c.JSON(400, gin.H{"error": "Invalid input: " + err.Error()})
+			return
+		}
 
+		// lets call the db function
+		err := database.RegisterUser(req.Username, req.Email, req.Password)
+		if err != nil {
+			c.JSON(500, gin.H{"error": "Registration failed: " + err.Error()})
+			return
+		}
+
+		c.JSON(201, gin.H{"message": "User created successfully"})
+	})
 	// Start server on port 8080 (default)
 	// Server will listen on 0.0.0.0:8080 (localhost:8080 on Windows)
 	r.Run()
 }
 
 func main() {
+	// 1. Load Configuration
+	config.LoadConfig()
+
+	// 2. Connect to Database using the URL we just built
+	database.Connect(config.Envs.DatabaseURL)
+	defer database.Close()
+
+	// 3. Setup Tables
+	// Note: Move CreateUsersTable to a separate package like 'repository'
+	// to avoid circular dependencies with the 'database' package.
+	err := database.CreateUsersTable()
+	if err != nil {
+		log.Fatalf("Could not setup database tables: %v", err)
+	}
+
+	log.Printf("Server starting on port %s in %s mode", config.Envs.Port, config.Envs.Environment)
+
+	// 4. Starting HTTP server here...
 	var gc = internal.NewGameController()
 	setup_gin(gc)
 

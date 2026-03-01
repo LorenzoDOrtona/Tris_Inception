@@ -33,3 +33,8 @@ type ReqMove struct {
 	I int `json:"i"`
 	J int `json:"j"`
 }
+type ReqRegister struct {
+	Username string `json:"username" binding:"required"`
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required,min=6"`
+}

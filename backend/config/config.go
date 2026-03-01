@@ -1,48 +1,51 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
 
 	"github.com/joho/godotenv"
 )
 
-// AppConfig holds all the configuration variables for the application
 type AppConfig struct {
 	Port        string
-	DatabaseURL string
+	DatabaseURL string // This will be the final assembled string
 	JWTSecret   string
 	FrontendURL string
 	Environment string
 }
 
-// Envs is the global configuration object
 var Envs AppConfig
 
-// LoadConfig initializes the configuration variables.
-// It tries to load from a .env file first, then falls back to system environment variables.
 func LoadConfig() {
-	// 1. Attempt to load .env file
-	// We ignore the error because on production (Render/Docker), there is no .env file
 	_ = godotenv.Load()
 
-	// 2. Populate the struct with values or defaults
+	// 1. Get database components from environment (injected by K3s secrets)
+	dbUser := getEnv("DB_USER", "dbuser")
+	dbPass := getEnv("DB_PASSWORD", "dbpassword")
+	dbHost := getEnv("DB_HOST", "localhost")
+	dbName := getEnv("DB_NAME", "myappdb")
+	dbPort := getEnv("DB_PORT", "5432")
+
+	// 2. Build the DatabaseURL string: postgres://user:password@host:port/dbname
+	// We use fmt.Sprintf to assemble the parts safely
+	fullDatabaseURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s",
+		dbUser, dbPass, dbHost, dbPort, dbName)
+
 	Envs = AppConfig{
 		Port:        getEnv("PORT", "8080"),
-		DatabaseURL: getEnv("DATABASE_URL", ""),
+		DatabaseURL: getEnv("DATABASE_URL", fullDatabaseURL), // Use assembled URL as default
 		JWTSecret:   getEnv("JWT_SECRET", "default-secret-do-not-use-in-prod"),
 		FrontendURL: getEnv("FRONTEND_URL", "http://localhost:3000"),
 		Environment: getEnv("ENV", "development"),
 	}
 
-	// 3. Fail Fast: If critical variables are missing, stop the server immediately
 	if Envs.DatabaseURL == "" {
-		log.Fatal("CRITICAL ERROR: DATABASE_URL is not set in environment variables.")
+		log.Fatal("CRITICAL ERROR: DATABASE_URL is not set.")
 	}
 }
 
-// getEnv retrieves the value of the environment variable named by the key.
-// If the variable is present, its value is returned. Otherwise, the fallback is returned.
 func getEnv(key, fallback string) string {
 	if value, exists := os.LookupEnv(key); exists {
 		return value
