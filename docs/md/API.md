@@ -1,4 +1,3 @@
-```markdown
 # Tris Inception - Architecture & Deployment
 
 This document provides a comprehensive overview of the architecture, game engine logic, and deployment infrastructure for the Tris Inception project.

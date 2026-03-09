@@ -1,10 +1,8 @@
-
-```markdown
 # Tris Inception - Architecture & Deployment
 
 This document provides a comprehensive overview of the architecture, game engine logic, and deployment infrastructure for the Tris Inception project.
 
-
+---
 ## 1. System Architecture
 
 The project follows a decoupled architecture, separating the client-side presentation from the server-side game logic and persistence layer.
