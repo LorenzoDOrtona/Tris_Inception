@@ -31,6 +31,14 @@ Try it live: [https://tris.lorenzodortona.com](https://tris.lorenzodortona.com)
 - React frontend built with Vite
 
 ---
+## 📚 Documentation
+
+For a deep dive into how Tris Inception is built and how to interact with it, check out the detailed documentation:
+
+* [Architecture & Deployment](./docs/md/architecture.md) - Details on the k3s GitOps setup, Traefik routing, and the game engine's State Pattern.
+* [REST API Reference](./docs/md/API.md) - Endpoints, payloads, and flow for matchmaking, user management, and gameplay.
+
+---
 ## 🛠 Local Development
 
 The local environment is fully containerized using Docker Compose.  
