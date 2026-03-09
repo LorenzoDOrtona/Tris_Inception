@@ -88,3 +88,7 @@ sops-key.txt
 
 # Ignore cleartext Kubernetes secrets (only commit .enc.yaml files)
 *secret.yaml
+
+
+#custom
+custom_utility*
