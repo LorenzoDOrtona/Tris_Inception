@@ -17,19 +17,26 @@ Try it live: [https://tris.lorenzodortona.com](https://tris.lorenzodortona.com)
 
 ---
 
-## Accomplished
-- ~90% test coverage on core game engine logic
-- Clean backend architecture (MVC + State pattern)
-- Multiplayer mode and bot mode
-- RESTful API for game and user interactions
-- User authentication system (bcrypt password hashing)
-- PostgreSQL integration for user persistence
-- Encrypted secrets management (SOPS + Age)
-- Fully automated GitOps CI/CD pipeline (GitHub Actions → GHCR → k3s)
-- Deployed on k3s cluster running on a remote VPS
-- Automated HTTPS provisioning (cert-manager + Let's Encrypt)
-- React frontend built with Vite
+## ✨ Features & Infrastructure
 
+**Game Engine**
+* ~90% test coverage on core game engine logic
+* Clean backend architecture (MVC + State pattern)
+* Multiplayer mode and dedicated bot mode
+* RESTful API for game and user interactions
+
+**Tech Stack**
+* Go backend for high concurrency and performance
+* React frontend built with Vite
+* PostgreSQL integration for user persistence
+* User authentication system (bcrypt password hashing)
+
+**DevOps & GitOps**
+* Infrastructure as Code (IaC) provisioning via Ansible
+* Fully automated GitOps CI/CD pipeline (GitHub Actions → GHCR → k3s)
+* Deployed on a self-managed k3s cluster running on a remote VPS
+* Encrypted secrets management via SOPS + Age
+* Automated HTTPS provisioning via cert-manager and Let's Encrypt
 ---
 ## 📚 Documentation
 
