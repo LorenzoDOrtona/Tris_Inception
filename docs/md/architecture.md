@@ -9,15 +9,16 @@ This document provides a comprehensive overview of the architecture, game engine
 The project follows a decoupled architecture, separating the client-side presentation from the server-side game logic and persistence layer.
 
 ### Core Components
-* **Frontend (React/Vite):** A lightweight client that handles user interactions and renders the game board. [cite_start]It communicates with the backend via REST API polling[cite: 13].
-* **Backend (Go):** The core engine of the application. [cite_start]It exposes a RESTful API using the Gin framework [cite: 11, 12] [cite_start]and manages game state, user authentication, and matchmaking[cite: 13, 14].
-* [cite_start]**Database (PostgreSQL):** A relational database used for persistent storage of user accounts (with bcrypt hashed passwords) [cite: 36, 37] and future match history.
+* **Frontend (React/Vite):** A lightweight client that handles user interactions and renders the game board. It communicates with the backend via REST API polling.
+* **Backend (Go):** The core engine of the application. It exposes a RESTful API using the Gin framework and manages game state, user authentication, and matchmaking.
+* **Database (PostgreSQL):** A relational database used for persistent storage of user accounts (with bcrypt hashed passwords) and future match history.
 
 ### Game Engine Logic (State Pattern)
-The Ultimate Tic-Tac-Toe rules are strictly enforced server-side to prevent client manipulation. [cite_start]The engine implements the **State Design Pattern** [cite: 82] to manage the flow of a match:
-1.  [cite_start]**`BeginState`**: Initializes the board and waits for an opponent[cite: 79, 80].
-2.  [cite_start]**`MatchState`**: Handles the active gameplay, validates moves [cite: 84][cite_start], executes them [cite: 84, 85][cite_start], and checks for win conditions[cite: 85].
-3.  [cite_start]**`EndState`**: Locks the game once a winner is declared or a draw occurs[cite: 80, 81].
+The Ultimate Tic-Tac-Toe rules are strictly enforced server-side to prevent client manipulation. The engine implements the **State Design Pattern** to manage the flow of a match:
+
+1. **`BeginState`**: Initializes the board and waits for an opponent.
+2. **`MatchState`**: Handles the active gameplay, validates moves, executes them, and checks for win conditions.
+3. **`EndState`**: Locks the game once a winner is declared or a draw occurs.
 
 ```mermaid
 stateDiagram-v2
@@ -58,21 +59,17 @@ stateDiagram-v2
 
 The application is fully containerized and runs on a self-managed **Kubernetes (k3s)** cluster deployed on a remote VPS.
 
+### Server Provisioning (Infrastructure as Code)
+
+The underlying Hetzner VPS is provisioned and hardened automatically using **Ansible**. The Ansible playbook handles the initial system setup, UFW firewall configuration, dependencies (like SOPS), and the unattended installation of the k3s cluster, ensuring a fully reproducible host environment.
+
 ### Traffic Routing & Ingress
 
 External traffic is managed by **Traefik**, which acts as the Ingress controller.
 
-* 
-**TLS/HTTPS:** Automated certificate provisioning is handled by `cert-manager` using a Let's Encrypt `ClusterIssuer`.
-
-
-* 
-**Path-Based Routing:** * Requests to `tris.lorenzodortona.com/api` are routed to the Go backend service on port 8080.
-
-
+* **TLS/HTTPS:** Automated certificate provisioning is handled by `cert-manager` using a Let's Encrypt `ClusterIssuer`.
+* **Path-Based Routing:** * Requests to `tris.lorenzodortona.com/api` are routed to the Go backend service on port 8080.
 * All other requests to the root `/` are routed to the React frontend service on port 80.
-
-
 
 
 
@@ -129,14 +126,8 @@ The PostgreSQL database utilizes a `PersistentVolumeClaim` (PVC) requesting 5Gi 
 To maintain a public Git repository without compromising security, secrets are managed using **SOPS** and **Age**.
 
 * Any file matching `k3s/secrets/.*\.yaml$` is automatically encrypted.
-
-
 * The `encrypted_regex: '^(data|stringData)$'` rule ensures that only the sensitive values are encrypted, leaving Kubernetes metadata readable.
-
-
 * Decrypted secrets are injected directly into the `postgres` and `go-backend` pods as environment variables (`POSTGRES_USER`, `POSTGRES_PASSWORD`, etc.) during deployment.
-
-
 
 ---
 
@@ -175,4 +166,3 @@ sequenceDiagram
 ```
 
 ```
-
