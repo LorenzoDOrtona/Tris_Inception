@@ -1,0 +1,77 @@
+---
+# ansible/playbook.yaml
+# This playbook provisions a Hetzner VPS for a K3s-based game server
+- name: Provision Hetzner VPS for K3s Game Server
+  # 'all' means it will run on any server IP you provide via command line
+  hosts: all
+  become: yes
+  vars:
+    # Change this to the user your GitHub Action uses to connect via SSH
+    deploy_user: "root" 
+
+  tasks:
+    # 1. Install necessary packages
+    - name: Install required system packages
+      apt:
+        name: 
+          - ufw
+          - tar
+          - curl
+          - git
+        state: present
+        update_cache: yes
+
+    # 2. Configure Firewall (UFW)
+    - name: Allow SSH traffic
+      ufw:
+        rule: allow
+        port: '22'
+        proto: tcp
+
+    - name: Allow HTTP and HTTPS traffic for Traefik Ingress
+      ufw:
+        rule: allow
+        port: '80,443'
+        proto: tcp
+
+    - name: Enable UFW firewall with default deny policy
+      ufw:
+        state: enabled
+        policy: deny
+
+    # 3. Install K3s (Idempotent: won't run if already installed)
+    - name: Install K3s using the official script
+      shell: curl -sfL https://get.k3s.io | sh -
+      args:
+        creates: /usr/local/bin/k3s
+
+    # 4. Install cert-manager (Idempotent: apply handles existing resources gracefully)
+    - name: Deploy cert-manager
+      shell: k3s kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.4/cert-manager.yaml
+      environment:
+        KUBECONFIG: /etc/rancher/k3s/k3s.yaml
+
+    # 5. Install SOPS for GitHub Actions secret decryption
+    - name: Download and install SOPS
+      get_url:
+        url: "https://github.com/getsops/sops/releases/download/v3.8.1/sops-v3.8.1.linux.amd64"
+        dest: /usr/local/bin/sops
+        mode: '0755'
+
+    # 6. Prepare .sops directory for the deploy user
+    - name: Create .sops directory
+      file:
+        path: "/home/{{ deploy_user }}/.sops"
+        state: directory
+        owner: "{{ deploy_user }}"
+        group: "{{ deploy_user }}"
+        mode: '0700'
+
+    # 7. Prepare Git repository directory
+    - name: Ensure game directory exists and is owned by deploy_user
+      file:
+        path: /opt/tris
+        state: directory
+        owner: "{{ deploy_user }}"
+        group: "{{ deploy_user }}"
+        mode: '0755'
