@@ -57,6 +57,8 @@ stateDiagram-v2
 
 ## 2. Infrastructure & Deployment (k3s GitOps)
 
+*Note: The actual Ansible playbooks and K3s manifests are now managed in a separate dedicated infrastructure repository. The following section describes the architectural setup used to host and scale this application.*
+
 The application is fully containerized and runs on a self-managed **Kubernetes (k3s)** cluster deployed on a remote VPS.
 
 ### Server Provisioning (Infrastructure as Code)

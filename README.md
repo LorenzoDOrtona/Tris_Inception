@@ -1,7 +1,9 @@
 # Tris Inception – Ultimate Tic-Tac-Toe Engine 
  
 **Tris Inception** is an **Ultimate Tic-Tac-Toe** engine written in **Go**, focused on building a scalable, maintainable, and testable backend.
-The application is fully containerized and runs on a custom **Kubernetes (k3s)** cluster deployed on a remote VPS.
+The application is containerized and designed to run on a **Kubernetes (k3s)** cluster.
+
+> **Note:** The infrastructure provisioning (Ansible) and deployment manifests (K3s/SOPS) have been moved to a [dedicated infrastructure repository] to separate application logic from environment management. The documentation below describes the production architecture where this game is deployed.
 
 [![codecov](https://codecov.io/github/LorenzoDOrtona/Tris_Inception/graph/badge.svg?token=ZHU72H7R0G)](https://codecov.io/github/LorenzoDOrtona/Tris_Inception)
 

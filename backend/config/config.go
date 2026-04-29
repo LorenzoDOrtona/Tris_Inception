@@ -21,7 +21,7 @@ var Envs AppConfig
 func LoadConfig() {
 	_ = godotenv.Load()
 
-	// 1. Get database components from environment (injected by K3s secrets)
+	// 1. Get database components from environment (injected by the external infrastructure)
 	dbUser := getEnv("DB_USER", "dbuser")
 	dbPass := getEnv("DB_PASSWORD", "dbpassword")
 	dbHost := getEnv("DB_HOST", "localhost")
