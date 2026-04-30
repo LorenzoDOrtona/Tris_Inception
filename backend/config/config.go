@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"log"
+	"net/url"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -29,9 +30,11 @@ func LoadConfig() {
 	dbPort := getEnv("DB_PORT", "5432")
 
 	// 2. Build the DatabaseURL string: postgres://user:password@host:port/dbname
-	// We use fmt.Sprintf to assemble the parts safely
-	fullDatabaseURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s",
-		dbUser, dbPass, dbHost, dbPort, dbName)
+	// We use url.QueryEscape for the password to handle special characters (@, #, etc.)
+	// and add sslmode=disable for Kubernetes environments without SSL.
+	dbPassEncoded := url.QueryEscape(dbPass)
+	fullDatabaseURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
+		dbUser, dbPassEncoded, dbHost, dbPort, dbName)
 
 	Envs = AppConfig{
 		Port:        getEnv("PORT", "8080"),
