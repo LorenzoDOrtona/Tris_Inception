@@ -18,12 +18,12 @@ function App() {
   const [isLoginMode, setIsLoginMode] = useState(true); // Toggle between Login and Register
   useEffect(() => {
       if (errorMessage) {
-        // Imposta un timer per cancellare il messaggio dopo 3 secondi (3000 ms)
+        // Set a timer to clear the message after 3 seconds (3000 ms)
         const timer = setTimeout(() => {
           setErrorMessage('');
         }, 3000);
 
-        // Pulizia del timer se il componente smonta o se arriva un nuovo errore prima dei 3 sec
+        // Clear the timer if the component unmounts or if a new error arrives before 3 seconds
         return () => clearTimeout(timer);
       }
     }, [errorMessage]);
@@ -64,7 +64,7 @@ function App() {
 };
 
   // --- 2. MATCHMAKING ---
-  const handleFindGame = async (mode) => { // 'mode can be "normal" o "BOT"
+  const handleFindGame = async (mode) => { // 'mode' can be "normal" or "BOT"
     try {
       const res = await fetch(`${API_BASE_URL}/match`, {
         method: 'POST',
@@ -110,18 +110,18 @@ function App() {
 
       const data = await res.json();
 
-      // Verifica se abbiamo ricevuto un GameState valido
+      // Check if we received a valid GameState
       if (data.game_state && data.game_state.board) {
-         console.log("Stato Aggiornato:", data);
+         console.log("Updated State:", data);
          
          setGameState(data.game_state);
          
-         // CORREZIONE FONDAMENTALE:
-         // Usa il timestamp del SERVER, non quello del client!
-         // Nota: Controlla se nel JSON ti arriva come "LastTimestamp" o "last_timestamp"
+         // FUNDAMENTAL FIX:
+         // Use the SERVER timestamp, not the client one!
+         // Note: Check if it arrives in JSON as "LastTimestamp" or "last_timestamp"
           lastTimestampRef.current = data.game_state.last_timestamp;
          
-         // Logica di switch view basata sul flag 'started' che hai aggiunto nel backend
+         // View switch logic based on the 'started' flag added in the backend
          setView(prev =>
           prev === 'waiting' && data.game_state.started ? 'game' : prev
         );
@@ -132,21 +132,21 @@ function App() {
     }
   };
   // --- 4. POLLING (Effect) ---
-  // Questo useEffect gestisce l'avvio e l'arresto del polling AUTOMATICAMENTE
+  // This useEffect manages starting and stopping polling AUTOMATICALLY
   useEffect(() => {
-    // Pulisci timer precedente
+    // Clean up previous timer
     if (pollingRef.current) clearInterval(pollingRef.current);
 
-    // Condizioni per avviare il polling:
-    // 1. Siamo in waiting o in game
-    // 2. Abbiamo un gameId valido (evita il 400 iniziale)
+    // Conditions to start polling:
+    // 1. We are in waiting or in game
+    // 2. We have a valid gameId (prevents initial 400)
     if ((view === 'waiting' || view === 'game') && gameId) {
         
-        pollGameState(); // Esegui subito una volta
-        pollingRef.current = setInterval(pollGameState, 1000); // Poi ogni secondo
+        pollGameState(); // Run once immediately
+        pollingRef.current = setInterval(pollGameState, 1000); // Then every second
     }
 
-    // Cleanup quando il componente smonta o le dipendenze cambiano
+    // Cleanup when component unmounts or dependencies change
     return () => {
         if (pollingRef.current) clearInterval(pollingRef.current);
     };
@@ -157,7 +157,7 @@ function App() {
   const handleCellClick = async (row, col) => {
     if (!token || !gameId) return;
 
-    // Mapping coordinate: 9x9 -> (X,Y) Macro, (I,J) Micro
+    // Mapping coordinates: 9x9 -> (X,Y) Macro, (I,J) Micro
     const X = Math.floor(row / 3);
     const Y = Math.floor(col / 3);
     const I = row % 3;
@@ -192,7 +192,7 @@ function App() {
   const handleBackToLobby = () => {
     setGameId(null);
     setGameState(null);
-    lastTimestampRef.current = 0; // Reset importante del timestamp
+    lastTimestampRef.current = 0; // Important reset of the timestamp
     setErrorMessage('');
     setView('lobby');
   };
@@ -323,7 +323,7 @@ const renderBoard = () => {
 
       {view === 'waiting' && (
         <div className="card">
-          <h2>Waiting an opponent...</h2>
+          <h2>Waiting for an opponent...</h2>
           <p>Game ID: {gameId}</p>
           <div className="spinner"></div>
         </div>

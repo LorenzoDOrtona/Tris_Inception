@@ -17,7 +17,7 @@ type Game struct {
 	PlayingPlayer    *Player
 	ObservingPlayer  *Player
 	Winner           *Player
-	Looser           *Player
+	Loser            *Player
 	CurrentGameState GameState
 	MainBoard        board.BigBoard
 	Finished         bool
@@ -27,7 +27,7 @@ func New(player, opp *Player) *Game {
 	g := Game{
 		Creator:  player,
 		Opponent: opp,
-		// PlayingPlayer lo settiamo al player di default
+		// Set PlayingPlayer to the default player
 		PlayingPlayer:   player,
 		ObservingPlayer: opp,
 		GameUuid:        uuid.New(),
@@ -42,8 +42,8 @@ Starts the game by activating the first
 gameState
 */
 func (game *Game) Init() {
-	// inizializza la board e lo stato iniziale
-	//quindi tutto il model
+	// Initializes the board and the initial state,
+	// thus the whole model
 	game.MainBoard = board.BigBoard{}
 	game.CurrentGameState = &BeginState{MainGame: game}
 	game.CurrentGameState.Activate()
@@ -58,7 +58,7 @@ func (game *Game) ChangePlayerTurn() {
 }
 
 /*
-This functions makes the game procede to next state!
+This function makes the game proceed to the next state!
 */
 func (g *Game) GoNextState(gs GameState) {
 	g.CurrentGameState = gs

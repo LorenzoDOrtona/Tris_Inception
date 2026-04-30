@@ -13,7 +13,7 @@ func RandomGen() int {
 	/*
 		generates a random number in 0,M range
 	*/
-	// 1) Semina il generatore con un valore che cambia
+	// 1) Seed the generator with a value that changes
 	rand.Seed(time.Now().UnixNano())
 	x := rand.Intn(M) // 0 <= x < M
 	return x

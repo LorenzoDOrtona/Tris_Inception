@@ -15,7 +15,7 @@ import (
 func setup_gin(GC *internal.GameController) {
 	// Create a Gin router with default middleware (logger and recovery)
 	r := gin.Default()
-	// CONFIGURAZIONE CORS: Permetti al frontend di chiamare il backend
+	// CORS CONFIGURATION: Allow the frontend to call the backend
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{
 		"https://tris.lorenzodortona.com",

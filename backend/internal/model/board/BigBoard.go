@@ -220,13 +220,13 @@ func (BB *BigBoard) CheckWin(m positionable.Mark, player string) bool {
 			}
 		}
 		if mini_tris_done == true {
-			// ho fatto un tris verticale
+			// achieved a horizontal win (row)
 			BB.IsComplete = true
 			BB.PlayerWhoCompleted = player
 			return true
 		}
 	}
-	//if I'm here I didn't do a vertical tris
+	// horizontal check complete
 	for y := 0; y < 3; y++ {
 		mini_tris_done := true
 		for x := 0; x < 3; x++ {
@@ -236,13 +236,13 @@ func (BB *BigBoard) CheckWin(m positionable.Mark, player string) bool {
 			}
 		}
 		if mini_tris_done == true {
-			// ho fatto un tris verticale
+			// achieved a vertical win (column)
 			BB.IsComplete = true
 			BB.PlayerWhoCompleted = player
 			return true
 		}
 	}
-	//if I'm here I didn't do an horizontal tris
+	// vertical check complete
 	mini_tris_done := true
 	for x := 0; x < 3; x++ {
 		little_tris := &BB.mainBoard[x][x]
@@ -268,7 +268,7 @@ func (BB *BigBoard) CheckWin(m positionable.Mark, player string) bool {
 		BB.PlayerWhoCompleted = player
 		return true
 	}
-	//at this point I checked the cross section and found nothing
+	// at this point I checked the cross section and found nothing
 	allBoardsClosed := true
 	for x := 0; x < 3; x++ {
 		for y := 0; y < 3; y++ {
@@ -281,13 +281,13 @@ func (BB *BigBoard) CheckWin(m positionable.Mark, player string) bool {
 
 	if allBoardsClosed {
 		BB.IsComplete = true
-		// PlayerWhoCompleted resta vuoto -> Pareggio
+		// PlayerWhoCompleted remains empty -> Draw
 		return false
 	}
 	return false
 }
 func (BB *BigBoard) MakeBotMove(difficulty string) [4]int {
-	//here to be updated
+	// to be updated
 
 	var possibleMoves [][4]int
 	for i, v := range BB.AvailableMoves {

@@ -29,15 +29,15 @@ func BigBoardToDTO(g *game.Game) GameStateDTO {
 	}
 }
 
-// Trasforma la mappa in una matrice 3x3 dove 1 = Attivo, 0 = Inattivo
+// Transforms the map into a 3x3 matrix where 1 = Active, 0 = Inactive
 func mapAvailableBoards(m map[[2]int]bool) [][]int {
-	// Crea matrice 3x3 vuota
+	// Create empty 3x3 matrix
 	matrix := make([][]int, 3)
 	for i := range matrix {
 		matrix[i] = make([]int, 3)
 	}
 
-	// Popola con 1 dove la board è disponibile
+	// Populate with 1 where the board is available
 	for k, v := range m {
 		if v {
 			matrix[k[0]][k[1]] = 1
@@ -46,9 +46,9 @@ func mapAvailableBoards(m map[[2]int]bool) [][]int {
 	return matrix
 }
 
-// Nota: AvailableMoves è una lista di mosse specifiche, questa va bene lasciarla come lista
-// perché il frontend non la usa per disegnare la griglia, ma per validare (se lo implementerai).
-// Se però vuoi solo disegnare, per ora va bene anche così.
+// Note: AvailableMoves is a list of specific moves, it's fine to leave it as a list
+// because the frontend doesn't use it to draw the grid, but for validation (if implemented).
+// If you just want to draw, it's fine for now.
 func mapAvailableMoves(m map[[4]int]bool) [][]int {
 	res := [][]int{}
 	for k, v := range m {

@@ -46,7 +46,7 @@ func main() {
 			}
 		}
 	} else if m == 2 {
-		// modalità test automatico
+		// automated test mode
 		if err := RunAutomatedTest(g, GetDefaultTestMoves()); err != nil {
 			fmt.Println("Errore durante test automatico:", err)
 			return
@@ -134,12 +134,12 @@ func RunAutomatedTest(g *game.Game, moves []string) error {
 		fmt.Println("curr played:", g.PlayingPlayer.Username)
 	}
 
-	fmt.Println("Partita terminata. Stato Finished =", g.Finished)
+	fmt.Println("Match finished. Finished state =", g.Finished)
 	return nil
 }
 
-// GetDefaultTestMoves ritorna la lista di mosse cooperative (0-based)
-// che ti ho preparato — incollala qui così la chiami facilmente.
+// GetDefaultTestMoves returns the list of cooperative moves (0-based)
+// that I prepared for you — paste it here to call it easily.
 func GetDefaultTestMoves() []string {
 	return []string{
 		"1 1 1 1",
@@ -170,4 +170,8 @@ func GetDefaultTestMoves() []string {
 		"2 0 0 2",
 		"0 2 0 0",
 	}
+}
+
+}
+}
 }
