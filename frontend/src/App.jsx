@@ -64,19 +64,22 @@ function App() {
 };
 
   // --- 2. MATCHMAKING ---
-  const handleFindGame = async (mode) => { // 'mode' can be "normal" or "BOT"
+  const handleFindGame = async (mode, customToken = null) => { // 'mode' can be "normal" or "BOT"
+    const activeToken = customToken || token;
     try {
       const res = await fetch(`${API_BASE_URL}/match`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-           token: token,
+           token: activeToken,
            game_mode: mode, 
            side_measure: 9
         })
       });
       
       const data = await res.json(); 
+      if (!res.ok) throw new Error(data.error || "Matchmaking failed");
+
       setGameId(data.id_game);
       lastTimestampRef.current = 0;
       
@@ -87,6 +90,26 @@ function App() {
       }
     } catch (err) {
       console.error("Matchmaking Error:", err);
+      setErrorMessage(err.message);
+    }
+  };
+
+  const handleDemoMatch = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/guest`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Guest login failed");
+
+      setToken(data.token);
+      setPlayerName(data.username);
+      // Directly start a BOT game with the new token
+      handleFindGame('BOT', data.token);
+    } catch (err) {
+      console.error("Demo Match Error:", err);
+      setErrorMessage(err.message);
     }
   };
 
@@ -290,6 +313,16 @@ const renderBoard = () => {
           {isLoginMode ? 'Login' : 'Register'}
         </button>
       </form>
+
+      {isLoginMode && (
+        <button 
+          onClick={handleDemoMatch}
+          className="demo-button"
+          style={{ marginTop: '10px', backgroundColor: '#4caf50' }}
+        >
+          Try Demo Match vs Bot 🤖
+        </button>
+      )}
 
       {/* Toggle Link */}
       <p style={{ marginTop: '15px', fontSize: '0.9rem' }}>

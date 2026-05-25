@@ -57,6 +57,21 @@ func (GC *GameController) CreatePlayerToken(reqStruct *api.ReqToken) (api.RespTo
 		}, nil
 	}
 }
+
+func (GC *GameController) CreateGuestToken() (api.RespToken, error) {
+	GC.muPlayer.Lock()
+	defer GC.muPlayer.Unlock()
+
+	guestID := "GUEST-" + uuid.New().String()
+	guestName := "Guest-" + guestID[6:10]
+
+	GC.ConnectedPlayersID[guestName] = guestID
+	GC.ConnectedPlayersName[guestID] = guestName
+
+	return api.RespToken{
+		Token: guestID,
+	}, nil
+}
 func FeasibleGameFound(g game.Game, reqStruct *api.ReqCreateOrJoinGame) bool {
 	return true
 }

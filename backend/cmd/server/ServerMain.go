@@ -118,6 +118,19 @@ func setup_gin(GC *internal.GameController) {
 				"token":    user.Token,
 			})
 		})
+		apiR.POST("/guest", func(c *gin.Context) {
+			user, err := GC.CreateGuestToken()
+			if err != nil {
+				c.JSON(500, gin.H{"error": "Failed to create guest token"})
+				return
+			}
+
+			c.JSON(200, gin.H{
+				"message":  "Guest login successful",
+				"username": "Guest",
+				"token":    user.Token,
+			})
+		})
 	}
 	// Start server on port 8080 (default)
 	// Server will listen on 0.0.0.0:8080 (localhost:8080 on Windows)
